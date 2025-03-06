@@ -1,6 +1,7 @@
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { RoleLayout } from "./layouts/RoleLayout";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
+import VerificationForm from "./components/Broker/VerificationForm";
 
 const InsurerHome = () => <h1>Insurer Home</h1>;
 const InsurerListings = () => <h1>Insurer Listings</h1>;
@@ -33,6 +34,10 @@ export default function App() {
             <Route path="home" element={<CustomerHome />} />
             <Route path="listings" element={<CustomerListings />} />
           </Route>
+          <Route
+            path="/customer/Verification"
+            element={<VerificationForm />}
+          ></Route>
 
           <Route path="*" element={<Navigate to="/insurer/home" replace />} />
         </Routes>
