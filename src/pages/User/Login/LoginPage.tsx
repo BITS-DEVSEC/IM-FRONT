@@ -10,12 +10,10 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { GoogleButton } from "./GoogleButton"; // Ensure you import the GoogleButton component
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <div
       style={{
@@ -40,11 +38,7 @@ const LoginPage: React.FC = () => {
           <GoogleButton radius="xl">Google</GoogleButton>
         </Group>
 
-        <Divider
-          label="Or continue with email"
-          labelPosition="center"
-          my="lg"
-        />
+        <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
         <form>
           <Stack>
@@ -63,18 +57,26 @@ const LoginPage: React.FC = () => {
           </Stack>
 
           <Group justify="space-between" mt="xl">
-            <Anchor
-              component="button"
-              onClick={() => navigate("/register")}
-              size="xs"
-            >
-              Don't have an account? Register
+            <Anchor component="button" size="xs">
+              Don't have an account?{" "}
+              <Link to="/register" style={{ textDecoration: "none" }}>
+                Register
+              </Link>
             </Anchor>
             <Button type="submit" radius="xl">
               Login
             </Button>
           </Group>
         </form>
+
+        {/* Forgot Password Link */}
+        <Group align="center" justify="center" mt="md">
+          <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+            <Anchor size="xs" color="dimmed">
+              Forgot password?
+            </Anchor>
+          </Link>
+        </Group>
       </Paper>
     </div>
   );

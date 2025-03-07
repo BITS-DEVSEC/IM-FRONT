@@ -51,7 +51,7 @@ const RegisterPage: React.FC = () => {
         <form>
           <Stack>
             <TextInput
-              label="Name"
+              label="Full Name"
               placeholder="Your name"
               required
               radius="md"

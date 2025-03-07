@@ -4,6 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 import VerificationForm from "./components/Broker/VerificationForm";
 import LoginPage from "./pages/User/Login/LoginPage"
 import RegisterPage from "./pages/User/Register/RegisterPage"
+import ForgotPasswordPage from "./pages/User/ForgotPassword/ForgotPasswordPage"; // Adjust the path as necessary
 
 const InsurerHome = () => <h1>Insurer Home</h1>;
 const InsurerListings = () => <h1>Insurer Listings</h1>;
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/insurer/home" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           <Route path="/insurer" element={<RoleLayout />}>
             <Route index element={<Navigate to="home" replace />} />
