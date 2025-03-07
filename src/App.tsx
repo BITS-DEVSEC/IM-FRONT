@@ -2,13 +2,12 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { RoleLayout } from "./layouts/RoleLayout";
 import { AuthProvider } from "./context/AuthContext";
 import VerificationForm from "./components/Broker/VerificationForm";
+import InsuranceCards from "./components/Broker/ProductClass";
 
 const InsurerHome = () => <h1>Insurer Home</h1>;
 const InsurerListings = () => <h1>Insurer Listings</h1>;
 const AdminHome = () => <h1>Admin Home</h1>;
 const AdminListings = () => <h1>Admin Listings</h1>;
-const CustomerHome = () => <h1>Customer Home</h1>;
-const CustomerListings = () => <h1>Customer Listings</h1>;
 
 export default function App() {
   return (
@@ -31,8 +30,7 @@ export default function App() {
 
           <Route path="/customer" element={<RoleLayout />}>
             <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<CustomerHome />} />
-            <Route path="listings" element={<CustomerListings />} />
+            <Route path="home" element={<InsuranceCards />} />
           </Route>
           <Route
             path="/customer/Verification"

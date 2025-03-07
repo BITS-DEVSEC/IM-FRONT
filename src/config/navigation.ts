@@ -21,7 +21,6 @@ export const navigationData: Record<string, NavItem[]> = {
     ],
     customer: [
         { link: '/customer/home', label: 'Home', icon: DashboardIcon },
-        { link: '/customer/listings', label: 'Listing', icon: CardStackIcon },
     ],
 };
 
