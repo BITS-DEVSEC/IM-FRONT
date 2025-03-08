@@ -20,7 +20,7 @@ export default function VerificationForm() {
         p="lg"
         style={{ background: "#f5f5f5", borderRadius: 10 }}
       >
-        <Text ta="center" fz="h3" fw={700} mb="md" color="#7E4005">
+        <Text ta="center" fz="h3" fw={700} mb="md" color="primary">
           Verification Needed
         </Text>
 
@@ -82,7 +82,7 @@ export default function VerificationForm() {
         </div>
 
         <Center>
-          <Button fullWidth mt="lg" color="#7E4005">
+          <Button fullWidth mt="lg">
             Submit
           </Button>
         </Center>
