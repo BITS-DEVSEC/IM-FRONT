@@ -2,6 +2,9 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { RoleLayout } from "./layouts/RoleLayout";
 import { AuthProvider } from "./context/AuthContext";
 import VerificationForm from "./components/Broker/VerificationForm";
+import ManageListings from "./pages/insurer/ManageListings";
+import ListingForm from "./pages/insurer/ListingForm";
+
 
 const InsurerHome = () => <h1>Insurer Home</h1>;
 const InsurerListings = () => <h1>Insurer Listings</h1>;
@@ -20,7 +23,8 @@ export default function App() {
           <Route path="/insurer" element={<RoleLayout />}>
             <Route index element={<Navigate to="home" replace />} />
             <Route path="home" element={<InsurerHome />} />
-            <Route path="listings" element={<InsurerListings />} />
+            <Route path="listings" element={<ManageListings />} />
+            <Route path="new-listing" element={<ListingForm />} />
           </Route>
 
           <Route path="/admin" element={<RoleLayout />}>
