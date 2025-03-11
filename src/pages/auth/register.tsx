@@ -49,7 +49,7 @@ const Register: React.FC = () => {
                 htmlFor="phone_no"
                 className="block text-sm font-medium text-gray-900 dark:text-gray-100"
               >
-                Phone Number / FIN
+                Phone Number / Email
               </label>
               <div className="mt-2">
                 <input
