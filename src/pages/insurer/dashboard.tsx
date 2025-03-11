@@ -16,26 +16,28 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
-import { NavMain } from "@/components/nav-main"; 
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
 import { SidebarContent } from "@/components/ui/sidebar";
 import {
   BookOpen,
   Frame,
   Map,
-  PieChart, 
+  PieChart,
+  Send,
+  Settings2,
+  Notebook,
   House,
-  Info, 
-  ShoppingBag,
-  Users,
-  ChartLine,
+  Info,
+  CogIcon,
 } from "lucide-react";
 
 const data = {
   user: {
-    name: "Admin",
-    email: "Admin@example.com",
-    avatar: "/avatars/Admin.jpg",
+    name: "Insurer",
+    email: "Insurer@example.com",
+    avatar: "/avatars/Insurer.jpg",
   },
   navMain: [
     {
@@ -45,46 +47,35 @@ const data = {
       isActive: true,
     },
     {
-      title: "Product",
+      title: "Listings",
       url: "#",
-      icon: ShoppingBag,
+      icon: Notebook,
       items: [
         {
-          title: "Waitlist",
-          url: "/admin/product/waitlist",
+          title: "All Listings",
+          url: "/insurer/listing",
+        },
+        {
+          title: "Pending Listings",
+          url: "#",
         },
         {
           title: "Approved Listings",
-          url: "/admin/product/approved",
-        },
-      ],
-    },
-    {
-      title: "User Managment",
-      url: "#",
-      icon: Users,
-      items: [
-        {
-          title: "Insurers",
-          url: "#",
-        },
-        {
-          title: "Brokers",
           url: "#",
         },
       ],
-    },
+    }, 
     {
-      title: "Feedback & Analysis",
+      title: "Settings",
       url: "#",
-      icon: ChartLine,
+      icon: CogIcon,
       items: [
         {
-          title: "Statistics of product",
+          title: "Account",
           url: "#",
         },
         {
-          title: "User reviews",
+          title: "Notification",
           url: "#",
         },
       ],
@@ -119,8 +110,38 @@ const data = {
       icon: Map,
     },
   ],
-}; 
- 
+};
+import { BellRing, Check } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+
+const notifications = [
+  {
+    title: "Your call has been confirmed.",
+    description: "1 hour ago",
+  },
+  {
+    title: "You have a new message!",
+    description: "1 hour ago",
+  },
+  {
+    title: "Your subscription is expiring soon!",
+    description: "2 hours ago",
+  },
+];
+
+type CardProps = React.ComponentProps<typeof Card>;
+
 function Dashboard() {
   return (
     <>
@@ -144,7 +165,9 @@ function Dashboard() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="">Buna Bank</BreadcrumbLink>
+                    <BreadcrumbLink href="#">
+                      Buna Bank
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
@@ -159,7 +182,8 @@ function Dashboard() {
 
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-              <div className="aspect-video rounded-xl bg-muted/50"></div>
+              <div className="aspect-video rounded-xl bg-muted/50" >
+              </div>
               <div className="aspect-video rounded-xl bg-muted/50" />
               <div className="aspect-video rounded-xl bg-muted/50" />
             </div>

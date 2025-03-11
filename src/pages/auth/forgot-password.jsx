@@ -1,5 +1,6 @@
 import React from "react";
-import Buna from "/buna.svg";
+import Buna from "/buna_norm.svg";
+import BunaWhite from "/buna_white.svg";
 
 const ForgotPassword = () => {
   return (

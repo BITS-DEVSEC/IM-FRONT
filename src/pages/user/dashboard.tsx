@@ -16,26 +16,34 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
-import { NavMain } from "@/components/nav-main"; 
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
 import { SidebarContent } from "@/components/ui/sidebar";
 import {
   BookOpen,
   Frame,
   Map,
-  PieChart, 
+  PieChart,
+  Send,
+  Settings2,
+  Notebook,
   House,
-  Info, 
+  Info,
+  CogIcon,
   ShoppingBag,
   Users,
   ChartLine,
+  Car,
+  FileQuestion,
+  MessageCircleQuestionIcon,
 } from "lucide-react";
 
 const data = {
   user: {
-    name: "Admin",
-    email: "Admin@example.com",
-    avatar: "/avatars/Admin.jpg",
+    name: "User",
+    email: "User@example.com",
+    avatar: "/avatars/User.jpg",
   },
   navMain: [
     {
@@ -45,50 +53,15 @@ const data = {
       isActive: true,
     },
     {
-      title: "Product",
+      title: "Vehicle",
       url: "#",
-      icon: ShoppingBag,
-      items: [
-        {
-          title: "Waitlist",
-          url: "/admin/product/waitlist",
-        },
-        {
-          title: "Approved Listings",
-          url: "/admin/product/approved",
-        },
-      ],
+      icon: Car, 
     },
     {
-      title: "User Managment",
+      title: "Request",
       url: "#",
-      icon: Users,
-      items: [
-        {
-          title: "Insurers",
-          url: "#",
-        },
-        {
-          title: "Brokers",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Feedback & Analysis",
-      url: "#",
-      icon: ChartLine,
-      items: [
-        {
-          title: "Statistics of product",
-          url: "#",
-        },
-        {
-          title: "User reviews",
-          url: "#",
-        },
-      ],
-    },
+      icon: MessageCircleQuestionIcon, 
+    }, 
   ],
   navSecondary: [
     {
@@ -101,26 +74,39 @@ const data = {
       url: "#",
       icon: Info,
     },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-}; 
- 
+  ] 
+};
+import { BellRing, Check } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+
+const notifications = [
+  {
+    title: "Your call has been confirmed.",
+    description: "1 hour ago",
+  },
+  {
+    title: "You have a new message!",
+    description: "1 hour ago",
+  },
+  {
+    title: "Your subscription is expiring soon!",
+    description: "2 hours ago",
+  },
+];
+
+type CardProps = React.ComponentProps<typeof Card>;
+
 function Dashboard() {
   return (
     <>
@@ -144,7 +130,7 @@ function Dashboard() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="">Buna Bank</BreadcrumbLink>
+                    <BreadcrumbLink href="#">Buna Bank</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
