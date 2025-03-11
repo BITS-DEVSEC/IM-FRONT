@@ -25,7 +25,7 @@ const ForgotPassword = () => {
                   htmlFor="phone_no"
                   className="block text-sm font-medium text-gray-900"
                 >
-                  Phone Number / FIN
+                  Phone Number / Email
                 </label>
                 <div className="mt-2">
                   <input

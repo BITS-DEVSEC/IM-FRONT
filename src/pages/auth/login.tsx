@@ -142,7 +142,7 @@ const Login: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-900 dark:text-gray-100"
               >
-                Phone Number / email
+                Phone Number / Email
               </label>
               <div className="mt-2">
                 <input
@@ -187,7 +187,7 @@ const Login: React.FC = () => {
 
             <div>
               <a
-                href="/dashboard"
+                href="/user/dashboard"
                 className="flex w-full justify-center rounded-md bg-yellow-800 dark:bg-yellow-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Login
