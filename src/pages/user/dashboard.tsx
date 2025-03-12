@@ -55,13 +55,13 @@ const data = {
     {
       title: "Vehicle",
       url: "#",
-      icon: Car, 
+      icon: Car,
     },
     {
       title: "Request",
       url: "#",
-      icon: MessageCircleQuestionIcon, 
-    }, 
+      icon: MessageCircleQuestionIcon,
+    },
   ],
   navSecondary: [
     {
@@ -74,7 +74,7 @@ const data = {
       url: "#",
       icon: Info,
     },
-  ] 
+  ],
 };
 import { BellRing, Check } from "lucide-react";
 
