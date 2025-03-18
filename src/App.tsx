@@ -10,6 +10,8 @@ import InsuereDashboard from "./pages/insurer/dashboard"; // Adjust path
 import UserDashboard from "./pages/user/dashboard"; // Adjust path
 import ForgotPassword from "./pages/auth/forgot-password"; // Adjust path
 import { ThemeProvider } from "@/components/theme-provider";
+import LiabilityInsuranceFlow from "./pages/user/on-boarding-flow";
+import OnboardingFlow from "./pages/user/OnboardingFlow";
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/insurer/dashboard" element={<InsuereDashboard />} />
             <Route path="/user/dashboard" element={<UserDashboard />} />
+            <Route path="/user/onboardingflow" element={<OnboardingFlow />} />
           </Routes>
         </Router>
       </ThemeProvider>
