@@ -1,6 +1,4 @@
-import React from "react";
 import Buna from "/buna_norm.svg";
-import BunaWhite from "/buna_white.svg";
 
 const ForgotPassword = () => {
   return (
@@ -47,7 +45,7 @@ const ForgotPassword = () => {
                   Next
                 </a>
               </div>
-            </form> 
+            </form>
           </div>
         </div>
       </div>
