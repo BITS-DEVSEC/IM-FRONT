@@ -1,51 +1,34 @@
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
-import { RoleLayout } from "./layouts/RoleLayout";
-import { AuthProvider } from "./context/AuthContext";
-import VerificationForm from "./components/Broker/VerificationForm";
-import ManageListings from "./pages/insurer/ManageListings";
-import ListingForm from "./pages/insurer/ListingForm";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/auth/login"; // Adjust path
+import Otp from "./pages/auth/otp"; // Adjust path
+import Register from "./pages/auth/register"; // Adjust path
+import ConfirmPassword from "./pages/auth/confirm-password"; // Adjust path
+import Done from "./pages/auth/done"; // Adjust path
+import Welcome from "./pages/landing/index"
+import AdminDashboard from "./pages/admin/dashboard"; // Adjust path
+import InsuereDashboard from "./pages/insurer/dashboard"; // Adjust path
+import UserDashboard from "./pages/user/dashboard"; // Adjust path
+import ForgotPassword from "./pages/auth/forgot-password"; // Adjust path
+import { ThemeProvider } from "@/components/theme-provider"
 
-
-const InsurerHome = () => <h1>Insurer Home</h1>;
-const InsurerListings = () => <h1>Insurer Listings</h1>;
-const AdminHome = () => <h1>Admin Home</h1>;
-const AdminListings = () => <h1>Admin Listings</h1>;
-const CustomerHome = () => <h1>Customer Home</h1>;
-const CustomerListings = () => <h1>Customer Listings</h1>;
-
-export default function App() {
+function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/insurer/home" replace />} />
-
-          <Route path="/insurer" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<InsurerHome />} />
-            <Route path="listings" element={<ManageListings />} />
-            <Route path="new-listing" element={<ListingForm />} />
-          </Route>
-
-          <Route path="/admin" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<AdminHome />} />
-            <Route path="listings" element={<AdminListings />} />
-          </Route>
-
-          <Route path="/customer" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<CustomerHome />} />
-            <Route path="listings" element={<CustomerListings />} />
-          </Route>
-          <Route
-            path="/customer/Verification"
-            element={<VerificationForm />}
-          ></Route>
-
-          <Route path="*" element={<Navigate to="/insurer/home" replace />} />
+          <Route path="/" element={<Welcome />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/confirm-password" element={<ConfirmPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/done" element={<Done />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/insurer/dashboard" element={<InsuereDashboard />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
-}
+} 
+export default App;
