@@ -7,7 +7,7 @@ export default function Pricing() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-            Start managing your company smarter today
+            Start your coverage now quick and easy!
           </h2>
         </div>
         <div className="mt-8 md:mt-20">
@@ -34,10 +34,10 @@ export default function Pricing() {
               <div className="relative">
                 <ul role="list" className="space-y-4">
                   {[
-                    "First premium advantage",
-                    "Second advantage weekly",
-                    "Third advantage donate to project",
-                    "Fourth, access to all components weekly",
+                    "Choose your insurance and get a quote in minutes.",
+                    "Find the best coverage that fits your needs.",
+                    "Simple, secure, and hassle-free process.",
+                    "Enjoy peace of mind with reliable protection.",
                   ].map((item, index) => (
                     <li key={index} className="flex items-center gap-2">
                       <Check className="size-3" />
@@ -46,8 +46,8 @@ export default function Pricing() {
                   ))}
                 </ul>
                 <p className="text-muted-foreground mt-6 text-sm">
-                  Team can be any size, and you can add or switch members as
-                  needed. Companies using our platform include:
+                  Getting insured has never been easier. Follow these simple
+                  steps to find the right coverage and get protected in no time
                 </p>
                 <div className="mt-12 flex flex-wrap items-center justify-between gap-6">
                   <img

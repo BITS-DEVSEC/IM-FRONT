@@ -6,8 +6,13 @@ export default function CallToAction() {
     <section className="bg-background py-16 md:py-32">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
-          <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Start Building</h2>
-          <p className="mt-4">Libero sapiente aliquam quibusdam aspernatur.</p>
+          <h2 className="text-balance text-4xl font-semibold lg:text-5xl">
+            Get Started
+          </h2>
+          <p className="mt-4">
+            Get a quote, compare plans, and apply online in minutes—simple and
+            hassle-free!
+          </p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
@@ -18,13 +23,13 @@ export default function CallToAction() {
 
             <Button asChild size="lg" variant="outline">
               <a href="/">
-                <span>Book Demo</span>
+                <span>More Info</span>
               </a>
             </Button>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
