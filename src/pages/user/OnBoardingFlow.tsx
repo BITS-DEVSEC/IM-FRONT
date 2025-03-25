@@ -5,26 +5,33 @@ import { motion } from "framer-motion";
 import ProgressBar from "./ProgressBar";
 import StepWelcome from "./StepWelcome";
 import StepSelectInsuranceClass from "./StepSelectInsuranceClass";
-import StepVehicleDetails from "./StepVehicleDetails";
+import StepVehicleDetails from "./StepVehicleDetails1";
+import StepVehicleDetails2 from "./StepVehicleDetails2"; // Correct import
 import StepCompareQuotes from "./StepCompareQuotes";
 import StepPayment from "./StepPayment";
 import StepSelectInsurance from "./StepSelectInsurance";
 import StepSelectCompensation from "./StepSelectCompensation";
 import StepReviewDetails from "./StepReviewDetails";
+import StepUploadCarPhotos from "./StepUploadCarPhotos";
 
-// Define the structure of vehicle details
 interface VehicleDetails {
   vin: string;
   year: string;
   make: string;
   model: string;
   engineCapacity: string;
-  vehicleType: string;
-  useType: string;
   plateNumber: string;
+  engineNumber: string;
 }
 
-// Define the structure of compensation limits
+interface VehicleDetails2 {
+  carPrice: string;
+  passengers: string;
+  vehicleType: string;
+  vehicleUsage: string;
+  goods: string;
+}
+
 interface CompensationLimits {
   ownDamage: number;
   bodilyInjury: number;
@@ -33,7 +40,9 @@ interface CompensationLimits {
 const steps = [
   "Welcome",
   "Select Insurance Type",
-  "Enter Vehicle Details",
+  "Basic Vehicle Details",
+  "Additional Vehicle Details", // Position 3
+  "Upload Car Photos", // Position 4
   "Select Insurance",
   "Select Compensation Limits",
   "Review Details",
@@ -51,9 +60,21 @@ export default function OnboardingFlow() {
     make: "",
     model: "",
     engineCapacity: "",
-    vehicleType: "",
-    useType: "",
     plateNumber: "",
+    engineNumber: "",
+  });
+  const [vehicleDetails2, setVehicleDetails2] = useState<VehicleDetails2>({
+    carPrice: "",
+    passengers: "",
+    vehicleType: "",
+    vehicleUsage: "",
+    goods: "",
+  });
+  const [carPhotos, setCarPhotos] = useState<{ [key: string]: File | null }>({
+    front: null,
+    back: null,
+    left: null,
+    right: null,
   });
   const [compensationLimits, setCompensationLimits] =
     useState<CompensationLimits>({
@@ -66,8 +87,6 @@ export default function OnboardingFlow() {
 
   return (
     <div className="max-w-xl mx-auto pt-12">
-      {" "}
-      {/* Changed from max-w-sm to max-w-md */}
       <ProgressBar step={step} totalSteps={steps.length} />
       <Card>
         <CardHeader>
@@ -86,31 +105,46 @@ export default function OnboardingFlow() {
                 setInsuranceClassType={setInsuranceClassType}
               />
             )}
-            {step === 2 && (
+            {step === 2 && ( // Correct step number
+              <StepVehicleDetails2
+                vehicleDetails2={vehicleDetails2}
+                setVehicleDetails2={setVehicleDetails2}
+              />
+            )}
+            {step === 3 && (
               <StepVehicleDetails
                 vehicleDetails={vehicleDetails}
                 setVehicleDetails={setVehicleDetails}
               />
             )}
-            {step === 3 && (
+
+            {step === 4 && (
+              <StepUploadCarPhotos
+                carPhotos={carPhotos}
+                setCarPhotos={setCarPhotos}
+              />
+            )}
+            {step === 5 && (
               <StepSelectInsurance setInsuranceType={setInsuranceType} />
             )}
-            {step === 4 && (
+            {step === 6 && (
               <StepSelectCompensation
                 insuranceType={insuranceType}
                 compensationLimits={compensationLimits}
                 setCompensationLimits={setCompensationLimits}
               />
             )}
-            {step === 5 && (
+            {step === 7 && (
               <StepReviewDetails
                 vehicleDetails={vehicleDetails}
+                vehicleDetails2={vehicleDetails2}
                 insuranceType={insuranceType}
                 compensationLimits={compensationLimits}
+                carPhotos={carPhotos}
               />
             )}
-            {step === 6 && <StepCompareQuotes />}
-            {step === 7 && <StepPayment />}
+            {step === 8 && <StepCompareQuotes />}
+            {step === 9 && <StepPayment />}
           </motion.div>
         </CardContent>
       </Card>
