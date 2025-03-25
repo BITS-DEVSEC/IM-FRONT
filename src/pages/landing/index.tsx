@@ -12,12 +12,12 @@ import Pricing from "@/components/pricing";
 import StatsSection from "@/components/stats";
 import FeaturesSection from "@/components/features";
 import { TextEffect } from "@/components/motion-primitives/text-effects";
-import { AnimatedGroup } from "@/components/motion-primitives/animated-group";
+import { AnimatedGroup } from "@/components/motion-primitives/animated-group"; 
 
 const menuItems = [
   { name: "Partners", href: "#" },
   { name: "Services", href: "#" },
-  { name: "Pricing", href: "#" },
+  { name: "Products", href: "#" },
   { name: "About", href: "#" },
 ];
 
@@ -55,10 +55,10 @@ const LandingPage: React.FC = () => {
                 as="p"
                 className="mx-auto mt-12 max-w-2xl text-pretty text-xl "
               >
-                Get the coverage you need—health, auto, home, and more—quickly
-                and securely. Our fully digital platform makes insurance simple,
-                accessible, and hassle-free, giving you peace of mind anytime,
-                anywhere.
+                Get the coverage you need! health, auto, home, and
+                more,instantly and securely. Our digital platform simplifies
+                insurance, making it fast, accessible, and hassle-free for your
+                peace of mind.
               </TextEffect>
 
               <AnimatedGroup
@@ -75,36 +75,24 @@ const LandingPage: React.FC = () => {
                 }}
                 className="mt-12"
               >
-                <form action="" className="mx-auto max-w-sm">
-                  <div className="bg-background has-[input:focus]:ring-muted relative grid grid-cols-[1fr_auto] items-center rounded-[calc(var(--radius)+0.5rem)] border pr-2 shadow shadow-zinc-950/5 has-[input:focus]:ring-2">
-                    <Mail className="pointer-events-none absolute inset-y-0 left-4 my-auto size-4" />
-
-                    <input
-                      placeholder="Your mail address"
-                      className="h-12 w-full bg-transparent pl-12 focus:outline-none"
-                      type="email"
-                    />
-
-                    <div className="md:pr-1.5 lg:pr-0">
-                      <Button
-                        aria-label="submit"
-                        size="sm"
-                        className="rounded-(--radius)"
-                      >
-                        <span className="hidden md:block">Get Started</span>
-                        <SendHorizonal
-                          className="relative mx-auto size-5 md:hidden"
-                          strokeWidth={2}
-                        />
-                      </Button>
-                    </div>
-                  </div>
-                </form>
+                <Button
+                  aria-label="submit"
+                  size="lg"
+                  className="rounded-lg px-4 py-2 bg-primary text-white hover:bg-yellow-600 transition-colors"
+                >
+                  <a href="/choose" className="hidden md:block">
+                    Get Started
+                  </a>
+                  <SendHorizonal
+                    className="h-5 w-5 md:hidden"
+                    strokeWidth={2}
+                  />
+                </Button>
               </AnimatedGroup>
             </div>
           </div>
         </section>
-        <LogoCloud />
+        <LogoCloud /> 
         <FeaturesSection />
         <StatsSection />
         <Testimonials />

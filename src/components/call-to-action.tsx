@@ -7,16 +7,17 @@ export default function CallToAction() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance text-4xl font-semibold lg:text-5xl">
-            Get Started
+            Start securing your future today.
           </h2>
           <p className="mt-4">
-            Get a quote, compare plans, and apply online in minutes—simple and
-            hassle-free!
+            Get the coverage you need for health, auto, home, and more,
+            instantly and securely. Our digital platform simplifies insurance,
+            making it fast, accessible, and hassle-free for your peace of mind.
           </p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
-              <a href="/">
+              <a href="/choose">
                 <span>Get Started</span>
               </a>
             </Button>

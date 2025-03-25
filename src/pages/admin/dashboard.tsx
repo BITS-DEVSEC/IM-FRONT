@@ -16,19 +16,20 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
-import { NavMain } from "@/components/nav-main"; 
+import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { SidebarContent } from "@/components/ui/sidebar";
 import {
   BookOpen,
   Frame,
   Map,
-  PieChart, 
+  PieChart,
   House,
-  Info, 
+  Info,
   ShoppingBag,
   Users,
   ChartLine,
+  FrameIcon,
 } from "lucide-react";
 
 const data = {
@@ -70,6 +71,21 @@ const data = {
         },
         {
           title: "Brokers",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Roles and Permission",
+      url: "#",
+      icon: FrameIcon,
+      items: [
+        {
+          title: "Roles",
+          url: "#",
+        },
+        {
+          title: "permissions",
           url: "#",
         },
       ],
@@ -119,8 +135,8 @@ const data = {
       icon: Map,
     },
   ],
-}; 
- 
+};
+
 function Dashboard() {
   return (
     <>

@@ -30,7 +30,7 @@ const Register: React.FC = () => {
         </div>
         <br />
         <br />
-        <LoginIcons title="Register to Buna">
+        <LoginIcons title="Welcome To The Sign Up Page">
           <img
             alt="Your Company"
             src={Buna}

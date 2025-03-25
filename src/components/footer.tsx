@@ -278,7 +278,7 @@ export default function FooterSection() {
           <form className="row-start-1 border-b pb-8 text-sm md:col-span-2 md:border-none lg:col-span-1">
             <div className="space-y-4">
               <label htmlFor="mail" className="block font-medium">
-                Newsletter
+                Contact us
               </label>
               <div className="flex gap-2">
                 <Input
@@ -315,10 +315,9 @@ export default function FooterSection() {
                 name="language"
               >
                 <option value="1">English</option>
-                <option value="2">Espanol</option>
+                <option value="2">Amharic</option>
                 <option value="3">Français</option>
                 <option value="4">Swahili</option>
-                <option value="5">Lingala</option>
               </select>
             </div>
           </form>

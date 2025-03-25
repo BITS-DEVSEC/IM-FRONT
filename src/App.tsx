@@ -10,6 +10,8 @@ import InsuereDashboard from "./pages/insurer/dashboard"; // Adjust path
 import UserDashboard from "./pages/user/dashboard"; // Adjust path
 import ForgotPassword from "./pages/auth/forgot-password"; // Adjust path
 import { ThemeProvider } from "@/components/theme-provider"
+import Choose from "./pages/auth/choose";
+import MotorInsurance from "./pages/landing/motor-Insurance";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Welcome />} />
+          <Route path="/motor-insurance" element={<MotorInsurance />} />
+          <Route path="/choose" element={<Choose />} />
           <Route path="/login" element={<Login />} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/register" element={<Register />} />

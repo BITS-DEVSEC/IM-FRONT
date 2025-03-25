@@ -197,7 +197,7 @@ const Login: React.FC = () => {
           <p className="mt-10 text-center text-sm text-gray-500 dark:text-gray-100">
             Dont Have An Account?{""} &nbsp;
             <a
-              href="/register"
+              href="/choose"
               className="font-semibold text-yellow-800 dark:text-yellow-500 hover:text-yellow-700"
             >
               Register
