@@ -37,7 +37,7 @@ const Done = () => {
                             href="/user/dashboard"
                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm bg-yellow-800 dark:bg-yellow-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-yellow-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                            Go to Home
+                            Go to Your Dashboard
                         </a>
                     </div>
                 </div>

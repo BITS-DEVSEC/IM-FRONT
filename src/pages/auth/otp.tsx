@@ -89,10 +89,10 @@ const Otp: React.FC = () => {
               <br />
               <header className="mb-8">
                 <h1 className="text-xl md:text-2xl font-bold mb-1">
-                  Fayda Verification
+                 Verify Your Account
                 </h1>
                 <p className="text-sm md:text-[15px] text-slate-500 dark:text-slate-100">
-                  Enter the 4-digit verification code that was sent to your
+                  Enter the 6-digit verification code that was sent to your
                   phone number.
                 </p>
               </header>

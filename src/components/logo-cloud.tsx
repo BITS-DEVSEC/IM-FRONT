@@ -52,7 +52,7 @@ export default function LogoCloud() {
               <div className="flex">
                 <img
                   className="mx-auto h-20 w-fit dark:invert"
-                  src="Awash.svg"
+                  src="hibret-bank.svg"
                   alt="Column Logo"
                   height="80"
                   width="auto"
@@ -61,7 +61,7 @@ export default function LogoCloud() {
               <div className="flex">
                 <img
                   className="mx-auto h-20 w-fit dark:invert"
-                  src="bunna2.svg"
+                  src="Awash.svg"
                   alt="Column Logo"
                   height="80"
                   width="auto"
@@ -69,15 +69,15 @@ export default function LogoCloud() {
               </div>
             
 
-              <div className="flex">
+              {/* <div className="flex">
                 <img
-                  className="mx-auto h-6 w-fit dark:invert"
-                  src="Awash.svg"
+                  className="mx-auto h-20 w-fit dark:invert"
+                  src="bunna2.svg"
                   alt="OpenAI Logo"
                   height="24"
                   width="auto"
                 />
-              </div>
+              </div> */}
             </InfiniteSlider>
 
             <div className="bg-linear-to-r from-background absolute inset-y-0 left-0 w-20"></div>
