@@ -69,14 +69,14 @@ export default function Pricing() {
                   />
                   <img
                     className="h-4 w-fit dark:invert"
-                    src="Awash.svg"
+                    src="hibret-bank.svg"
                     alt="GitHub Logo"
                     height="16"
                     width="auto"
                   />
                   <img
                     className="h-5 w-fit dark:invert"
-                    src="bunna2.svg"
+                    src="Awash.svg"
                     alt="Nike Logo"
                     height="20"
                     width="auto"
