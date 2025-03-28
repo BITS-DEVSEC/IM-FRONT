@@ -106,7 +106,7 @@
 
 // export default Login;
 import React, { useState } from "react";
-import AuthLayout from "@/layouts/AuthLayout"; 
+import AuthLayout from "@/layouts/AuthLayout";
 import Buna from "/buna_norm.svg";
 import BunaWhite from "/buna_white.svg";
 import LoginIcons from "@/components/LoginIcons";
@@ -187,7 +187,7 @@ const Login: React.FC = () => {
 
             <div>
               <a
-                href="/user/dashboard"
+                href="/user/onboardingflow"
                 className="flex w-full justify-center rounded-md bg-yellow-800 dark:bg-yellow-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Login

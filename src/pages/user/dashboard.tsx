@@ -17,25 +17,13 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
 import { SidebarContent } from "@/components/ui/sidebar";
 import {
   BookOpen,
-  Frame,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  Notebook,
   House,
   Info,
-  CogIcon,
-  ShoppingBag,
-  Users,
-  ChartLine,
   Car,
-  FileQuestion,
   MessageCircleQuestionIcon,
 } from "lucide-react";
 
@@ -55,13 +43,13 @@ const data = {
     {
       title: "Vehicle",
       url: "#",
-      icon: Car, 
+      icon: Car,
     },
     {
       title: "Request",
       url: "#",
-      icon: MessageCircleQuestionIcon, 
-    }, 
+      icon: MessageCircleQuestionIcon,
+    },
   ],
   navSecondary: [
     {
@@ -74,21 +62,10 @@ const data = {
       url: "#",
       icon: Info,
     },
-  ] 
+  ],
 };
-import { BellRing, Check } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import { Card } from "@/components/ui/card";
 
 const notifications = [
   {

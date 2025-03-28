@@ -4,14 +4,15 @@ import Otp from "./pages/auth/otp"; // Adjust path
 import Register from "./pages/auth/register"; // Adjust path
 import ConfirmPassword from "./pages/auth/confirm-password"; // Adjust path
 import Done from "./pages/auth/done"; // Adjust path
-import Welcome from "./pages/landing/index"
+import Welcome from "./pages/landing/index";
 import AdminDashboard from "./pages/admin/dashboard"; // Adjust path
 import InsuereDashboard from "./pages/insurer/dashboard"; // Adjust path
 import UserDashboard from "./pages/user/dashboard"; // Adjust path
 import ForgotPassword from "./pages/auth/forgot-password"; // Adjust path
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 import Choose from "./pages/auth/choose";
 import MotorInsurance from "./pages/landing/motor-Insurance";
+import OnboardingFlow from "./pages/user/OnBoardingFlow";
 
 function App() {
   return (
@@ -30,9 +31,10 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/insurer/dashboard" element={<InsuereDashboard />} />
           <Route path="/user/dashboard" element={<UserDashboard />} />
+          <Route path="/user/onboardingflow" element={<OnboardingFlow />} />
         </Routes>
       </Router>
     </ThemeProvider>
   );
-} 
+}
 export default App;
