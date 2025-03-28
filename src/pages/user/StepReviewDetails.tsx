@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/typography";
 
 type StepReviewDetailsProps = {
-  vehicleDetails: {
+  VehicleDetails2: {
     vin: string;
     year: string;
     make: string;
@@ -15,7 +15,7 @@ type StepReviewDetailsProps = {
     plateNumber: string;
     engineNumber: string;
   };
-  vehicleDetails2: {
+  VehicleDetails1: {
     carPrice: string;
     passengers: string;
     vehicleType: string;
@@ -36,16 +36,16 @@ type StepReviewDetailsProps = {
 };
 
 export default function StepReviewDetails({
-  vehicleDetails,
-  vehicleDetails2,
+  VehicleDetails2,
+  VehicleDetails1,
   insuranceType,
   compensationLimits,
   carPhotos,
 }: StepReviewDetailsProps) {
   // Calculate premium based on engine capacity, vehicle type and usage
   const calculatePremium = () => {
-    const { engineCapacity } = vehicleDetails;
-    const { vehicleType, vehicleUsage } = vehicleDetails2;
+    const { engineCapacity } = VehicleDetails2;
+    const { vehicleType, vehicleUsage } = VehicleDetails1;
 
     // Only calculate for private vehicles
     if (vehicleType === "Private Vehicle") {
@@ -92,20 +92,20 @@ export default function StepReviewDetails({
           <CardContent className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <TypographySmall className="text-gray-600">
-                <strong>Car Price:</strong> {vehicleDetails2.carPrice}
+                <strong>Car Price:</strong> {VehicleDetails1.carPrice}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Passengers:</strong> {vehicleDetails2.passengers}
+                <strong>Passengers:</strong> {VehicleDetails1.passengers}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Vehicle Type:</strong> {vehicleDetails2.vehicleType}
+                <strong>Vehicle Type:</strong> {VehicleDetails1.vehicleType}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Vehicle Usage:</strong> {vehicleDetails2.vehicleUsage}
+                <strong>Vehicle Usage:</strong> {VehicleDetails1.vehicleUsage}
               </TypographySmall>
-              {vehicleDetails2.goods && (
+              {VehicleDetails1.goods && (
                 <TypographySmall className="text-gray-600">
-                  <strong>Goods Carried:</strong> {vehicleDetails2.goods}
+                  <strong>Goods Carried:</strong> {VehicleDetails1.goods}
                 </TypographySmall>
               )}
             </div>
@@ -123,26 +123,26 @@ export default function StepReviewDetails({
             <div className="grid grid-cols-2 gap-4">
               <TypographySmall className="text-gray-600">
                 <strong>Chassis Number (VIN):</strong>{" "}
-                {vehicleDetails.vin || "Not provided"}
+                {VehicleDetails2.vin || "Not provided"}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Year:</strong> {vehicleDetails.year}
+                <strong>Year:</strong> {VehicleDetails2.year}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Make:</strong> {vehicleDetails.make}
+                <strong>Make:</strong> {VehicleDetails2.make}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Model:</strong> {vehicleDetails.model}
+                <strong>Model:</strong> {VehicleDetails2.model}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
                 <strong>Engine Capacity:</strong>{" "}
-                {vehicleDetails.engineCapacity}
+                {VehicleDetails2.engineCapacity}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Plate Number:</strong> {vehicleDetails.plateNumber}
+                <strong>Plate Number:</strong> {VehicleDetails2.plateNumber}
               </TypographySmall>
               <TypographySmall className="text-gray-600">
-                <strong>Engine Number:</strong> {vehicleDetails.engineNumber}
+                <strong>Engine Number:</strong> {VehicleDetails2.engineNumber}
               </TypographySmall>
             </div>
           </CardContent>
@@ -230,8 +230,8 @@ export default function StepReviewDetails({
                 <strong>Calculated Premium:</strong> {premium}
               </TypographyP>
               <TypographySmall className="text-gray-500 mt-2 block">
-                Based on: {vehicleDetails.engineCapacity},{" "}
-                {vehicleDetails2.vehicleType}, {vehicleDetails2.vehicleUsage}
+                Based on: {VehicleDetails2.engineCapacity},{" "}
+                {VehicleDetails1.vehicleType}, {VehicleDetails1.vehicleUsage}
               </TypographySmall>
             </CardContent>
           </Card>

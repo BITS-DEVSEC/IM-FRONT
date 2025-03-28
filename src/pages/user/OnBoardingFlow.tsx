@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import ProgressBar from "./ProgressBar";
 import StepSelectInsuranceClass from "./StepSelectInsuranceClass";
-import StepVehicleDetails from "./StepVehicleDetails1";
-import StepVehicleDetails2 from "./StepVehicleDetails2"; // Correct import
+import StepVehicleDetails2 from "./StepVehicleDetails2";
+import StepVehicleDetails1 from "./StepVehicleDetails1"; // Correct import
 import StepCompareQuotes from "./StepCompareQuotes";
 import StepPayment from "./StepPayment";
 import StepSelectInsurance from "./StepSelectInsurance";
@@ -13,7 +13,7 @@ import StepSelectCompensation from "./StepSelectCompensation";
 import StepReviewDetails from "./StepReviewDetails";
 import StepUploadCarPhotos from "./StepUploadCarPhotos";
 
-interface VehicleDetails {
+interface VehicleDetails2 {
   vin: string;
   year: string;
   make: string;
@@ -23,7 +23,7 @@ interface VehicleDetails {
   engineNumber: string;
 }
 
-interface VehicleDetails2 {
+interface VehicleDetails1 {
   carPrice: string;
   passengers: string;
   vehicleType: string;
@@ -52,7 +52,7 @@ export default function OnboardingFlow() {
   const [step, setStep] = useState(0);
   const [setInsuranceClassType] = useState<string>("motor");
   const [insuranceType, setInsuranceType] = useState<string>("");
-  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails>({
+  const [VehicleDetails2, setVehicleDetails2] = useState<VehicleDetails2>({
     vin: "",
     year: "",
     make: "",
@@ -61,7 +61,7 @@ export default function OnboardingFlow() {
     plateNumber: "",
     engineNumber: "",
   });
-  const [vehicleDetails2, setVehicleDetails2] = useState<VehicleDetails2>({
+  const [VehicleDetails1, setVehicleDetails1] = useState<VehicleDetails1>({
     carPrice: "",
     passengers: "",
     vehicleType: "",
@@ -103,15 +103,15 @@ export default function OnboardingFlow() {
               />
             )}
             {step === 1 && ( // Correct step number
-              <StepVehicleDetails2
-                vehicleDetails2={vehicleDetails2}
-                setVehicleDetails2={setVehicleDetails2}
+              <StepVehicleDetails1
+                VehicleDetails1={VehicleDetails1}
+                setVehicleDetails1={setVehicleDetails1}
               />
             )}
             {step === 2 && (
-              <StepVehicleDetails
-                vehicleDetails={vehicleDetails}
-                setVehicleDetails={setVehicleDetails}
+              <StepVehicleDetails2
+                VehicleDetails2={VehicleDetails2}
+                setVehicleDetails2={setVehicleDetails2}
               />
             )}
 
@@ -133,8 +133,8 @@ export default function OnboardingFlow() {
             )}
             {step === 6 && (
               <StepReviewDetails
-                vehicleDetails={vehicleDetails}
-                vehicleDetails2={vehicleDetails2}
+                VehicleDetails2={VehicleDetails2}
+                VehicleDetails1={VehicleDetails1}
                 insuranceType={insuranceType}
                 compensationLimits={compensationLimits}
                 carPhotos={carPhotos}

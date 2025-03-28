@@ -1,6 +1,5 @@
+import { useState } from "react";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { TypographyH3 } from "@/components/ui/typography";
 import {
   Select,
   SelectTrigger,
@@ -8,160 +7,223 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { TypographyH3, TypographyP } from "@/components/ui/typography";
 import { IconInfoCircle } from "@tabler/icons-react";
 
+// Define the structure of the VehicleDetails2 object
 interface VehicleDetails2 {
-  carPrice: string;
-  passengers: string;
-  vehicleType: string;
-  vehicleUsage: string;
-  goods: string;
+  vin: string;
+  year: string;
+  make: string;
+  model: string;
+  bodyStyle: string;
+  ownershipType: string;
+  engineCapacity: string;
+  plateNumber: string;
+  engineNumber: string;
 }
 
+// Define the props for the component
 interface StepVehicleDetails2Props {
-  vehicleDetails2: VehicleDetails2;
+  VehicleDetails2: VehicleDetails2;
   setVehicleDetails2: (details: VehicleDetails2) => void;
+  onNext: () => void;
 }
 
 export default function StepVehicleDetails2({
-  vehicleDetails2,
+  VehicleDetails2,
   setVehicleDetails2,
 }: StepVehicleDetails2Props) {
-  const vehicleTypes = [
-    "Private Vehicle",
-    "Minibus",
-    "Bus",
-    "Truck/Trailer",
-    "Tanker",
-    "Taxi",
-    "Motorcycle",
-    "Three-Wheeled Vehicle",
-    "Special Vehicle",
-  ];
-
-  const usages = [
-    "Private Own Use",
-    "Private Business Use",
-    "Public Service (With Fare)",
-    "Commercial Use (With Hire/Payment)",
-  ];
-
+  const [language, setLanguage] = useState<"en" | "am">("en"); // Default language is English
   return (
     <div className="max-w-sm mx-auto space-y-4">
-      <TypographyH3 className="mb-4">Vehicle Details</TypographyH3>
+      <TypographyH3 className="mb-4">
+        {language === "en" ? "Vehicle Details" : "የተሽከርካሪ ዝርዝሮች"}
+      </TypographyH3>
+
+      {/* Language Selector */}
+      <div className="flex items-center justify-between mb-4">
+        <TypographyP>Language/ቋንቋ</TypographyP>
+        <Select
+          value={language}
+          onValueChange={(value) => setLanguage(value as "en" | "am")}
+        >
+          <SelectTrigger className="w-[120px]">
+            <SelectValue placeholder="Select language" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="en">English</SelectItem>
+            <SelectItem value="am">አማርኛ</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       <div className="inline-flex items-start p-3 bg-blue-50/80 rounded-lg border border-blue-200 mb-4 space-x-3">
         <IconInfoCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
         <span className="text-blue-800 text-sm leading-snug">
-          You can find this information on your vehicle registration card
+          {language === "en"
+            ? "You can find this information on your vehicle registration card"
+            : "እነዚህን መረጃዎች በመኪናዎ የምዝገባ ካርድ ላይ ማግኘት ይችላሉ።"}
         </span>
       </div>
 
-      {/* Vehicle Type Select */}
-      <CardHeader className="p-0">
-        <CardTitle>Vehicle Type</CardTitle>
+      {/* Plate Number Input */}
+      <CardHeader>
+        <CardTitle>{language === "en" ? "Plate Number" : "የሰሌዳ ቁጥር"}</CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
-        <Select
-          value={vehicleDetails2.vehicleType}
-          onValueChange={(value) =>
+      <CardContent>
+        <Input
+          placeholder={language === "en" ? "Plate Number" : "የሰሌዳ ቁጥር"}
+          value={VehicleDetails2.plateNumber}
+          onChange={(e) =>
             setVehicleDetails2({
-              ...vehicleDetails2,
-              vehicleType: value,
+              ...VehicleDetails2,
+              plateNumber: e.target.value,
             })
+          }
+        />
+      </CardContent>
+
+      {/* VIN Input */}
+      <CardHeader>
+        <CardTitle>
+          {language === "en" ? "Chassis Number" : " የሻንሲ ቁጥር"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Input
+          placeholder={
+            language === "en" ? "Enter 17-character VIN" : "17-ቁልፍ ቪአይን ያስገቡ"
+          }
+          value={VehicleDetails2.vin}
+          onChange={(e) =>
+            setVehicleDetails2({ ...VehicleDetails2, vin: e.target.value })
+          }
+        />
+      </CardContent>
+      {/* Engine Number Input */}
+      <CardHeader>
+        <CardTitle>
+          {language === "en" ? "Engine Number" : "የሞተር ቁጥር"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Input
+          placeholder={language === "en" ? "Engine Number" : "የሞተር  ቁጥር"}
+          value={VehicleDetails2.engineNumber}
+          onChange={(e) =>
+            setVehicleDetails2({
+              ...VehicleDetails2,
+              engineNumber: e.target.value,
+            })
+          }
+        />
+      </CardContent>
+
+      {/* Make (Company) Select */}
+      <CardHeader>
+        <CardTitle>
+          {language === "en" ? "Make (Company)" : "የተሰራበት ድርጅት"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Select
+          value={VehicleDetails2.make}
+          onValueChange={(value) =>
+            setVehicleDetails2({ ...VehicleDetails2, make: value })
           }
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select vehicle type" />
+            <SelectValue placeholder="Select Make" />
           </SelectTrigger>
           <SelectContent>
-            {vehicleTypes.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
+            {[
+              "Toyota",
+              "Honda",
+              "Ford",
+              "BMW",
+              "Mercedes-Benz",
+              "Hyundai",
+              "Nissan",
+              "Volkswagen",
+            ].map((make) => (
+              <SelectItem key={make} value={make}>
+                {make}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </CardContent>
 
-      {/* Vehicle Usage Select */}
-      <CardHeader className="p-0">
-        <CardTitle>Vehicle Usage</CardTitle>
+      {/* Model Input */}
+      <CardHeader>
+        <CardTitle>{language === "en" ? "Model" : "ሞዴል"}</CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent>
+        <Input
+          placeholder={language === "en" ? "Model" : "ሞዴል"}
+          value={VehicleDetails2.model}
+          onChange={(e) =>
+            setVehicleDetails2({ ...VehicleDetails2, model: e.target.value })
+          }
+        />
+      </CardContent>
+
+      {/* Engine Capacity (CC) Select */}
+      <CardHeader>
+        <CardTitle>
+          {language === "en" ? "Engine Capacity (CC)" : "የሞተር ችሎታ"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
         <Select
-          value={vehicleDetails2.vehicleUsage}
+          value={VehicleDetails2.engineCapacity}
           onValueChange={(value) =>
-            setVehicleDetails2({
-              ...vehicleDetails2,
-              vehicleUsage: value,
-            })
+            setVehicleDetails2({ ...VehicleDetails2, engineCapacity: value })
           }
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select vehicle usage" />
+            <SelectValue placeholder="Select Engine Capacity" />
           </SelectTrigger>
           <SelectContent>
-            {usages.map((usage) => (
-              <SelectItem key={usage} value={usage}>
-                {usage}
+            {[
+              "Below 1600 CC",
+              "Between 1600cc and 2000 CC",
+              "Between 2000cc and 3000 CC",
+              "Between 3000cc and 4000 CC",
+              "Above 4000 CC",
+            ].map((capacity) => (
+              <SelectItem key={capacity} value={capacity}>
+                {capacity}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </CardContent>
-
-      {/* Number of Passengers Input */}
-      <CardHeader className="p-0">
-        <CardTitle>Number of passengers (including driver)</CardTitle>
+      {/* Year of Manufacture Select */}
+      <CardHeader>
+        <CardTitle>
+          {language === "en" ? "Year of Manufacture" : "የተሰራበት ዘመን"}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
-        <Input
-          placeholder="Enter number of passengers"
-          type="number"
-          value={vehicleDetails2.passengers}
-          onChange={(e) =>
-            setVehicleDetails2({
-              ...vehicleDetails2,
-              passengers: e.target.value,
-            })
+      <CardContent>
+        <Select
+          value={VehicleDetails2.year}
+          onValueChange={(value) =>
+            setVehicleDetails2({ ...VehicleDetails2, year: value })
           }
-        />
-      </CardContent>
-
-      {/* Car Price Input */}
-      <CardHeader className="p-0">
-        <CardTitle>Car Price (including accessories)</CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <Input
-          placeholder="Enter car price"
-          type="number"
-          value={vehicleDetails2.carPrice}
-          onChange={(e) =>
-            setVehicleDetails2({
-              ...vehicleDetails2,
-              carPrice: e.target.value,
-            })
-          }
-        />
-      </CardContent>
-
-      {/* Goods Input */}
-      <CardHeader className="p-0">
-        <CardTitle>Goods</CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <Input
-          placeholder="Enter goods capacity"
-          type="number"
-          value={vehicleDetails2.goods}
-          onChange={(e) =>
-            setVehicleDetails2({
-              ...vehicleDetails2,
-              goods: e.target.value,
-            })
-          }
-        />
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Year" />
+          </SelectTrigger>
+          <SelectContent>
+            {["2024", "2023", "2022", "2021"].map((year) => (
+              <SelectItem key={year} value={year}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </CardContent>
     </div>
   );
