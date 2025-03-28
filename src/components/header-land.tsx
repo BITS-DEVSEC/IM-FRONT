@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 import Buna from "/buna_norm.svg";
 import BunaWhite from "/buna_white.svg";
 
-import { useState, useEffect, type SetStateAction } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, type SetStateAction } from "react";
+import { motion } from "framer-motion";
 import {
   Menu,
   X,
@@ -20,10 +20,10 @@ import {
   Clock,
   Moon,
   Sun,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils" 
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -31,10 +31,20 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Badge } from "@/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+} from "@/components/ui/navigation-menu";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Enhanced menu items with icons and hot/new indicators
 const menuItems = [
@@ -73,9 +83,9 @@ const menuItems = [
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a"> & {
-    icon?: React.ComponentType<{ className?: string }>
-    badge?: string
-    hot?: boolean
+    icon?: React.ComponentType<{ className?: string }>;
+    badge?: string;
+    hot?: boolean;
   }
 >(({ className, title, children, icon: Icon, badge, hot, ...props }, ref) => {
   return (
@@ -85,7 +95,7 @@ const ListItem = React.forwardRef<
           ref={ref}
           className={cn(
             "group relative block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className,
+            className
           )}
           {...props}
         >
@@ -134,50 +144,50 @@ const ListItem = React.forwardRef<
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";
 
 export function HeroHeader() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const [activeLink, setActiveLink] = useState("home") 
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeLink, setActiveLink] = useState("home");
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
-        setScrolled(true)
+        setScrolled(true);
       } else {
-        setScrolled(false)
+        setScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Check if mobile
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+      setIsMobile(window.innerWidth < 768);
+    };
 
-    checkIsMobile()
-    window.addEventListener("resize", checkIsMobile)
-    return () => window.removeEventListener("resize", checkIsMobile)
-  }, [])
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const handleLinkClick = (link: SetStateAction<string>) => {
-    setActiveLink(link)
-    setIsOpen(false)
-  }
+    setActiveLink(link);
+    setIsOpen(false);
+  };
 
   const ThemeToggle = () => {
     return (
@@ -190,13 +200,13 @@ export function HeroHeader() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem  >Light</DropdownMenuItem>
-          <DropdownMenuItem >Dark</DropdownMenuItem>
-          <DropdownMenuItem  >System</DropdownMenuItem>
+          <DropdownMenuItem>Light</DropdownMenuItem>
+          <DropdownMenuItem>Dark</DropdownMenuItem>
+          <DropdownMenuItem>System</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    )
-  }
+    );
+  };
 
   return (
     <motion.div
@@ -230,7 +240,6 @@ export function HeroHeader() {
             <div
               className={cn(
                 "flex items-center justify-center rounded-full transition-all duration-300",
-                "bg-gradient-to-br from-primary to-primary/80",
                 scrolled ? "h-7 w-7" : "h-8 w-8"
               )}
             >
@@ -289,7 +298,7 @@ export function HeroHeader() {
                   onClick={() => handleLinkClick(link.id)}
                   className={cn(
                     "relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                    "hover:bg-primary/10",
+                    "hover:bg-[#7E4005]",
                     activeLink === link.id
                       ? "text-foreground"
                       : "text-foreground/70 hover:text-foreground"
@@ -297,7 +306,7 @@ export function HeroHeader() {
                 >
                   {link.name}
                   {activeLink === link.id && (
-                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#7E4005]" />
                   )}
                 </a>
               )
@@ -306,7 +315,6 @@ export function HeroHeader() {
 
           {/* Theme Toggle and Mobile Menu Button */}
           <div className="flex items-center space-x-1">
-
             {/* Login and Get Started buttons on desktop */}
             <div className="hidden md:flex items-center space-x-2">
               <motion.div
@@ -332,7 +340,7 @@ export function HeroHeader() {
                 <Button
                   asChild
                   size="sm"
-                  className="relative z-10 rounded-full"
+                  className="relative z-10 rounded-full bg-[#7E4005]"
                 >
                   <a href="/choose">
                     <span className="flex items-center gap-1">
@@ -512,7 +520,10 @@ export function HeroHeader() {
                 whileTap={{ scale: 0.98 }}
                 className="relative overflow-hidden rounded-full"
               >
-                <Button asChild className="w-full relative z-10 rounded-full">
+                <Button
+                  asChild
+                  className="w-full relative z-10 rounded-full bg-[#7E4005]"
+                >
                   <a href="/choose">
                     <span className="flex items-center justify-center gap-1">
                       Get Started

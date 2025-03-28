@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
- 
+
 export default function Pricing() {
   return (
     <div className="bg-background relative py-16 md:py-32">
@@ -23,7 +23,7 @@ export default function Pricing() {
                 </span>
 
                 <div className="flex justify-center">
-                  <Button asChild size="lg">
+                  <Button asChild size="lg" className="bg-[#7E4005]">
                     <a href="#">Get started</a>
                   </Button>
                 </div>

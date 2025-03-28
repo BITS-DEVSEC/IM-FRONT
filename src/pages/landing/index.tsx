@@ -12,7 +12,7 @@ import Pricing from "@/components/pricing";
 import StatsSection from "@/components/stats";
 import FeaturesSection from "@/components/features";
 import { TextEffect } from "@/components/motion-primitives/text-effects";
-import { AnimatedGroup } from "@/components/motion-primitives/animated-group"; 
+import { AnimatedGroup } from "@/components/motion-primitives/animated-group";
 
 const menuItems = [
   { name: "Partners", href: "#" },
@@ -78,7 +78,7 @@ const LandingPage: React.FC = () => {
                 <Button
                   aria-label="submit"
                   size="lg"
-                  className="rounded-lg px-4 py-2 bg-primary text-white hover:bg-yellow-600 transition-colors"
+                  className="rounded-lg px-4 py-2 bg-[#7E4005] text-white hover:bg-[#9a4f06] transition-colors"
                 >
                   <a href="/choose" className="hidden md:block">
                     Get Started
@@ -92,7 +92,7 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
         </section>
-        <LogoCloud /> 
+        <LogoCloud />
         <FeaturesSection />
         <StatsSection />
         <Testimonials />

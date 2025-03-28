@@ -32,7 +32,7 @@ export default function FeaturesSection() {
                     extensive life, health, and property coverage with
                     exceptional customer service.
                   </p>
-                  <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full">
+                  <button className="mt-4 text-white px-4 py-2 rounded-full bg-[#7E4005]">
                     Read More
                   </button>
                 </div>
@@ -52,7 +52,7 @@ export default function FeaturesSection() {
                     extensive life, health, and property coverage with
                     exceptional customer service.
                   </p>
-                  <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full">
+                  <button className="mt-4 text-white px-4 py-2 rounded-full bg-[#7E4005]">
                     Read More
                   </button>
                 </div>
@@ -72,7 +72,7 @@ export default function FeaturesSection() {
                     extensive life, health, and property coverage with
                     exceptional customer service.
                   </p>
-                  <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full">
+                  <button className="mt-4 text-white px-4 py-2 rounded-full bg-[#7E4005]">
                     Read More
                   </button>
                 </div>

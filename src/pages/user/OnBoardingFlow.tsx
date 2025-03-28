@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import ProgressBar from "./ProgressBar";
-import StepWelcome from "./StepWelcome";
 import StepSelectInsuranceClass from "./StepSelectInsuranceClass";
 import StepVehicleDetails from "./StepVehicleDetails1";
 import StepVehicleDetails2 from "./StepVehicleDetails2"; // Correct import
@@ -38,7 +37,6 @@ interface CompensationLimits {
 }
 
 const steps = [
-  "Welcome",
   "Select Insurance Type",
   "Basic Vehicle Details",
   "Additional Vehicle Details", // Position 3
@@ -99,42 +97,41 @@ export default function OnboardingFlow() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {step === 0 && <StepWelcome />}
-            {step === 1 && (
+            {step === 0 && (
               <StepSelectInsuranceClass
                 setInsuranceClassType={setInsuranceClassType}
               />
             )}
-            {step === 2 && ( // Correct step number
+            {step === 1 && ( // Correct step number
               <StepVehicleDetails2
                 vehicleDetails2={vehicleDetails2}
                 setVehicleDetails2={setVehicleDetails2}
               />
             )}
-            {step === 3 && (
+            {step === 2 && (
               <StepVehicleDetails
                 vehicleDetails={vehicleDetails}
                 setVehicleDetails={setVehicleDetails}
               />
             )}
 
-            {step === 4 && (
+            {step === 3 && (
               <StepUploadCarPhotos
                 carPhotos={carPhotos}
                 setCarPhotos={setCarPhotos}
               />
             )}
-            {step === 5 && (
+            {step === 4 && (
               <StepSelectInsurance setInsuranceType={setInsuranceType} />
             )}
-            {step === 6 && (
+            {step === 5 && (
               <StepSelectCompensation
                 insuranceType={insuranceType}
                 compensationLimits={compensationLimits}
                 setCompensationLimits={setCompensationLimits}
               />
             )}
-            {step === 7 && (
+            {step === 6 && (
               <StepReviewDetails
                 vehicleDetails={vehicleDetails}
                 vehicleDetails2={vehicleDetails2}
@@ -143,8 +140,8 @@ export default function OnboardingFlow() {
                 carPhotos={carPhotos}
               />
             )}
-            {step === 8 && <StepCompareQuotes />}
-            {step === 9 && <StepPayment />}
+            {step === 7 && <StepCompareQuotes />}
+            {step === 8 && <StepPayment />}
           </motion.div>
         </CardContent>
       </Card>
@@ -152,7 +149,11 @@ export default function OnboardingFlow() {
         <Button variant="outline" onClick={prevStep} disabled={step === 0}>
           Back
         </Button>
-        <Button onClick={nextStep} disabled={step === steps.length - 1}>
+        <Button
+          onClick={nextStep}
+          disabled={step === steps.length - 1}
+          className="bg-[#7E4005] hover:bg-[#7E4005]-hover"
+        >
           {step === steps.length - 1 ? "Finish" : "Next"}
         </Button>
       </div>

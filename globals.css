@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 25 100% 25%; /* Converted #7E4005 to HSL (approx) */
+    --primary-foreground: 0 0% 100%;
+    /* ... rest of your variables */
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --primary: 25 100% 25%; /* Dark mode primary */
+    --primary-foreground: 0 0% 100%;
+    /* ... rest of your dark variables */
+  }
+}

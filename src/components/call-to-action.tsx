@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button"
- 
+import { Button } from "@/components/ui/button";
 
 export default function CallToAction() {
   return (
@@ -16,7 +15,7 @@ export default function CallToAction() {
           </p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="bg-[#7E4005]">
               <a href="/choose">
                 <span>Get Started</span>
               </a>
@@ -33,4 +32,3 @@ export default function CallToAction() {
     </section>
   );
 }
-
