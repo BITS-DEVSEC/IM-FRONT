@@ -1,33 +1,41 @@
-import InsurerHome from "@/pages/insurer/InsurerHome";
-import InsurerListings from "@/pages/insurer/InsurerListings";
 import type { ValidRole } from "./roles";
 import type { ReactNode } from "react";
 
+import AdminHome from "@/pages/admin/AdminHome";
+import AdminProducts from "@/pages/admin/AdminProducts";
+import AdminPolicies from "@/pages/admin/AdminPolicies";
+import AdminQuotations from "@/pages/admin/AdminQuotations";
+
 interface RouteConfig {
-  path: string;
-  element: ReactNode;
-  isIndex?: boolean;
+	path: string;
+	element: ReactNode;
+	isIndex?: boolean;
 }
 
 export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
-  admin: [
-    // Define admin routes here. Example:
-    // { path: "dashboard", element: <AdminDashboardPage />, isIndex: true },
-  ],
-  customer: [
-    // Define customer routes here. Example:
-    // { path: "profile", element: <CustomerProfilePage />, isIndex: true },
-  ],
-  insurer: [
-    { path: "home", element: <InsurerHome />, isIndex: true },
-    { path: "listings", element: <InsurerListings /> },
-  ],
+	admin: [
+		// Define admin routes here. Example:
+		// { path: "dashboard", element: <AdminDashboardPage />, isIndex: true },
+		{ path: "home", element: <AdminHome />, isIndex: true },
+		{ path: "products", element: <AdminProducts /> },
+		{ path: "quotation-requests", element: <AdminQuotations /> },
+		{ path: "policies", element: <AdminPolicies /> },
+	],
+	customer: [
+		// Define customer routes here. Example:
+		// { path: "profile", element: <CustomerProfilePage />, isIndex: true },
+	],
+	insurer: [
+		// Define insurer routes here. Example:
+		// { path: "home", element: <InsurerHome />, isIndex: true },
+		// { path: "listings", element: <InsurerListings /> },
+	],
 };
 
 export const defaultRoleRedirects: Record<ValidRole, string> = {
-  admin: "/admin/home", // Adjusted to match a potential "home" path for admin
-  customer: "/customer/home", // Adjusted to match a potential "home" path for customer
-  insurer: "/insurer/home",
+	admin: "/admin/home", // Adjusted to match a potential "home" path for admin
+	customer: "/customer/home", // Adjusted to match a potential "home" path for customer
+	insurer: "/insurer/home",
 };
 
 // This can be dynamic based on logged-in user's role in a real app

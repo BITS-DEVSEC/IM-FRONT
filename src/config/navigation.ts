@@ -14,11 +14,11 @@ import {
   }
 
   export const navigationData: Record<string, NavItem[]> = {
-    insurer: [
-      { link: "/insurer/home", label: "Dashboard", icon: LayoutDashboard },
-      { link: "/insurer/listings", label: "Listings", icon: Columns },
-      { link: "/insurer/policies", label: "Policies", icon: ShieldCheck },
-      { link: "/insurer/companies", label: "Companies", icon: Building2 },
+    admin: [
+      { link: "/admin/home", label: "Dashboard", icon: LayoutDashboard },
+      { link: "/admin/products", label: "Products", icon: Columns },
+      { link: "/admin/quotation-requests", label: "Quotations", icon: ShieldCheck },
+      { link: "/admin/policies", label: "Policies", icon: Building2 },
     ]
   }
 
