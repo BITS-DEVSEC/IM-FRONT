@@ -1,30 +1,28 @@
 import {
-    CardStackIcon,
-    DashboardIcon,
-    ExitIcon,
-} from '@radix-ui/react-icons';
+    Columns,
+    LayoutDashboard,
+    LogOut,
+    Settings,
+    Building2,
+    ShieldCheck,
+  } from "lucide-react"
 
-export type NavItem = {
-    link: string;
-    label: string;
-    icon: typeof DashboardIcon;
-};
+  export type NavItem = {
+    link: string
+    label: string
+    icon: typeof LayoutDashboard
+  }
 
-export const navigationData: Record<string, NavItem[]> = {
+  export const navigationData: Record<string, NavItem[]> = {
     insurer: [
-        { link: '/insurer/home', label: 'Home', icon: DashboardIcon },
-        { link: '/insurer/listings', label: 'Listing', icon: CardStackIcon },
-    ],
-    admin: [
-        { link: '/admin/home', label: 'Home', icon: DashboardIcon },
-        { link: '/admin/listings', label: 'Listing', icon: CardStackIcon },
-    ],
-    customer: [
-        { link: '/customer/home', label: 'Home', icon: DashboardIcon },
-        { link: '/customer/listings', label: 'Listing', icon: CardStackIcon },
-    ],
-};
+      { link: "/insurer/home", label: "Dashboard", icon: LayoutDashboard },
+      { link: "/insurer/listings", label: "Listings", icon: Columns },
+      { link: "/insurer/policies", label: "Policies", icon: ShieldCheck },
+      { link: "/insurer/companies", label: "Companies", icon: Building2 },
+    ]
+  }
 
-export const footerNavigation = [
-    { link: '/logout', label: 'Logout', icon: ExitIcon },
-];
+  export const footerNavigation = [
+    { link: "/settings", label: "Settings", icon: Settings },
+    { link: "/logout", label: "Logout", icon: LogOut },
+  ]

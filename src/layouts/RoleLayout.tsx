@@ -1,7 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
-
-const VALID_ROLES = ["admin", "customer", "insurer"] as const;
-type ValidRole = (typeof VALID_ROLES)[number];
+import { useLocation } from "react-router-dom";
+import { DashboardLayout } from "./DashboardLayout";
+import { VALID_ROLES, type ValidRole } from "@/config/roles";
 
 export function RoleLayout() {
 	const location = useLocation();
@@ -11,5 +10,5 @@ export function RoleLayout() {
 		return <div>Invalid role</div>; // or redirect to an error page
 	}
 
-	return <Outlet />;
+	return <DashboardLayout role={role as ValidRole} />;
 }
