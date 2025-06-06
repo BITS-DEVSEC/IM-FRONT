@@ -1,24 +1,15 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-
-type User = {
-    role: 'admin' | 'customer' | 'insurer';
-    id: string;
-};
-
-type AuthContextType = {
-    user: User | null;
-    login: (user: User) => void;
-    logout: () => void;
-    isAuthenticated: boolean;
-};
+import type { User, AuthContextType } from '@/types/auth';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     // Change to your role
     const [user] = useState<User>({
-        role: 'insurer',
-        id: 'user1'
+        role: 'admin',
+        id: 'user1',
+        name: 'John Doe',
+        email: 'john.doe@example.com'
     });
 
     const login = (userData: User) => {

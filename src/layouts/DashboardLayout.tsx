@@ -1,6 +1,9 @@
 "use client";
 import { Outlet, useLocation, Link } from "react-router-dom";
-import { navigationData, footerNavigation } from "@/config/navigation";
+import { ModeToggle } from "@/components/mode-toggle";
+import { navigationData, footerNavigation } from "@/config/navigation"; // Added footerNavigation back
+import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
+import { NavUser } from "@/components/NavUser";
 
 import {
 	Sidebar,
@@ -19,66 +22,107 @@ import {
 	SidebarInset,
 	SidebarSeparator,
 } from "@/components/ui/sidebar";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator as BreadcrumbSeparatorUI,
+} from "@/components/ui/breadcrumb";
 import type { ValidRole } from "@/config/roles";
 
 interface AppSidebarProps {
 	role: ValidRole;
 }
 
-function AppSidebar({ role }: AppSidebarProps) {
+function AppSidebar({
+	role,
+	user,
+}: AppSidebarProps & { user: ReturnType<typeof useAuth>["user"] }) {
 	const location = useLocation();
 
-	const navItems = navigationData[role] || [];
+	const navSections = navigationData[role] || [];
 	const currentPath = location.pathname;
 
 	return (
-		<Sidebar>
-			<SidebarHeader>
-				<div className="flex items-center gap-2 px-4 py-2">
-					<div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-						<span className="text-sm font-bold uppercase">
-							{role?.charAt(0)}
-						</span>
+		<Sidebar variant="inset">
+			<SidebarHeader className="p-4">
+				<div className="flex items-center gap-3">
+					<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+						{/* You can replace this with an actual SVG logo if you have one */}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+							className="h-6 w-6"
+							aria-hidden="true"
+						>
+							<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+						</svg>
 					</div>
-					<div className="font-semibold capitalize">{role} Portal</div>
+					<div>
+						<div className="font-semibold text-lg">SecureGuard</div>
+						<div className="text-xs text-muted-foreground">
+							Insurance Platform
+						</div>
+					</div>
 				</div>
 			</SidebarHeader>
-			<SidebarContent>
-				<SidebarGroup>
-					<SidebarGroupLabel>Navigation</SidebarGroupLabel>
-					<SidebarGroupContent>
-						<SidebarMenu>
-							{navItems.map((item) => (
-								<SidebarMenuItem key={item.link}>
-									<SidebarMenuButton
-										asChild
-										isActive={currentPath === item.link}
-									>
-										<Link to={item.link}>
-											<item.icon className="h-4 w-4" />
-											<span>{item.label}</span>
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
-						</SidebarMenu>
-					</SidebarGroupContent>
-				</SidebarGroup>
+			<SidebarContent className="flex-1 px-3 py-4">
+				{navSections.map((section) => (
+					<SidebarGroup key={section.title} className="mb-4">
+						<SidebarGroupLabel className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+							{section.title}
+						</SidebarGroupLabel>
+						<SidebarGroupContent>
+							<SidebarMenu>
+								{section.items.map((item) => (
+									<SidebarMenuItem key={item.link}>
+										<SidebarMenuButton
+											asChild
+											isActive={currentPath === item.link}
+											className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
+										>
+											<Link to={item.link}>
+												<item.icon className="h-5 w-5" />
+												<span>{item.label}</span>
+											</Link>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								))}
+							</SidebarMenu>
+						</SidebarGroupContent>
+					</SidebarGroup>
+				))}
 			</SidebarContent>
-			<SidebarFooter>
-				<SidebarSeparator />
+			<SidebarFooter className="p-4 mt-auto">
 				<SidebarMenu>
 					{footerNavigation.map((item) => (
 						<SidebarMenuItem key={item.link}>
-							<SidebarMenuButton asChild>
+							<SidebarMenuButton
+								asChild
+								className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
+							>
 								<Link to={item.link}>
-									<item.icon className="h-4 w-4" />
+									<item.icon className="h-5 w-5" />
 									<span>{item.label}</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 					))}
 				</SidebarMenu>
+				<SidebarSeparator className="my-4" />{" "}
+				{/* Added separator for visual distinction */}
+				{user && (
+					<NavUser
+						user={{
+							name: user.name || "User Name",
+							email: user.email || "user@example.com",
+							role: user.role || "user",
+						}}
+					/>
+				)}
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
@@ -90,13 +134,33 @@ export interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ role }: DashboardLayoutProps) {
+	const { user } = useAuth();
+
 	return (
 		<SidebarProvider>
-			<AppSidebar role={role} />
+			<AppSidebar role={role} user={user} />
 			<SidebarInset>
-				<header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+				<header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
 					<SidebarTrigger className="-ml-1" />
-					<div className="font-semibold capitalize">{role} Dashboard</div>
+					<Breadcrumb>
+						<BreadcrumbList>
+							<BreadcrumbItem className="hidden md:block">
+								<BreadcrumbLink asChild>
+									<Link to={`/${role}/home`}>{role} Dashboard</Link>
+								</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparatorUI className="hidden md:block" />
+							<BreadcrumbItem>
+								<BreadcrumbPage>
+									{location.pathname.split("/").pop()?.replace(/-/g, " ") ||
+										"Home"}
+								</BreadcrumbPage>
+							</BreadcrumbItem>
+						</BreadcrumbList>
+					</Breadcrumb>
+					<div className="ml-auto">
+						<ModeToggle />
+					</div>
 				</header>
 				<main className="flex flex-1 flex-col gap-4 p-4">
 					<Outlet />

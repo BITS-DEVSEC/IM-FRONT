@@ -3,12 +3,14 @@ import { RoleLayout } from "./layouts/RoleLayout";
 import { AuthProvider } from "./context/AuthContext";
 import { roleSpecificRoutes, defaultAppRedirect } from "./config/routes.tsx";
 import { VALID_ROLES } from "./config/roles";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function App() {
 	return (
-		<AuthProvider>
-			<BrowserRouter>
-				<Routes>
+		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+			<AuthProvider>
+				<BrowserRouter>
+					<Routes>
 					<Route
 						path="/"
 						element={<Navigate to={defaultAppRedirect} replace />}
@@ -36,8 +38,9 @@ export default function App() {
 							</Route>
 						);
 					})}
-				</Routes>
-			</BrowserRouter>
-		</AuthProvider>
+					</Routes>
+				</BrowserRouter>
+			</AuthProvider>
+		</ThemeProvider>
 	);
 }

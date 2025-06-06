@@ -13,12 +13,28 @@ import {
     icon: typeof LayoutDashboard
   }
 
-  export const navigationData: Record<string, NavItem[]> = {
+  // Updated structure to support grouped navigation
+  export type NavItemGroup = {
+    title: string;
+    items: NavItem[];
+  };
+
+  export const navigationData: Record<string, NavItemGroup[]> = {
     admin: [
-      { link: "/admin/home", label: "Dashboard", icon: LayoutDashboard },
-      { link: "/admin/products", label: "Products", icon: Columns },
-      { link: "/admin/quotation-requests", label: "Quotations", icon: ShieldCheck },
-      { link: "/admin/policies", label: "Policies", icon: Building2 },
+      {
+        title: "OVERVIEW",
+        items: [
+          { link: "/admin/home", label: "Dashboard", icon: LayoutDashboard },
+          { link: "/admin/products", label: "Products", icon: Columns },
+        ]
+      },
+      {
+        title: "MANAGEMENT",
+        items: [
+          { link: "/admin/quotation-requests", label: "Quotations", icon: ShieldCheck },
+          { link: "/admin/policies", label: "Policies", icon: Building2 },
+        ]
+      }
     ]
   }
 
