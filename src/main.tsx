@@ -1,37 +1,19 @@
-import "@mantine/core/styles.css";
-
-import {
-  createTheme,
-  MantineProvider,
-  MantineColorsTuple,
-} from "@mantine/core";
 import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App";
 
-const base: MantineColorsTuple = [
-  "#faefef",
-  "#efdcdc",
-  "#e1b5b4",
-  "#d58b8a",
-  "#ca6866",
-  "#c55250",
-  "#c24644",
-  "#ac3836",
-  "#9a302f",
-  "#541718",
-];
+const rootElement = document.getElementById("root");
 
-const theme = createTheme({
-  colors: {
-    primary: base,
-  },
-  primaryColor: "primary",
-  primaryShade: { light: 9, dark: 9 },
-});
+if (!rootElement) {
+	throw new Error(
+		"Root element not found. Ensure there is a <div id='root'> in your HTML.",
+	);
+}
 
-createRoot(document.getElementById("root")!).render(
-  <MantineProvider theme={theme}>
-    <App />
-  </MantineProvider>
+const root = createRoot(rootElement);
+root.render(
+	<StrictMode>
+		<App />
+	</StrictMode>,
 );
