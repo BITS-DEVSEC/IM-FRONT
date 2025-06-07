@@ -3,6 +3,7 @@ import { NavUser } from "@/components/shared/NavUser";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation"; // Added footerNavigation back
 import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
+import { useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -171,6 +172,11 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 		// Existing logic for other pages
 		breadcrumbPageContent = pathSegments.pop()?.replace(/-/g, " ") || "Home";
 	}
+
+	// Update document title when breadcrumbPageContent changes
+	useEffect(() => {
+		document.title = `SecureGuard | ${breadcrumbPageContent.charAt(0).toUpperCase() + breadcrumbPageContent.slice(1)}`;
+	}, [breadcrumbPageContent]);
 
 	return (
 		<SidebarProvider>

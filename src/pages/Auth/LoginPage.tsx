@@ -3,7 +3,7 @@ import { defaultRoleRedirects } from "@/config/routes";
 import { useAuth } from "@/context/AuthContext";
 import { fetchUser } from "@/services/authService";
 import type { User } from "@/types/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -13,6 +13,10 @@ export default function LoginPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 	const { login } = useAuth();
+
+	useEffect(() => {
+		document.title = "SecureGuard | Login";
+	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
