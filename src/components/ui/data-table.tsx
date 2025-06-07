@@ -1,8 +1,10 @@
 "use client";
 
+import { rankItem } from "@tanstack/match-sorter-utils";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
+	type FilterFn,
 	type SortingState,
 	type VisibilityState,
 	flexRender,
@@ -59,6 +61,21 @@ export function DataTable<TData, TValue>({
 	const [columnVisibility, setColumnVisibility] =
 		React.useState<VisibilityState>({}); // Control column visibility
 	const [rowSelection, setRowSelection] = React.useState({}); // If you need row selection
+	const [globalFilter, setGlobalFilter] = React.useState(""); // New state for global filter
+
+	// Define fuzzy filter function
+	const fuzzyFilter: FilterFn<TData> = (row, columnId, value, addMeta) => {
+		// Rank the item
+		const itemRank = rankItem(row.getValue(columnId), value);
+
+		// Store the itemRank on the row for sorting
+		addMeta({
+			itemRank,
+		});
+
+		// Return if the item should be filtered in/out
+		return itemRank.passed;
+	};
 
 	const table = useReactTable({
 		data,
@@ -72,11 +89,14 @@ export function DataTable<TData, TValue>({
 		getFilteredRowModel: getFilteredRowModel(), // For filtering
 		onColumnVisibilityChange: setColumnVisibility, // For column visibility
 		onRowSelectionChange: setRowSelection, // For row selection
+		onGlobalFilterChange: setGlobalFilter, // New: for global filter
+		globalFilterFn: fuzzyFilter, // New: apply fuzzy filter globally
 		state: {
 			sorting,
 			columnFilters,
 			columnVisibility,
 			rowSelection,
+			globalFilter, // New: global filter state
 		},
 	});
 
@@ -86,16 +106,9 @@ export function DataTable<TData, TValue>({
 			<div className="flex items-center justify-between py-4">
 				<div className="flex items-center gap-2 flex-1">
 					<Input
-						placeholder="Filter titles..." // Example: filter by coverageType (Title)
-						value={
-							(table.getColumn("coverageType")?.getFilterValue() as string) ??
-							""
-						}
-						onChange={(event) =>
-							table
-								.getColumn("coverageType")
-								?.setFilterValue(event.target.value)
-						}
+						placeholder="Search all columns..." // Updated placeholder
+						value={globalFilter ?? ""} // Use globalFilter state
+						onChange={(event) => setGlobalFilter(event.target.value)} // Update globalFilter
 						className="max-w-sm h-10"
 					/>
 				</div>

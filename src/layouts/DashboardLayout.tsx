@@ -212,7 +212,7 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 						<ModeToggle />
 					</div>
 				</header>
-				<main className="flex flex-1 flex-col gap-4 px-8">
+				<main className="flex flex-1 flex-col gap-4 py-4 px-8">
 					<Outlet />
 				</main>
 			</SidebarInset>
