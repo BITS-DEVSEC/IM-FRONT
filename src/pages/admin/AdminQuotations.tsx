@@ -1,5 +1,5 @@
-import { QuotationFilterDialog } from "@/components/admin-components/QuotationFilterDialog";
-import { QuotationRequestsTable } from "@/components/admin-components/QuotationRequestsTable";
+import { QuotationFilterDialog } from "@/components/admin-components/quotations/QuotationFilterDialog.tsx";
+import { QuotationRequestsTable } from "@/components/admin-components/quotations/QuotationRequestsTable.tsx";
 import type {
 	QuotationFilters as QuotationFiltersType,
 	QuotationRequest,
@@ -140,17 +140,24 @@ export default function AdminQuotations() {
 
 	return (
 		<div className="space-y-6">
-			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Quotation Requests</h1>
-				<Button onClick={() => setIsFilterDialogOpen(true)} variant="outline">
-					<Filter className="mr-2 h-4 w-4" /> Filter
-				</Button>
+			<div className="flex justify-between items-start">
+				<div>
+					<h1 className="text-2xl font-bold">Quotation Requests</h1>
+					<p className="text-muted-foreground text-sm">
+						View and manage all incoming insurance quotation requests.
+					</p>
+				</div>
 			</div>
 
 			<QuotationRequestsTable
 				quotations={quotations}
 				onViewDetails={handleViewDetails}
 				onStatusChange={handleStatusChange}
+				toolbarActionsPrefix={
+					<Button onClick={() => setIsFilterDialogOpen(true)} variant="outline">
+						<Filter className="mr-2 h-4 w-4" /> Filter
+					</Button>
+				}
 			/>
 
 			<QuotationFilterDialog

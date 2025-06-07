@@ -1,7 +1,7 @@
-import type { Quotation } from "@/types";
+import type { QuotationRequest } from "@/types/quotation";
 
 interface AddressInformationCardProps {
-	address: Quotation["form_data"]["current_residence_address"];
+	address: QuotationRequest["form_data"]["current_residence_address"];
 }
 
 export function AddressInformationCard({

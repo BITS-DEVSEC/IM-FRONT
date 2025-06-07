@@ -1,7 +1,7 @@
-import type { Quotation } from "@/types";
+import type { QuotationRequest } from "@/types/quotation";
 
 interface UserInformationCardProps {
-	user: Quotation["user"];
+	user: QuotationRequest["user"];
 }
 
 export function UserInformationCard({ user }: UserInformationCardProps) {

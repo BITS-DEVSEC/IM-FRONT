@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table"; // Import the new DataTable
 import type { FC } from "react";
-import { columns } from "./columns"; // Import the column definitions
-import type { Product } from "./product-data";
+import { columns } from "./product-columns.tsx"; // Import the column definitions
+import type { Product } from "./product-data-types.ts";
 
 interface ProductsTableProps {
 	products: Product[];

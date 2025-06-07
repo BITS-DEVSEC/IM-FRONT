@@ -14,7 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { coverageTypeOptions, insuranceTypeOptions } from "./product-data";
+import {
+	coverageTypeOptions,
+	insuranceTypeOptions,
+} from "../products/product-data-types.ts";
 
 const filterSchema = z.object({
 	status: z.string().optional(),
@@ -39,23 +42,25 @@ const statusOptions = [
 
 interface QuotationFiltersProps {
 	onFilterChange: (filters: QuotationFiltersType) => void;
+	currentFilters: QuotationFiltersType;
 }
 
 const QuotationFiltersForm: React.FC<QuotationFiltersProps> = ({
 	onFilterChange,
+	currentFilters,
 }) => {
 	const form = useForm<z.infer<typeof filterSchema>>({
 		resolver: zodResolver(filterSchema),
 		defaultValues: {
-			status: "",
-			insuranceType: "",
-			coverageType: "",
+			status: currentFilters.status || "",
+			insuranceType: currentFilters.insuranceType || "",
+			coverageType: currentFilters.coverageType || "",
 			dateRange: {
-				from: undefined,
-				to: undefined,
+				from: currentFilters.dateRange?.from || undefined,
+				to: currentFilters.dateRange?.to || undefined,
 			},
-			vehicleType: "",
-			region: "",
+			vehicleType: currentFilters.vehicleType || "",
+			region: currentFilters.region || "",
 		},
 	});
 

@@ -1,5 +1,3 @@
-"use client";
-
 import type { ColumnDef } from "@tanstack/react-table";
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
 
@@ -13,7 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import type { Product } from "./product-data"; // Assuming Product type is here
+import type { Product } from "./product-data-types.ts"; // Assuming Product type is here
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

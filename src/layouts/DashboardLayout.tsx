@@ -1,6 +1,6 @@
 "use client";
-import { NavUser } from "@/components/NavUser";
-import { ModeToggle } from "@/components/mode-toggle";
+import { NavUser } from "@/components/shared/NavUser";
+import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation"; // Added footerNavigation back
 import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
 import { Link, Outlet, useLocation } from "react-router-dom";

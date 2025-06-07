@@ -1,4 +1,4 @@
-import { PoliciesTable } from "@/components/admin-components/PoliciesTable";
+import { PoliciesTable } from "@/components/admin-components/policies/PoliciesTable.tsx";
 import type { Policy } from "@/types/policy";
 import { useState, useEffect } from "react";
 import { fetchPolicies } from "@/services/policyService";
@@ -39,8 +39,14 @@ export default function AdminPolicies() {
 
 	return (
 		<div className="space-y-6">
-			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Insurance Policies</h1>
+			<div className="flex justify-between items-start">
+				<div>
+					<h1 className="text-2xl font-bold">Insurance Policies</h1>
+					<p className="text-muted-foreground text-sm">
+						View and manage all active, expired, and cancelled insurance
+						policies.
+					</p>
+				</div>
 			</div>
 
 			<PoliciesTable policies={policies} />

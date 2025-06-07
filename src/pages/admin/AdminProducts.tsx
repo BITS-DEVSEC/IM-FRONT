@@ -1,6 +1,6 @@
-import { CreateProductDialog } from "@/components/admin-components/CreateProductDialog";
-import { ProductsTable } from "@/components/admin-components/ProductsTable";
-import type { Product } from "@/components/admin-components/product-data";
+import { CreateProductDialog } from "@/components/admin-components/products/modals/CreateProductDialog";
+import { ProductsTable } from "@/components/admin-components/products/ProductsTable.tsx";
+import type { Product } from "@/components/admin-components/products/product-data-types";
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -10,7 +10,7 @@ import {
 	deleteProduct,
 } from "@/services/productService";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { EditProductDialog } from "@/components/admin-components/EditProductDialog";
+import { EditProductDialog } from "@/components/admin-components/products/modals/EditProductDialog";
 
 const AdminProducts: React.FC = () => {
 	const [products, setProducts] = useState<Product[]>([]);
@@ -87,8 +87,13 @@ const AdminProducts: React.FC = () => {
 
 	return (
 		<div className="container mx-auto">
-			<div className="flex justify-between items-center mb-6">
-				<h1 className="text-3xl font-bold">Manage Products</h1>
+			<div className="flex justify-between items-start mb-6">
+				<div>
+					<h1 className="text-3xl font-bold">Manage Products</h1>
+					<p className="text-muted-foreground text-sm">
+						Create, edit, and delete insurance products offered to customers.
+					</p>
+				</div>
 			</div>
 
 			<ProductsTable

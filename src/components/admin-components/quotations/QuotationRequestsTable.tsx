@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import type { QuotationRequest } from "@/types/quotation";
 import type { FC } from "react";
-import { columns } from "./quotation-columns";
+import { columns } from "./quotation-columns.tsx";
 
 interface QuotationRequestsTableProps {
 	quotations: QuotationRequest[];

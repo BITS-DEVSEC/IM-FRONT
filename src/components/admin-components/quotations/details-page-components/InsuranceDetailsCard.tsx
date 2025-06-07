@@ -1,9 +1,9 @@
-import type { Quotation } from "@/types";
+import type { QuotationRequest } from "@/types/quotation";
 
 interface InsuranceDetailsCardProps {
-	insuranceType: Quotation["insurance_type"];
-	coverageType: Quotation["coverage_type"];
-	coverageAmount: Quotation["form_data"]["coverage_amount"];
+	insuranceType: QuotationRequest["insurance_type"];
+	coverageType: QuotationRequest["coverage_type"];
+	coverageAmount: QuotationRequest["form_data"]["coverage_amount"];
 }
 
 export function InsuranceDetailsCard({

@@ -4,11 +4,11 @@ import { useTransition } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
-import { VehicleImages } from "@/components/admin-components/quotations/VehicleImages";
-import { UserInformationCard } from "@/components/admin-components/quotations/UserInformationCard";
-import { InsuranceDetailsCard } from "@/components/admin-components/quotations/InsuranceDetailsCard";
-import { VehicleDetailsCard } from "@/components/admin-components/quotations/VehicleDetailsCard";
-import { AddressInformationCard } from "@/components/admin-components/quotations/AddressInformationCard";
+import { VehicleImages } from "@/components/admin-components/quotations/details-page-components/VehicleImages";
+import { UserInformationCard } from "@/components/admin-components/quotations/details-page-components/UserInformationCard";
+import { InsuranceDetailsCard } from "@/components/admin-components/quotations/details-page-components/InsuranceDetailsCard";
+import { VehicleDetailsCard } from "@/components/admin-components/quotations/details-page-components/VehicleDetailsCard";
+import { AddressInformationCard } from "@/components/admin-components/quotations/details-page-components/AddressInformationCard";
 import {
 	MorphingDialog,
 	MorphingDialogTrigger,

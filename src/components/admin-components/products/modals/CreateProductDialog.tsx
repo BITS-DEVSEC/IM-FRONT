@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -13,9 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Info, Save } from "lucide-react";
+import { Info, PlusCircle } from "lucide-react";
 import type React from "react";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
@@ -23,7 +27,7 @@ import {
 	type Product,
 	coverageTypeOptions,
 	insuranceTypeOptions,
-} from "./product-data";
+} from "../product-data-types.ts";
 
 const formSchema = z.object({
 	insuranceType: z.string().min(1, "Insurance type is required"),
@@ -32,18 +36,16 @@ const formSchema = z.object({
 	pricing: z.string().regex(/^\d+(\.\d{1,2})?$/, "Please enter a valid price"),
 });
 
-interface EditProductDialogProps {
+interface CreateProductDialogProps {
 	isOpen: boolean;
 	onOpenChange: (isOpen: boolean) => void;
-	onProductUpdate: (updatedProduct: Product) => void;
-	product: Product | null; // The product to be edited
+	onProductCreate: (newProduct: Product) => void;
 }
 
-export const EditProductDialog: React.FC<EditProductDialogProps> = ({
+export const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 	isOpen,
 	onOpenChange,
-	onProductUpdate,
-	product,
+	onProductCreate,
 }) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -55,34 +57,12 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 		},
 	});
 
-	// Populate form fields when the product prop changes (i.e., when dialog opens with a product)
-	useEffect(() => {
-		if (product) {
-			const insuranceTypeValue =
-				insuranceTypeOptions.find((opt) => opt.label === product.insuranceType)
-					?.value || product.insuranceType;
-			const coverageTypeValue =
-				coverageTypeOptions.find((opt) => opt.label === product.coverageType)
-					?.value || product.coverageType;
-
-			form.reset({
-				insuranceType: insuranceTypeValue,
-				coverageType: coverageTypeValue,
-				description: product.description,
-				pricing: product.pricing.toString(),
-			});
-		}
-	}, [product, form]);
-
 	const resetFormFields = () => {
 		form.reset();
 	};
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		if (!product) return; // Should not happen if dialog is opened with a product
-
-		const updatedProduct: Product = {
-			...product, // Keep the existing ID
+		const newProduct: Omit<Product, "id"> = {
 			insuranceType:
 				insuranceTypeOptions.find((opt) => opt.value === values.insuranceType)
 					?.label || values.insuranceType,
@@ -93,7 +73,7 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 			pricing: Number.parseFloat(values.pricing),
 		};
 
-		onProductUpdate(updatedProduct);
+		onProductCreate(newProduct as Product);
 		resetFormFields();
 		onOpenChange(false);
 	};
@@ -106,6 +86,11 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 				if (!openState) resetFormFields();
 			}}
 		>
+			<DialogTrigger asChild>
+				<Button>
+					<PlusCircle className="mr-2 h-4 w-4" /> Create Product
+				</Button>
+			</DialogTrigger>
 			<DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -117,11 +102,12 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 										<div className="p-2 rounded-full bg-primary/10">
 											<Info className="h-5 w-5 text-primary" />
 										</div>
-										<h3 className="font-semibold">Edit Product</h3>
+										<h3 className="font-semibold">Create New Product</h3>
 									</div>
 									<p className="text-sm text-muted-foreground">
-										Update the product details. All fields are required to
-										ensure proper processing.
+										Fill in the product details to create a new insurance
+										product. All fields are required to ensure proper
+										processing.
 									</p>
 									<div className="space-y-2 pt-4">
 										<h4 className="text-sm font-medium">Tips:</h4>
@@ -152,7 +138,6 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 													<FormLabel>Insurance Type</FormLabel>
 													<FormControl>
 														<Combobox
-															key={field.value}
 															options={insuranceTypeOptions as ComboboxOption[]}
 															value={field.value}
 															onValueChange={field.onChange}
@@ -176,7 +161,6 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 													<FormLabel>Coverage Type</FormLabel>
 													<FormControl>
 														<Combobox
-															key={field.value}
 															options={coverageTypeOptions as ComboboxOption[]}
 															value={field.value}
 															onValueChange={field.onChange}
@@ -256,7 +240,7 @@ export const EditProductDialog: React.FC<EditProductDialogProps> = ({
 										Cancel
 									</Button>
 									<Button type="submit">
-										<Save className="mr-2 h-4 w-4" /> Save Changes
+										<PlusCircle className="mr-2 h-4 w-4" /> Create Product
 									</Button>
 								</DialogFooter>
 							</div>

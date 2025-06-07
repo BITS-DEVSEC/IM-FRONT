@@ -1,8 +1,8 @@
-import type { Quotation } from "@/types";
+import type { QuotationRequest } from "@/types/quotation";
 
 interface VehicleDetailsCardProps {
-	vehicle: Quotation["vehicle"];
-	formData: Quotation["form_data"];
+	vehicle: QuotationRequest["vehicle"];
+	formData: QuotationRequest["form_data"];
 }
 
 export function VehicleDetailsCard({
