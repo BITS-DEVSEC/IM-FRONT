@@ -1,4 +1,4 @@
-import type React from "react";
+import { Badge } from "@/components/ui/badge";
 import {
 	Dialog,
 	DialogContent,
@@ -6,8 +6,8 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import type { QuotationRequest } from "@/types/quotation";
+import type React from "react";
 
 interface QuotationDetailsDialogProps {
 	quotation: QuotationRequest | null;

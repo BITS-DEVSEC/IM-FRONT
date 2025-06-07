@@ -1,7 +1,6 @@
-import * as React from "react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -16,6 +15,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface ComboboxOption {
 	value: string;
@@ -50,7 +50,6 @@ export function Combobox({
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
-					role="combobox"
 					aria-expanded={open}
 					className={cn("w-[200px] justify-between", className)}
 				>

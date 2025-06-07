@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { PoliciesTable } from "@/components/admin-components/PoliciesTable";
 import type { Policy } from "@/types/policy";
+import { useState } from "react";
 
 // Mock data for initial display
 const mockPolicies: Policy[] = [
@@ -28,7 +28,7 @@ const mockPolicies: Policy[] = [
 ];
 
 export default function AdminPolicies() {
-	const [policies, setPolicies] = useState<Policy[]>(mockPolicies);
+	const [policies] = useState<Policy[]>(mockPolicies);
 
 	return (
 		<div className="space-y-6">

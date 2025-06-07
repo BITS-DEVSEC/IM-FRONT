@@ -1,33 +1,33 @@
-import type React from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Combobox } from "@/components/ui/combobox";
-import { PlusCircle, Info } from "lucide-react";
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-	FormDescription,
 } from "@/components/ui/form";
-import {
-	type Product,
-	insuranceTypeOptions,
-	coverageTypeOptions,
-	type ComboboxOption,
-} from "./product-data";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Info, PlusCircle } from "lucide-react";
+import type React from "react";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+import {
+	type ComboboxOption,
+	type Product,
+	coverageTypeOptions,
+	insuranceTypeOptions,
+} from "./product-data";
 
 const formSchema = z.object({
 	insuranceType: z.string().min(1, "Insurance type is required"),

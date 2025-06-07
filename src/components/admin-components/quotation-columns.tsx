@@ -1,7 +1,5 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Eye, CheckCircle, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +11,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { QuotationRequest, QuotationStatus } from "@/types/quotation";
+import type { ColumnDef } from "@tanstack/react-table";
+import { CheckCircle, Eye, MoreHorizontal, XCircle } from "lucide-react";
 
 const statusColors: Record<QuotationStatus, string> = {
 	draft: "bg-gray-500/80 text-gray-800",

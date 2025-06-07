@@ -1,10 +1,17 @@
 "use client";
-import { Outlet, useLocation, Link } from "react-router-dom";
-import { ModeToggle } from "@/components/mode-toggle";
-import { navigationData, footerNavigation } from "@/config/navigation"; // Added footerNavigation back
-import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
 import { NavUser } from "@/components/NavUser";
+import { ModeToggle } from "@/components/mode-toggle";
+import { footerNavigation, navigationData } from "@/config/navigation"; // Added footerNavigation back
+import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
+import { Link, Outlet, useLocation } from "react-router-dom";
 
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator as BreadcrumbSeparatorUI,
+} from "@/components/ui/breadcrumb";
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,23 +20,15 @@ import {
 	SidebarGroupContent,
 	SidebarGroupLabel,
 	SidebarHeader,
+	SidebarInset,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarProvider,
 	SidebarRail,
-	SidebarTrigger,
-	SidebarInset,
 	SidebarSeparator,
+	SidebarTrigger,
 } from "@/components/ui/sidebar";
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator as BreadcrumbSeparatorUI,
-} from "@/components/ui/breadcrumb";
 import type { ValidRole } from "@/config/roles";
 
 interface AppSidebarProps {
@@ -145,9 +144,9 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 					<Breadcrumb>
 						<BreadcrumbList>
 							<BreadcrumbItem className="hidden md:block">
-								<BreadcrumbLink asChild>
-									<Link to={`/${role}/home`}>{role} Dashboard</Link>
-								</BreadcrumbLink>
+								<BreadcrumbPage>
+									{role.charAt(0).toUpperCase() + role.slice(1)}
+								</BreadcrumbPage>
 							</BreadcrumbItem>
 							<BreadcrumbSeparatorUI className="hidden md:block" />
 							<BreadcrumbItem>

@@ -1,9 +1,8 @@
-import type { ValidRole } from "./roles";
 import type { ReactNode } from "react";
+import type { ValidRole } from "./roles";
 
-import AdminHome from "@/pages/admin/AdminHome";
-import AdminProducts from "@/pages/admin/AdminProducts";
 import AdminPolicies from "@/pages/admin/AdminPolicies";
+import AdminProducts from "@/pages/admin/AdminProducts";
 import AdminQuotations from "@/pages/admin/AdminQuotations";
 
 interface RouteConfig {
@@ -16,7 +15,6 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 	admin: [
 		// Define admin routes here. Example:
 		// { path: "dashboard", element: <AdminDashboardPage />, isIndex: true },
-		{ path: "home", element: <AdminHome />, isIndex: true },
 		{ path: "products", element: <AdminProducts /> },
 		{ path: "quotation-requests", element: <AdminQuotations /> },
 		{ path: "policies", element: <AdminPolicies /> },
@@ -33,7 +31,7 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 };
 
 export const defaultRoleRedirects: Record<ValidRole, string> = {
-	admin: "/admin/home", // Adjusted to match a potential "home" path for admin
+	admin: "/admin", // Adjusted to match a potential "home" path for admin
 	customer: "/customer/home", // Adjusted to match a potential "home" path for customer
 	insurer: "/insurer/home",
 };

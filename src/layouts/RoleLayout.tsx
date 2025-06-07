@@ -1,6 +1,6 @@
+import { VALID_ROLES, type ValidRole } from "@/config/roles";
 import { useLocation } from "react-router-dom";
 import { DashboardLayout } from "./DashboardLayout";
-import { VALID_ROLES, type ValidRole } from "@/config/roles";
 
 export function RoleLayout() {
 	const location = useLocation();
