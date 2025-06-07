@@ -1,14 +1,6 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import type { Policy, PolicyStatus } from "@/types/policy";
 import type { ColumnDef } from "@tanstack/react-table";
-
-const statusColors: Record<PolicyStatus, string> = {
-	active: "bg-green-500",
-	expired: "bg-yellow-500",
-	cancelled: "bg-red-500",
-};
 
 export const columns: ColumnDef<Policy>[] = [
 	{
@@ -50,7 +42,7 @@ export const columns: ColumnDef<Policy>[] = [
 			const amount = Number.parseFloat(row.getValue("premiumAmount"));
 			const formatted = new Intl.NumberFormat("en-US", {
 				style: "currency",
-				currency: "USD",
+				currency: "ETB",
 			}).format(amount);
 
 			return <div className="text-right font-medium">{formatted}</div>;
@@ -61,8 +53,13 @@ export const columns: ColumnDef<Policy>[] = [
 		header: "Status",
 		cell: ({ row }) => {
 			const status = row.getValue("status") as PolicyStatus;
+			const statusVariant = {
+				active: "status-approved",
+				expired: "status-pending",
+				cancelled: "status-rejected",
+			}[status] as "status-approved" | "status-pending" | "status-rejected";
 			return (
-				<Badge className={`${statusColors[status]} text-white`}>
+				<Badge variant={statusVariant}>
 					{status.charAt(0).toUpperCase() + status.slice(1)}
 				</Badge>
 			);

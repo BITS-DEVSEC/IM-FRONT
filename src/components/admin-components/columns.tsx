@@ -12,6 +12,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import type { Product } from "./product-data"; // Assuming Product type is here
 
 // This type is used to define the shape of our data.
@@ -28,6 +29,10 @@ export const columns: ColumnDef<Product>[] = [
 	{
 		accessorKey: "insuranceType",
 		header: "Insurance Type",
+		cell: ({ row }) => {
+			const insuranceType = row.getValue("insuranceType") as string;
+			return <Badge>{insuranceType}</Badge>;
+		},
 	},
 	{
 		accessorKey: "description",
@@ -40,10 +45,12 @@ export const columns: ColumnDef<Product>[] = [
 			const amount = Number.parseFloat(row.getValue("pricing"));
 			const formatted = new Intl.NumberFormat("en-US", {
 				style: "currency",
-				currency: "USD",
+				currency: "ETB",
 			}).format(amount);
 
-			return <div className="text-right font-medium">{formatted}</div>;
+			return (
+				<div className="text-right font-medium font-mono">{formatted}</div>
+			);
 		},
 	},
 	{

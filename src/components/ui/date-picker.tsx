@@ -85,7 +85,7 @@ export function DatePicker({
 							onSelect(selectedDate);
 							setOpen(false);
 						}}
-						initialFocus
+						
 					/>
 				</PopoverContent>
 			</Popover>

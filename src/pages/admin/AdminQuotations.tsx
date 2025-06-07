@@ -1,270 +1,163 @@
-import { QuotationDetailsDialog } from "@/components/admin-components/QuotationDetailsDialog";
 import { QuotationFilterDialog } from "@/components/admin-components/QuotationFilterDialog";
 import { QuotationRequestsTable } from "@/components/admin-components/QuotationRequestsTable";
-import { Button } from "@/components/ui/button";
 import type {
 	QuotationFilters as QuotationFiltersType,
 	QuotationRequest,
 } from "@/types/quotation";
+import { useState, useEffect } from "react";
+import {
+	fetchQuotations,
+	updateQuotationStatus,
+} from "@/services/quotationService";
+import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
-import { useMemo, useState } from "react";
-
-// Mock data for initial display
-const mockQuotations: QuotationRequest[] = [
-	{
-		id: 1,
-		status: "pending",
-		form_data: {
-			coverage_amount: 5000,
-			vehicle_details: {
-				vehicle_type: "Sedan",
-				vehicle_usage: "Personal",
-			},
-			current_residence_address: {
-				region: "Addis Ababa",
-				house_number: "123",
-			},
-		},
-		user: {
-			phone_number: "+251912345678",
-			fin: "123456789",
-		},
-		insurance_type: {
-			name: "Motor",
-		},
-		coverage_type: {
-			name: "Comprehensive",
-		},
-		vehicle: {
-			plate_number: "ABC123",
-			front_view_photo_url: "https://example.com/front.jpg",
-			back_view_photo_url: "https://example.com/back.jpg",
-		},
-	},
-	{
-		id: 2,
-		status: "approved",
-		form_data: {
-			coverage_amount: 7500,
-			vehicle_details: {
-				vehicle_type: "SUV",
-				vehicle_usage: "Commercial",
-			},
-			current_residence_address: {
-				region: "Oromia",
-				house_number: "456",
-			},
-		},
-		user: {
-			phone_number: "+251923456789",
-			fin: "987654321",
-		},
-		insurance_type: {
-			name: "Motor",
-		},
-		coverage_type: {
-			name: "Third Party",
-		},
-		vehicle: {
-			plate_number: "XYZ789",
-			front_view_photo_url: "https://example.com/front-suv.jpg",
-			back_view_photo_url: "https://example.com/back-suv.jpg",
-		},
-	},
-	{
-		id: 3,
-		status: "rejected",
-		form_data: {
-			coverage_amount: 1000,
-			vehicle_details: {
-				vehicle_type: "Motorcycle",
-				vehicle_usage: "Personal",
-			},
-			current_residence_address: {
-				region: "Amhara",
-				house_number: "789",
-			},
-		},
-		user: {
-			phone_number: "+251934567890",
-			fin: "112233445",
-		},
-		insurance_type: {
-			name: "Motor",
-		},
-		coverage_type: {
-			name: "Comprehensive",
-		},
-		vehicle: {
-			plate_number: "MCL456",
-			front_view_photo_url: "https://example.com/front-mc.jpg",
-			back_view_photo_url: "https://example.com/back-mc.jpg",
-		},
-	},
-	{
-		id: 4,
-		status: "draft",
-		form_data: {
-			coverage_amount: 20000,
-			vehicle_details: {
-				vehicle_type: "Truck",
-				vehicle_usage: "Commercial",
-			},
-			current_residence_address: {
-				region: "Tigray",
-				house_number: "101",
-			},
-		},
-		user: {
-			phone_number: "+251945678901",
-			fin: "667788990",
-		},
-		insurance_type: {
-			name: "Motor",
-		},
-		coverage_type: {
-			name: "Third Party",
-		},
-		vehicle: {
-			plate_number: "TRK777",
-			front_view_photo_url: "https://example.com/front-truck.jpg",
-			back_view_photo_url: "https://example.com/back-truck.jpg",
-		},
-	},
-];
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function AdminQuotations() {
-	const [quotations, setQuotations] =
-		useState<QuotationRequest[]>(mockQuotations);
-	const [selectedQuotation, setSelectedQuotation] =
-		useState<QuotationRequest | null>(null);
-	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const [filters, setFilters] = useState<QuotationFiltersType>({});
+	const [quotations, setQuotations] = useState<QuotationRequest[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<Error | null>(null);
+	const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+	const [currentFilters, setCurrentFilters] = useState<QuotationFiltersType>(
+		{},
+	);
 
-	const handleViewDetails = (quotationId: number) => {
-		const quotation = quotations.find((q) => q.id === quotationId);
-		if (quotation) {
-			setSelectedQuotation(quotation);
-			setIsDetailsOpen(true);
-		}
+	useEffect(() => {
+		const getQuotations = async () => {
+			setIsLoading(true);
+			setError(null);
+			try {
+				const fetchedQuotations = await fetchQuotations();
+				setQuotations(fetchedQuotations);
+			} catch (err) {
+				setError(err as Error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		getQuotations();
+	}, []);
+
+	const applyFilters = (data: QuotationFiltersType) => {
+		setCurrentFilters(data);
+		// In a real app, you'd re-fetch data from the API with these filters
+		console.log("Applying filters:", data);
+
+		const filtered = quotations.filter((quotation) => {
+			let matches = true;
+
+			if (
+				data.status &&
+				quotation.status.toLowerCase() !== data.status.toLowerCase()
+			) {
+				matches = false;
+			}
+			if (
+				data.insuranceType &&
+				quotation.insurance_type.name.toLowerCase() !==
+					data.insuranceType.toLowerCase()
+			) {
+				matches = false;
+			}
+			if (
+				data.coverageType &&
+				quotation.coverage_type.name.toLowerCase() !==
+					data.coverageType.toLowerCase()
+			) {
+				matches = false;
+			}
+			if (data.dateRange?.from && quotation.id) {
+				// For date range, we'll use a simple mock based on ID for demonstration
+				// In a real app, you'd compare actual dates from quotation objects
+				const quotationDate = new Date(2024, 0, quotation.id); // Mock date for example
+				if (quotationDate < data.dateRange.from) {
+					matches = false;
+				}
+			}
+			if (data.dateRange?.to && quotation.id) {
+				const quotationDate = new Date(2024, 0, quotation.id); // Mock date for example
+				if (quotationDate > data.dateRange.to) {
+					matches = false;
+				}
+			}
+			if (
+				data.vehicleType &&
+				!quotation.form_data.vehicle_details.vehicle_type
+					.toLowerCase()
+					.includes(data.vehicleType.toLowerCase())
+			) {
+				matches = false;
+			}
+			if (
+				data.region &&
+				!quotation.form_data.current_residence_address.region
+					.toLowerCase()
+					.includes(data.region.toLowerCase())
+			) {
+				matches = false;
+			}
+
+			return matches;
+		});
+		setQuotations(filtered);
+		setIsFilterDialogOpen(false);
 	};
 
-	const handleStatusChange = (
+	const handleViewDetails = (quotationId: number) => {
+		// Navigate to quotation details page
+		console.log("Viewing details for quotation:", quotationId);
+		window.location.href = `/admin/quotations/${quotationId}`;
+	};
+
+	const handleStatusChange = async (
 		quotationId: number,
 		newStatus: QuotationRequest["status"],
 	) => {
-		setQuotations((prev) =>
-			prev.map((q) => (q.id === quotationId ? { ...q, status: newStatus } : q)),
+		try {
+			const updated = await updateQuotationStatus(quotationId, newStatus);
+			if (updated) {
+				setQuotations((prev) =>
+					prev.map((q) => (q.id === quotationId ? updated : q)),
+				);
+				console.log(`Quotation ${quotationId} status updated to ${newStatus}`);
+			}
+		} catch (err) {
+			console.error("Failed to update quotation status:", err);
+		}
+	};
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
+	if (error) {
+		return (
+			<div className="flex justify-center items-center h-full min-h-[calc(100vh-80px)] text-red-500">
+				<p className="text-lg font-medium">Error: {error.message}</p>
+			</div>
 		);
-	};
-
-	const filteredQuotations = useMemo(() => {
-		return quotations.filter((quotation) => {
-			// Status filter
-			if (filters.status && quotation.status !== filters.status) {
-				return false;
-			}
-
-			// Insurance Type filter
-			if (
-				filters.insuranceType &&
-				quotation.insurance_type.name.toLowerCase() !==
-					filters.insuranceType.toLowerCase()
-			) {
-				return false;
-			}
-
-			// Coverage Type filter
-			if (
-				filters.coverageType &&
-				quotation.coverage_type.name.toLowerCase() !==
-					filters.coverageType.toLowerCase()
-			) {
-				return false;
-			}
-
-			// Date Range filter
-			if (filters.dateRange?.from || filters.dateRange?.to) {
-				// For simplicity, let's assume we have a creation date on QuotationRequest
-				// If not, you'd need to add it or use a proxy like the ID as a timestamp.
-				// For now, let's assume `id` can be roughly converted to a date for mock data.
-				const quotationDate = new Date(quotation.id); // This is a placeholder, use a real date field
-
-				if (
-					filters.dateRange.from &&
-					quotationDate < new Date(filters.dateRange.from)
-				) {
-					return false;
-				}
-				if (
-					filters.dateRange.to &&
-					quotationDate > new Date(filters.dateRange.to)
-				) {
-					return false;
-				}
-			}
-
-			// Vehicle Type filter
-			if (
-				filters.vehicleType &&
-				!quotation.form_data.vehicle_details.vehicle_type
-					.toLowerCase()
-					.includes(filters.vehicleType.toLowerCase())
-			) {
-				return false;
-			}
-
-			// Region filter
-			if (
-				filters.region &&
-				!quotation.form_data.current_residence_address.region
-					.toLowerCase()
-					.includes(filters.region.toLowerCase())
-			) {
-				return false;
-			}
-			return true;
-		});
-	}, [quotations, filters]);
-
-	const handleFilterChange = (newFilters: QuotationFiltersType) => {
-		setFilters(newFilters);
-		setIsFilterOpen(false);
-	};
+	}
 
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-bold">Quotation Requests</h1>
+				<Button onClick={() => setIsFilterDialogOpen(true)} variant="outline">
+					<Filter className="mr-2 h-4 w-4" /> Filter
+				</Button>
 			</div>
 
 			<QuotationRequestsTable
-				quotations={filteredQuotations}
+				quotations={quotations}
 				onViewDetails={handleViewDetails}
 				onStatusChange={handleStatusChange}
-				toolbarActionsPrefix={
-					<Button
-						variant="outline"
-						size="default"
-						onClick={() => setIsFilterOpen(true)}
-					>
-						<Filter className="h-4 w-4 mr-2" />
-						Filter
-					</Button>
-				}
-			/>
-
-			<QuotationDetailsDialog
-				quotation={selectedQuotation}
-				isOpen={isDetailsOpen}
-				onOpenChange={setIsDetailsOpen}
 			/>
 
 			<QuotationFilterDialog
-				isOpen={isFilterOpen}
-				onOpenChange={setIsFilterOpen}
-				onFilterChange={handleFilterChange}
+				isOpen={isFilterDialogOpen}
+				onOpenChange={setIsFilterDialogOpen}
+				onApplyFilters={applyFilters}
+				currentFilters={currentFilters}
 			/>
 		</div>
 	);

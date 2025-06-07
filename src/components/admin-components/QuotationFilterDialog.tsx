@@ -11,13 +11,15 @@ import { QuotationFilters } from "./QuotationFilters";
 interface QuotationFilterDialogProps {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
-	onFilterChange: (filters: QuotationFiltersType) => void;
+	onApplyFilters: (filters: QuotationFiltersType) => void;
+	currentFilters: QuotationFiltersType;
 }
 
 export const QuotationFilterDialog: React.FC<QuotationFilterDialogProps> = ({
 	isOpen,
 	onOpenChange,
-	onFilterChange,
+	onApplyFilters,
+	currentFilters,
 }) => {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -25,7 +27,10 @@ export const QuotationFilterDialog: React.FC<QuotationFilterDialogProps> = ({
 				<DialogHeader>
 					<DialogTitle>Filter Quotations</DialogTitle>
 				</DialogHeader>
-				<QuotationFilters onFilterChange={onFilterChange} />
+				<QuotationFilters
+					onFilterChange={onApplyFilters}
+					currentFilters={currentFilters}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

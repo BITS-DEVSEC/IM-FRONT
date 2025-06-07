@@ -1,34 +1,41 @@
 import { PoliciesTable } from "@/components/admin-components/PoliciesTable";
 import type { Policy } from "@/types/policy";
-import { useState } from "react";
-
-// Mock data for initial display
-const mockPolicies: Policy[] = [
-	{
-		policyNumber: "POL-001",
-		userPhoneNumber: "+1234567890",
-		insuredEntity: "John Doe",
-		coverageType: "Comprehensive",
-		startDate: new Date("2024-01-01"),
-		endDate: new Date("2025-01-01"),
-		premiumAmount: 1200,
-		status: "active",
-	},
-	{
-		policyNumber: "POL-002",
-		userPhoneNumber: "+1987654321",
-		insuredEntity: "Jane Smith",
-		coverageType: "Third Party",
-		startDate: new Date("2023-12-01"),
-		endDate: new Date("2024-12-01"),
-		premiumAmount: 800,
-		status: "active",
-	},
-	// Add more mock data as needed
-];
+import { useState, useEffect } from "react";
+import { fetchPolicies } from "@/services/policyService";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function AdminPolicies() {
-	const [policies] = useState<Policy[]>(mockPolicies);
+	const [policies, setPolicies] = useState<Policy[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<Error | null>(null);
+
+	useEffect(() => {
+		const getPolicies = async () => {
+			setIsLoading(true);
+			setError(null);
+			try {
+				const fetchedPolicies = await fetchPolicies();
+				setPolicies(fetchedPolicies);
+			} catch (err) {
+				setError(err as Error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		getPolicies();
+	}, []);
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
+	if (error) {
+		return (
+			<div className="flex justify-center items-center h-full min-h-[calc(100vh-80px)] text-red-500">
+				<p className="text-lg font-medium">Error: {error.message}</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="space-y-6">

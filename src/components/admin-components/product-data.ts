@@ -13,31 +13,7 @@ export interface ComboboxOption {
 	label: string;
 }
 
-// Mock data for initial display
-export const mockProducts: Product[] = [
-	{
-		id: "1",
-		insuranceType: "Motor",
-		coverageType: "Comprehensive",
-		description: "Full coverage for motor vehicles",
-		pricing: 1200.5,
-	},
-	{
-		id: "2",
-		insuranceType: "Health",
-		coverageType: "Individual Basic",
-		description: "Basic health coverage for individuals",
-		pricing: 300.0,
-	},
-	{
-		id: "3",
-		insuranceType: "Life",
-		coverageType: "Term Life 20 Years",
-		description: "20-year term life insurance policy",
-		pricing: 50.0,
-	},
-];
-
+// TODO: Coverage types might be dependent on selected insurance type in a real app
 export const insuranceTypeOptions: ComboboxOption[] = [
 	{ value: "motor", label: "Motor" },
 	{ value: "health", label: "Health" },
@@ -46,7 +22,6 @@ export const insuranceTypeOptions: ComboboxOption[] = [
 	{ value: "property", label: "Property" },
 ];
 
-// TODO: Coverage types might be dependent on selected insurance type in a real app
 export const coverageTypeOptions: ComboboxOption[] = [
 	{ value: "third_party", label: "Third Party" },
 	{ value: "comprehensive", label: "Comprehensive" },

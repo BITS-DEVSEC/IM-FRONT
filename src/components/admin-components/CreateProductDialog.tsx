@@ -62,8 +62,7 @@ export const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 	};
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		const newProduct: Product = {
-			id: String(Date.now()),
+		const newProduct: Omit<Product, "id"> = {
 			insuranceType:
 				insuranceTypeOptions.find((opt) => opt.value === values.insuranceType)
 					?.label || values.insuranceType,
@@ -74,7 +73,7 @@ export const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 			pricing: Number.parseFloat(values.pricing),
 		};
 
-		onProductCreate(newProduct);
+		onProductCreate(newProduct as Product);
 		resetFormFields();
 		onOpenChange(false);
 	};
@@ -206,7 +205,7 @@ export const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 										name="pricing"
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Pricing ($)</FormLabel>
+												<FormLabel>Pricing (ETB)</FormLabel>
 												<FormControl>
 													<Input
 														type="text"

@@ -4,6 +4,7 @@ import type { ValidRole } from "./roles";
 import AdminPolicies from "@/pages/admin/AdminPolicies";
 import AdminProducts from "@/pages/admin/AdminProducts";
 import AdminQuotations from "@/pages/admin/AdminQuotations";
+import QuotationDetailsPage from "@/pages/admin/quotations/[id]";
 
 interface RouteConfig {
 	path: string;
@@ -18,6 +19,11 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 		{ path: "products", element: <AdminProducts /> },
 		{ path: "quotation-requests", element: <AdminQuotations /> },
 		{ path: "policies", element: <AdminPolicies /> },
+		{
+			path: "quotations/:id",
+			element: <QuotationDetailsPage />,
+			isIndex: false,
+		},
 	],
 	customer: [
 		// Define customer routes here. Example:

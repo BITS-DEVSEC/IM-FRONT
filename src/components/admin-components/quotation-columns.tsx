@@ -14,13 +14,6 @@ import type { QuotationRequest, QuotationStatus } from "@/types/quotation";
 import type { ColumnDef } from "@tanstack/react-table";
 import { CheckCircle, Eye, MoreHorizontal, XCircle } from "lucide-react";
 
-const statusColors: Record<QuotationStatus, string> = {
-	draft: "bg-gray-500/80 text-gray-800",
-	pending: "bg-yellow-500/80 text-yellow-900",
-	approved: "bg-green-500/80 text-green-900",
-	rejected: "bg-red-500/80 text-red-900",
-};
-
 export const columns: ColumnDef<QuotationRequest>[] = [
 	{
 		accessorKey: "user.phone_number",
@@ -48,7 +41,15 @@ export const columns: ColumnDef<QuotationRequest>[] = [
 		cell: ({ row }) => {
 			const status = row.getValue("status") as QuotationStatus;
 			return (
-				<Badge className={`${statusColors[status]}`}>
+				<Badge
+					variant={
+						`status-${status}` as
+							| "status-draft"
+							| "status-pending"
+							| "status-approved"
+							| "status-rejected"
+					}
+				>
 					{status.charAt(0).toUpperCase() + status.slice(1)}
 				</Badge>
 			);
