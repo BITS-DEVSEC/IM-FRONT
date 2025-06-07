@@ -24,7 +24,7 @@ interface ComboboxOption {
 
 interface ComboboxProps {
 	options: ComboboxOption[];
-	value: string;
+	value?: string;
 	onValueChange: (value: string) => void;
 	placeholder?: string;
 	searchPlaceholder?: string;
@@ -35,7 +35,7 @@ interface ComboboxProps {
 
 export function Combobox({
 	options,
-	value,
+	value = "",
 	onValueChange,
 	placeholder = "Select an option...",
 	searchPlaceholder = "Search...",
