@@ -1,10 +1,10 @@
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { VALID_ROLES } from "./config/roles";
 import { defaultAppRedirect, roleSpecificRoutes } from "./config/routes.tsx";
 import { AuthProvider } from "./context/AuthContext";
 import { RoleLayout } from "./layouts/RoleLayout";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function App() {
 	return (

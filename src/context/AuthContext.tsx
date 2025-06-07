@@ -1,18 +1,13 @@
+import { fetchUser, loginUser, logoutUser } from "@/services/authService";
+import type { LoginCredentials } from "@/services/authService";
 import type { AuthContextType, User } from "@/types/auth";
 import {
 	type ReactNode,
 	createContext,
 	useContext,
-	useState,
 	useEffect,
+	useState,
 } from "react";
-import {
-	fetchUser,
-	loginUser,
-	logoutUser,
-	mockUser,
-	type LoginCredentials,
-} from "@/services/authService";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 

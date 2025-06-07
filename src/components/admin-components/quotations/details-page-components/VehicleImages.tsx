@@ -1,10 +1,10 @@
 import {
 	MorphingDialog,
-	MorphingDialogTrigger,
-	MorphingDialogContent,
 	MorphingDialogClose,
-	MorphingDialogImage,
 	MorphingDialogContainer,
+	MorphingDialogContent,
+	MorphingDialogImage,
+	MorphingDialogTrigger,
 } from "@/components/ui/morphing-dialog";
 import { XIcon } from "lucide-react";
 

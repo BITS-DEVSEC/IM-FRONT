@@ -85,7 +85,6 @@ export function DatePicker({
 							onSelect(selectedDate);
 							setOpen(false);
 						}}
-						
 					/>
 				</PopoverContent>
 			</Popover>

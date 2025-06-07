@@ -1,3 +1,5 @@
+import type { LoginCredentials } from "@/services/authService";
+
 export type User = {
 	role: "admin" | "customer" | "insurer";
 	id: string;
@@ -7,7 +9,7 @@ export type User = {
 
 export type AuthContextType = {
 	user: User | null;
-	login: (user: User) => void;
-	logout: () => void;
+	login: (userData: LoginCredentials) => Promise<void>;
+	logout: () => Promise<void>;
 	isAuthenticated: boolean;
 };

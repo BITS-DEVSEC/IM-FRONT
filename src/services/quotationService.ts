@@ -131,7 +131,9 @@ export const fetchQuotations = (): Promise<QuotationRequest[]> => {
 	});
 };
 
-export const fetchQuotationById = (id: number): Promise<QuotationRequest | undefined> => {
+export const fetchQuotationById = (
+	id: number,
+): Promise<QuotationRequest | undefined> => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve(mockQuotations.find((q) => q.id === id));
@@ -139,12 +141,18 @@ export const fetchQuotationById = (id: number): Promise<QuotationRequest | undef
 	});
 };
 
-export const updateQuotationStatus = (id: number, status: QuotationStatus): Promise<QuotationRequest | undefined> => {
+export const updateQuotationStatus = (
+	id: number,
+	status: QuotationStatus,
+): Promise<QuotationRequest | undefined> => {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			const quotationIndex = mockQuotations.findIndex((q) => q.id === id);
 			if (quotationIndex !== -1) {
-				mockQuotations[quotationIndex] = { ...mockQuotations[quotationIndex], status };
+				mockQuotations[quotationIndex] = {
+					...mockQuotations[quotationIndex],
+					status,
+				};
 				resolve(mockQuotations[quotationIndex]);
 			} else {
 				reject(new Error("Quotation not found"));

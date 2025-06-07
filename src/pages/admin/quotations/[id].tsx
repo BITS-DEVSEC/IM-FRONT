@@ -1,24 +1,15 @@
+import { AddressInformationCard } from "@/components/admin-components/quotations/details-page-components/AddressInformationCard";
+import { InsuranceDetailsCard } from "@/components/admin-components/quotations/details-page-components/InsuranceDetailsCard";
+import { UserInformationCard } from "@/components/admin-components/quotations/details-page-components/UserInformationCard";
+import { VehicleDetailsCard } from "@/components/admin-components/quotations/details-page-components/VehicleDetailsCard";
+import { VehicleImages } from "@/components/admin-components/quotations/details-page-components/VehicleImages";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useQuotation } from "@/hooks/useQuotation";
+import { ChevronLeft } from "lucide-react";
 import { useTransition } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
-import { VehicleImages } from "@/components/admin-components/quotations/details-page-components/VehicleImages";
-import { UserInformationCard } from "@/components/admin-components/quotations/details-page-components/UserInformationCard";
-import { InsuranceDetailsCard } from "@/components/admin-components/quotations/details-page-components/InsuranceDetailsCard";
-import { VehicleDetailsCard } from "@/components/admin-components/quotations/details-page-components/VehicleDetailsCard";
-import { AddressInformationCard } from "@/components/admin-components/quotations/details-page-components/AddressInformationCard";
-import {
-	MorphingDialog,
-	MorphingDialogTrigger,
-	MorphingDialogContent,
-	MorphingDialogClose,
-	MorphingDialogImage,
-	MorphingDialogContainer,
-} from "@/components/ui/morphing-dialog";
-import { XIcon } from "lucide-react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function QuotationDetailsPage() {
 	const { id } = useParams<{ id: string }>();

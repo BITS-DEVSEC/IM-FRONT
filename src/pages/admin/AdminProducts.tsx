@@ -1,16 +1,16 @@
-import { CreateProductDialog } from "@/components/admin-components/products/modals/CreateProductDialog";
 import { ProductsTable } from "@/components/admin-components/products/ProductsTable.tsx";
-import type { Product } from "@/components/admin-components/products/product-data-types";
-import type React from "react";
-import { useState, useEffect } from "react";
-import {
-	fetchProducts,
-	createProduct,
-	updateProduct,
-	deleteProduct,
-} from "@/services/productService";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { CreateProductDialog } from "@/components/admin-components/products/modals/CreateProductDialog";
 import { EditProductDialog } from "@/components/admin-components/products/modals/EditProductDialog";
+import type { Product } from "@/components/admin-components/products/product-data-types";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import {
+	createProduct,
+	deleteProduct,
+	fetchProducts,
+	updateProduct,
+} from "@/services/productService";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 const AdminProducts: React.FC = () => {
 	const [products, setProducts] = useState<Product[]>([]);

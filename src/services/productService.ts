@@ -1,4 +1,4 @@
-import type { Product } from "@/components/admin-components/product-data";
+import type { Product } from "@/components/admin-components/products/product-data-types";
 
 export const mockProducts: Product[] = [
 	{
