@@ -10,12 +10,16 @@ import {
 	deleteProduct,
 } from "@/services/productService";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { EditProductDialog } from "@/components/admin-components/EditProductDialog";
 
 const AdminProducts: React.FC = () => {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<Error | null>(null);
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [selectedProductForEdit, setSelectedProductForEdit] =
+		useState<Product | null>(null);
 
 	useEffect(() => {
 		const getProducts = async () => {
@@ -34,26 +38,32 @@ const AdminProducts: React.FC = () => {
 	}, []);
 
 	const handleCreateProduct = async (newProduct: Product) => {
-		// Simulate API call to persist the product
 		const createdProduct = await createProduct(newProduct);
 		setProducts((prevProducts) => [...prevProducts, createdProduct]);
 		console.log("Creating product:", createdProduct);
 	};
 
-	const handleEditProduct = async (productId: string) => {
-		// In a real application, you'd fetch the product by ID and populate a form for editing.
-		// For this simulation, we'll just log and assume an update mechanism exists.
-		console.log("Editing product:", productId);
-		// Example of how you might update a product after fetching it:
-		// const productToEdit = products.find(p => p.id === productId);
-		// if (productToEdit) {
-		//   const updated = await updateProduct({ ...productToEdit, pricing: productToEdit.pricing + 10 });
-		//   setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
-		// }
+	const handleEditProduct = (productId: string) => {
+		const productToEdit = products.find((p) => p.id === productId);
+		if (productToEdit) {
+			setSelectedProductForEdit(productToEdit);
+			setIsEditDialogOpen(true);
+		}
+	};
+
+	const handleProductUpdate = async (updatedProduct: Product) => {
+		try {
+			const result = await updateProduct(updatedProduct);
+			setProducts((prevProducts) =>
+				prevProducts.map((p) => (p.id === result.id ? result : p)),
+			);
+			console.log("Updating product:", result);
+		} catch (err) {
+			console.error("Failed to update product:", err);
+		}
 	};
 
 	const handleDeleteProduct = async (productId: string) => {
-		// Simulate API call for deletion
 		const success = await deleteProduct(productId);
 		if (success) {
 			setProducts((prevProducts) =>
@@ -79,7 +89,6 @@ const AdminProducts: React.FC = () => {
 		<div className="container mx-auto">
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-3xl font-bold">Manage Products</h1>
-				{/* CreateProductDialog will now be rendered inside the DataTable's toolbar */}
 			</div>
 
 			<ProductsTable
@@ -87,13 +96,19 @@ const AdminProducts: React.FC = () => {
 				onEditProduct={handleEditProduct}
 				onDeleteProduct={handleDeleteProduct}
 				toolbarActionsPrefix={
-					// Pass the CreateProductDialog here
 					<CreateProductDialog
 						isOpen={isCreateDialogOpen}
 						onOpenChange={setIsCreateDialogOpen}
 						onProductCreate={handleCreateProduct}
 					/>
 				}
+			/>
+
+			<EditProductDialog
+				isOpen={isEditDialogOpen}
+				onOpenChange={setIsEditDialogOpen}
+				onProductUpdate={handleProductUpdate}
+				product={selectedProductForEdit}
 			/>
 
 			{products.length === 0 && (
