@@ -1,16 +1,15 @@
 import {
-    Columns,
-    LayoutDashboard,
     LogOut,
     Settings,
     Building2,
     ShieldCheck,
+    Columns,
   } from "lucide-react"
 
   export type NavItem = {
     link: string
     label: string
-    icon: typeof LayoutDashboard
+    icon: React.ComponentType<{ className?: string }>
   }
 
   // Updated structure to support grouped navigation
@@ -22,15 +21,9 @@ import {
   export const navigationData: Record<string, NavItemGroup[]> = {
     admin: [
       {
-        title: "OVERVIEW",
-        items: [
-          { link: "/admin/home", label: "Dashboard", icon: LayoutDashboard },
-          { link: "/admin/products", label: "Products", icon: Columns },
-        ]
-      },
-      {
         title: "MANAGEMENT",
         items: [
+          { link: "/admin/products", label: "Products", icon: Columns },
           { link: "/admin/quotation-requests", label: "Quotations", icon: ShieldCheck },
           { link: "/admin/policies", label: "Policies", icon: Building2 },
         ]
