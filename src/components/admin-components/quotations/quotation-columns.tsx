@@ -16,24 +16,44 @@ import { CheckCircle, Eye, MoreHorizontal, XCircle } from "lucide-react";
 
 export const columns: ColumnDef<QuotationRequest>[] = [
 	{
-		accessorKey: "user.phone_number",
+		id: "userPhoneNumber",
+		accessorFn: (row) => row.user.phone_number,
 		header: "Phone Number",
+		cell: ({ row }) => (
+			<div className="font-mono">{row.original.user.phone_number}</div>
+		),
 	},
 	{
-		accessorKey: "user.fin",
+		id: "userFin",
+		accessorFn: (row) => row.user.fin,
 		header: "TIN (FIN)",
+		cell: ({ row }) => <div className="font-mono">{row.original.user.fin}</div>,
 	},
 	{
-		accessorKey: "insurance_type.name",
+		id: "insuranceType",
+		accessorFn: (row) => row.insurance_type.name,
 		header: "Insurance Type",
+		cell: ({ row }) => {
+			const insuranceType = row.original.insurance_type.name;
+			return <Badge>{insuranceType}</Badge>;
+		},
 	},
 	{
-		accessorKey: "coverage_type.name",
+		id: "coverageType",
+		accessorFn: (row) => row.coverage_type.name,
 		header: "Coverage Type",
+		cell: ({ row }) => {
+			const coverageType = row.original.coverage_type.name;
+			return <Badge variant="secondary">{coverageType}</Badge>;
+		},
 	},
 	{
-		accessorKey: "vehicle.plate_number",
+		id: "plateNumber",
+		accessorFn: (row) => row.vehicle.plate_number,
 		header: "Plate Number",
+		cell: ({ row }) => (
+			<div className="font-mono">{row.original.vehicle.plate_number}</div>
+		),
 	},
 	{
 		accessorKey: "status",

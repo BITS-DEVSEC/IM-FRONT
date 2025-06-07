@@ -5,6 +5,7 @@ import { VALID_ROLES } from "./config/roles";
 import { defaultAppRedirect, roleSpecificRoutes } from "./config/routes.tsx";
 import { AuthProvider } from "./context/AuthContext";
 import { RoleLayout } from "./layouts/RoleLayout";
+import LoginPage from "./pages/Auth/LoginPage";
 
 export default function App() {
 	return (
@@ -17,6 +18,7 @@ export default function App() {
 								path="/"
 								element={<Navigate to={defaultAppRedirect} replace />}
 							/>
+							<Route path="/login" element={<LoginPage />} />
 
 							{VALID_ROLES.map((role) => {
 								const routesForRole = roleSpecificRoutes[role];
@@ -37,6 +39,10 @@ export default function App() {
 												element={routeConfig.element}
 											/>
 										))}
+										<Route
+											path="*"
+											element={<Navigate to={`/${role}`} replace />}
+										/>
 									</Route>
 								);
 							})}

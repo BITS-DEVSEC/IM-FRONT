@@ -3,7 +3,7 @@ import { NavUser } from "@/components/shared/NavUser";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation"; // Added footerNavigation back
 import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import {
 	Breadcrumb,
@@ -33,16 +33,24 @@ import type { ValidRole } from "@/config/roles";
 
 interface AppSidebarProps {
 	role: ValidRole;
+	logout: ReturnType<typeof useAuth>["logout"];
 }
 
 function AppSidebar({
 	role,
 	user,
+	logout,
 }: AppSidebarProps & { user: ReturnType<typeof useAuth>["user"] }) {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const navSections = navigationData[role] || [];
 	const currentPath = location.pathname;
+
+	const handleLogout = async () => {
+		await logout();
+		navigate("/login");
+	};
 
 	return (
 		<Sidebar variant="inset">
@@ -99,15 +107,25 @@ function AppSidebar({
 				<SidebarMenu>
 					{footerNavigation.map((item) => (
 						<SidebarMenuItem key={item.link}>
-							<SidebarMenuButton
-								asChild
-								className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
-							>
-								<Link to={item.link}>
+							{item.link === "/logout" ? (
+								<SidebarMenuButton
+									className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
+									onClick={handleLogout}
+								>
 									<item.icon className="h-5 w-5" />
 									<span>{item.label}</span>
-								</Link>
-							</SidebarMenuButton>
+								</SidebarMenuButton>
+							) : (
+								<SidebarMenuButton
+									asChild
+									className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
+								>
+									<Link to={item.link}>
+										<item.icon className="h-5 w-5" />
+										<span>{item.label}</span>
+									</Link>
+								</SidebarMenuButton>
+							)}
 						</SidebarMenuItem>
 					))}
 				</SidebarMenu>
@@ -133,11 +151,11 @@ export interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ role }: DashboardLayoutProps) {
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 
 	return (
 		<SidebarProvider>
-			<AppSidebar role={role} user={user} />
+			<AppSidebar role={role} user={user} logout={logout} />
 			<SidebarInset>
 				<header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
 					<SidebarTrigger className="-ml-1" />

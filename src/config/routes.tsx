@@ -44,4 +44,4 @@ export const defaultRoleRedirects: Record<ValidRole, string> = {
 
 // This can be dynamic based on logged-in user's role in a real app
 // For now, defaulting to insurer. You might want to change this or handle it based on auth context.
-export const defaultAppRedirect = defaultRoleRedirects.insurer;
+export const defaultAppRedirect = defaultRoleRedirects.admin;

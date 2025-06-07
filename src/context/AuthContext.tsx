@@ -1,4 +1,9 @@
-import { fetchUser, loginUser, logoutUser } from "@/services/authService";
+import {
+	fetchUser,
+	loginUser,
+	logoutUser,
+	mockUser,
+} from "@/services/authService";
 import type { LoginCredentials } from "@/services/authService";
 import type { AuthContextType, User } from "@/types/auth";
 import {
@@ -17,17 +22,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		const initializeAuth = async () => {
-			// In a real app, you would check for a token or session here
-			// For now, we'll simulate fetching a logged-in user
-			try {
-				const fetchedUser = await fetchUser();
-				setUser(fetchedUser);
-				setIsAuthenticated(true);
-			} catch (error) {
-				console.error("Failed to fetch user on startup:", error);
-				setUser(null);
-				setIsAuthenticated(false);
-			}
+			// For development: bypass authentication and set a mock user
+			setUser(mockUser);
+			setIsAuthenticated(true);
 		};
 		initializeAuth();
 	}, []);

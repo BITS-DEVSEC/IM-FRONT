@@ -25,7 +25,10 @@ export function NavUser({ user }: NavUserProps) {
 	return (
 		<SidebarMenu className="mt-auto mb-4">
 			<SidebarMenuItem>
-				<SidebarMenuButton size="lg">
+				<SidebarMenuButton
+					size="lg"
+					className="hover:bg-transparent dark:hover:bg-transparent"
+				>
 					<Avatar className="h-10 w-10 rounded-md">
 						{user.avatar ? (
 							<AvatarImage src={user.avatar} alt={user.name} />
@@ -36,7 +39,9 @@ export function NavUser({ user }: NavUserProps) {
 						)}
 					</Avatar>
 					<div className="grid flex-1 text-left text-sm leading-tight">
-						<span className="truncate font-medium">{user.name}</span>
+						<span className="truncate font-medium text-primary">
+							{user.name}
+						</span>
 						<span className="truncate text-xs text-muted-foreground capitalize">
 							{user.role}
 						</span>

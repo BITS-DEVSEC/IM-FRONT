@@ -1,11 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import type { Policy, PolicyStatus } from "@/types/policy";
 import type { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<Policy>[] = [
 	{
 		accessorKey: "policyNumber",
 		header: "Policy Number",
+		cell: ({ row }) => (
+			<Badge className="font-mono">{row.getValue("policyNumber")}</Badge>
+		),
 	},
 	{
 		accessorKey: "userPhoneNumber",
@@ -18,13 +22,17 @@ export const columns: ColumnDef<Policy>[] = [
 	{
 		accessorKey: "coverageType",
 		header: "Coverage Type",
+		cell: ({ row }) => {
+			const coverageType = row.getValue("coverageType") as string;
+			return <Badge variant="secondary">{coverageType}</Badge>;
+		},
 	},
 	{
 		accessorKey: "startDate",
 		header: "Start Date",
 		cell: ({ row }) => {
 			const date = new Date(row.getValue("startDate"));
-			return date.toLocaleDateString();
+			return format(date, "dd MMM yyyy");
 		},
 	},
 	{
@@ -32,7 +40,7 @@ export const columns: ColumnDef<Policy>[] = [
 		header: "End Date",
 		cell: ({ row }) => {
 			const date = new Date(row.getValue("endDate"));
-			return date.toLocaleDateString();
+			return format(date, "dd MMM yyyy");
 		},
 	},
 	{
@@ -45,7 +53,9 @@ export const columns: ColumnDef<Policy>[] = [
 				currency: "ETB",
 			}).format(amount);
 
-			return <div className="text-right font-medium">{formatted}</div>;
+			return (
+				<div className="text-right font-medium font-mono">{formatted}</div>
+			);
 		},
 	},
 	{
