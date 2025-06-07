@@ -1,7 +1,8 @@
 import { VALID_ROLES, type ValidRole } from "@/config/roles";
+import { useAuth } from "@/context/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { DashboardLayout } from "./DashboardLayout";
-import { useAuth } from "@/context/AuthContext";
+import { defaultRoleRedirects } from "@/config/paths";
 
 export function RoleLayout() {
 	const location = useLocation();

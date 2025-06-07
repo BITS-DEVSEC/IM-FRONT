@@ -1,9 +1,9 @@
 import { AddressInformationCard } from "@/components/admin-components/quotations/details-page-components/AddressInformationCard";
+import { DetailSection } from "@/components/admin-components/quotations/details-page-components/DetailSection";
 import { InsuranceDetailsCard } from "@/components/admin-components/quotations/details-page-components/InsuranceDetailsCard";
 import { UserInformationCard } from "@/components/admin-components/quotations/details-page-components/UserInformationCard";
 import { VehicleDetailsCard } from "@/components/admin-components/quotations/details-page-components/VehicleDetailsCard";
 import { VehicleImages } from "@/components/admin-components/quotations/details-page-components/VehicleImages";
-import { DetailSection } from "@/components/admin-components/quotations/details-page-components/DetailSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";

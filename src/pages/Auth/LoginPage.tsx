@@ -1,11 +1,11 @@
-import { fetchUser } from "@/services/authService";
-import { defaultRoleRedirects } from "@/config/routes";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { defaultRoleRedirects } from "@/config/routes";
 import { useAuth } from "@/context/AuthContext";
+import { fetchUser } from "@/services/authService";
+import type { User } from "@/types/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import type { User } from "@/types/auth";
 
 export default function LoginPage() {
 	const [username, setUsername] = useState("");

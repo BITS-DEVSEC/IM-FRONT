@@ -1,5 +1,5 @@
-import type { QuotationRequest } from "@/types/quotation";
 import { DescriptionItem } from "@/components/shared/DescriptionItem";
+import type { QuotationRequest } from "@/types/quotation";
 
 interface UserInformationCardProps {
 	user: QuotationRequest["user"];
