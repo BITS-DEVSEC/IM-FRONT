@@ -34,18 +34,19 @@ import type { ValidRole } from "@/config/roles";
 interface AppSidebarProps {
 	role: ValidRole;
 	logout: ReturnType<typeof useAuth>["logout"];
+	currentPath: string; // Add currentPath to props
 }
 
 function AppSidebar({
 	role,
 	user,
 	logout,
+	currentPath, // Destructure currentPath
 }: AppSidebarProps & { user: ReturnType<typeof useAuth>["user"] }) {
-	const location = useLocation();
 	const navigate = useNavigate();
 
 	const navSections = navigationData[role] || [];
-	const currentPath = location.pathname;
+	// currentPath is now passed as a prop
 
 	const handleLogout = async () => {
 		await logout();
@@ -88,7 +89,7 @@ function AppSidebar({
 									<SidebarMenuItem key={item.link}>
 										<SidebarMenuButton
 											asChild
-											isActive={currentPath === item.link}
+											isActive={currentPath.startsWith(item.link)}
 											className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground"
 										>
 											<Link to={item.link}>
@@ -152,10 +153,33 @@ export interface DashboardLayoutProps {
 
 export function DashboardLayout({ role }: DashboardLayoutProps) {
 	const { user, logout } = useAuth();
+	const location = useLocation();
+
+	const pathSegments = location.pathname.split("/").filter(Boolean);
+	let breadcrumbPageContent = "Home";
+
+	// Check if the path is a quotation details page (e.g., /admin/quotation-requests/123)
+	const isQuotationDetailsPage =
+		pathSegments.length >= 3 &&
+		pathSegments[pathSegments.length - 2] === "quotation-requests" &&
+		/^\d+$/.test(pathSegments[pathSegments.length - 1]);
+
+	if (isQuotationDetailsPage) {
+		const quotationId = pathSegments[pathSegments.length - 1];
+		breadcrumbPageContent = `Request #${quotationId}`;
+	} else {
+		// Existing logic for other pages
+		breadcrumbPageContent = pathSegments.pop()?.replace(/-/g, " ") || "Home";
+	}
 
 	return (
 		<SidebarProvider>
-			<AppSidebar role={role} user={user} logout={logout} />
+			<AppSidebar
+				role={role}
+				user={user}
+				logout={logout}
+				currentPath={location.pathname}
+			/>
 			<SidebarInset>
 				<header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
 					<SidebarTrigger className="-ml-1" />
@@ -166,11 +190,20 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 									{role.charAt(0).toUpperCase() + role.slice(1)}
 								</BreadcrumbPage>
 							</BreadcrumbItem>
+							{isQuotationDetailsPage && (
+								<>
+									<BreadcrumbSeparatorUI className="hidden md:block" />
+									<BreadcrumbItem className="hidden md:block">
+										<Link to={`/${role}/quotation-requests`}>
+											<BreadcrumbPage>Quotation Requests</BreadcrumbPage>
+										</Link>
+									</BreadcrumbItem>
+								</>
+							)}
 							<BreadcrumbSeparatorUI className="hidden md:block" />
 							<BreadcrumbItem>
-								<BreadcrumbPage>
-									{location.pathname.split("/").pop()?.replace(/-/g, " ") ||
-										"Home"}
+								<BreadcrumbPage className="capitalize">
+									{breadcrumbPageContent}
 								</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
@@ -179,7 +212,7 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 						<ModeToggle />
 					</div>
 				</header>
-				<main className="flex flex-1 flex-col gap-4 p-4">
+				<main className="flex flex-1 flex-col gap-4 px-8">
 					<Outlet />
 				</main>
 			</SidebarInset>

@@ -1,5 +1,3 @@
-"use client";
-
 import useClickOutside from "@/hooks/useClickOutside";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
@@ -52,7 +50,7 @@ function MorphingDialogProvider({
 }: MorphingDialogProviderProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const uniqueId = useId();
-	const triggerRef = useRef<HTMLButtonElement>(null!);
+	const triggerRef = useRef<HTMLButtonElement>(null);
 
 	const contextValue = useMemo(
 		() => ({
@@ -143,7 +141,7 @@ function MorphingDialogContent({
 	style,
 }: MorphingDialogContentProps) {
 	const { setIsOpen, isOpen, uniqueId, triggerRef } = useMorphingDialog();
-	const containerRef = useRef<HTMLDivElement>(null!);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const [firstFocusableElement, setFirstFocusableElement] =
 		useState<HTMLElement | null>(null);
 	const [lastFocusableElement, setLastFocusableElement] =
@@ -242,7 +240,7 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
 				<>
 					<motion.div
 						key={`backdrop-${uniqueId}`}
-						className="fixed inset-0 h-full w-full bg-white/40 backdrop-blur-xs dark:bg-black/40"
+						className="fixed inset-0 h-full w-full bg-white/40 backdrop-blur-xs dark:bg-black/40 z-40"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}

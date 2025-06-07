@@ -1,10 +1,10 @@
 import type { User } from "@/types/auth";
 
 export const mockUser: User = {
+	id: "mock-user-123",
+	name: "Admin User",
+	email: "admin@example.com",
 	role: "admin",
-	id: "user1",
-	name: "John Doe",
-	email: "john.doe@example.com",
 };
 
 export const fetchUser = () => {

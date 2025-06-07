@@ -3,6 +3,7 @@ import { InsuranceDetailsCard } from "@/components/admin-components/quotations/d
 import { UserInformationCard } from "@/components/admin-components/quotations/details-page-components/UserInformationCard";
 import { VehicleDetailsCard } from "@/components/admin-components/quotations/details-page-components/VehicleDetailsCard";
 import { VehicleImages } from "@/components/admin-components/quotations/details-page-components/VehicleImages";
+import { DetailSection } from "@/components/admin-components/quotations/details-page-components/DetailSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -67,38 +68,43 @@ export default function QuotationDetailsPage() {
 				</div>
 			</div>
 
-			{/* Vehicle Images - Moved to top, below the title */}
-			<VehicleImages
-				frontViewPhotoUrl={quotation.vehicle.front_view_photo_url}
-				backViewPhotoUrl={quotation.vehicle.back_view_photo_url}
-			/>
+			<DetailSection title="Vehicle Images">
+				<VehicleImages
+					frontViewPhotoUrl={quotation.vehicle.front_view_photo_url}
+					backViewPhotoUrl={quotation.vehicle.back_view_photo_url}
+				/>
+			</DetailSection>
 
 			<div className="grid gap-8 lg:grid-cols-3">
 				{/* Main Content Column (wider) */}
 				<div className="lg:col-span-2 space-y-8">
-					{/* User Information Card */}
-					<UserInformationCard user={quotation.user} />
+					<DetailSection title="User & Insurance Details">
+						{/* User Information Card */}
+						<UserInformationCard user={quotation.user} />
 
-					{/* Insurance Details Card */}
-					<InsuranceDetailsCard
-						insuranceType={quotation.insurance_type}
-						coverageType={quotation.coverage_type}
-						coverageAmount={quotation.form_data.coverage_amount}
-					/>
+						{/* Insurance Details Card */}
+						<InsuranceDetailsCard
+							insuranceType={quotation.insurance_type}
+							coverageType={quotation.coverage_type}
+							coverageAmount={quotation.form_data.coverage_amount}
+						/>
+					</DetailSection>
 				</div>
 
 				{/* Sidebar Column (narrower) */}
 				<div className="lg:col-span-1 space-y-8">
-					{/* Vehicle Details Card */}
-					<VehicleDetailsCard
-						vehicle={quotation.vehicle}
-						formData={quotation.form_data}
-					/>
+					<DetailSection title="Vehicle & Address Details">
+						{/* Vehicle Details Card */}
+						<VehicleDetailsCard
+							vehicle={quotation.vehicle}
+							formData={quotation.form_data}
+						/>
 
-					{/* Address Information Card */}
-					<AddressInformationCard
-						address={quotation.form_data.current_residence_address}
-					/>
+						{/* Address Information Card */}
+						<AddressInformationCard
+							address={quotation.form_data.current_residence_address}
+						/>
+					</DetailSection>
 				</div>
 			</div>
 		</div>

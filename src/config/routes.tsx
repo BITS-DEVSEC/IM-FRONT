@@ -20,7 +20,7 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 		{ path: "quotation-requests", element: <AdminQuotations /> },
 		{ path: "policies", element: <AdminPolicies /> },
 		{
-			path: "quotations/:id",
+			path: "quotation-requests/:id",
 			element: <QuotationDetailsPage />,
 			isIndex: false,
 		},

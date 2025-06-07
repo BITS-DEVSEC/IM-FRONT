@@ -12,6 +12,7 @@ import type {
 } from "@/types/quotation";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminQuotations() {
 	const [quotations, setQuotations] = useState<QuotationRequest[]>([]);
@@ -21,6 +22,8 @@ export default function AdminQuotations() {
 	const [currentFilters, setCurrentFilters] = useState<QuotationFiltersType>(
 		{},
 	);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const getQuotations = async () => {
@@ -104,9 +107,8 @@ export default function AdminQuotations() {
 	};
 
 	const handleViewDetails = (quotationId: number) => {
-		// Navigate to quotation details page
 		console.log("Viewing details for quotation:", quotationId);
-		window.location.href = `/admin/quotations/${quotationId}`;
+		navigate(`/admin/quotation-requests/${quotationId}`);
 	};
 
 	const handleStatusChange = async (
