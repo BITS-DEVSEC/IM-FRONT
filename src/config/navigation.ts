@@ -36,6 +36,6 @@ export const navigationData: Record<string, NavItemGroup[]> = {
 };
 
 export const footerNavigation = [
-	{ link: "/settings", label: "Settings", icon: Settings },
+	{ link: "/admin/settings", label: "Settings", icon: Settings },
 	{ link: "/logout", label: "Logout", icon: LogOut },
 ];
