@@ -39,11 +39,10 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 };
 
 export const defaultRoleRedirects: Record<ValidRole, string> = {
-	admin: "/admin", // Adjusted to match a potential "home" path for admin
-	customer: "/customer/home", // Adjusted to match a potential "home" path for customer
+	admin: "/admin/products",
+	customer: "/customer/home",
 	insurer: "/insurer/home",
 };
 
-// This can be dynamic based on logged-in user's role in a real app
-// For now, defaulting to insurer. You might want to change this or handle it based on auth context.
-export const defaultAppRedirect = defaultRoleRedirects.admin;
+// All unauthenticated users would be redirected to the login page by default
+export const defaultAppRedirect = "/login";

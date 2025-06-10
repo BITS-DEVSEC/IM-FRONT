@@ -17,7 +17,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		const initializeAuth = async () => {
-			// For development: bypass authentication and set a mock user
+			// TODO: In a production environment, this should involve actual authentication (e.g., checking a token).
+			// For development, we bypass authentication and set a mock user.
 			setUser(mockUser);
 			setIsAuthenticated(true);
 		};
