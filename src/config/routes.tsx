@@ -17,7 +17,7 @@ export const roleSpecificRoutes: Record<ValidRole, RouteConfig[]> = {
 	admin: [
 		// Define admin routes here. Example:
 		// { path: "dashboard", element: <AdminDashboardPage />, isIndex: true },
-		{ path: "products", element: <AdminProducts /> },
+		{ path: "products", element: <AdminProducts />, isIndex: true },
 		{ path: "quotation-requests", element: <AdminQuotations /> },
 		{ path: "policies", element: <AdminPolicies /> },
 		{
