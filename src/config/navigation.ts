@@ -1,30 +1,41 @@
 import {
-    CardStackIcon,
-    DashboardIcon,
-    ExitIcon,
-} from '@radix-ui/react-icons';
+	Building2,
+	Columns,
+	LogOut,
+	Settings,
+	ShieldCheck,
+} from "lucide-react";
 
 export type NavItem = {
-    link: string;
-    label: string;
-    icon: typeof DashboardIcon;
+	link: string;
+	label: string;
+	icon: React.ComponentType<{ className?: string }>;
 };
 
-export const navigationData: Record<string, NavItem[]> = {
-    insurer: [
-        { link: '/insurer/home', label: 'Home', icon: DashboardIcon },
-        { link: '/insurer/listings', label: 'Listing', icon: CardStackIcon },
-    ],
-    admin: [
-        { link: '/admin/home', label: 'Home', icon: DashboardIcon },
-        { link: '/admin/listings', label: 'Listing', icon: CardStackIcon },
-    ],
-    customer: [
-        { link: '/customer/home', label: 'Home', icon: DashboardIcon },
-        { link: '/customer/listings', label: 'Listing', icon: CardStackIcon },
-    ],
+// Updated structure to support grouped navigation
+export type NavItemGroup = {
+	title: string;
+	items: NavItem[];
+};
+
+export const navigationData: Record<string, NavItemGroup[]> = {
+	admin: [
+		{
+			title: "MANAGEMENT",
+			items: [
+				{ link: "/admin/products", label: "Products", icon: Columns },
+				{
+					link: "/admin/quotation-requests",
+					label: "Quotations",
+					icon: ShieldCheck,
+				},
+				{ link: "/admin/policies", label: "Policies", icon: Building2 },
+			],
+		},
+	],
 };
 
 export const footerNavigation = [
-    { link: '/logout', label: 'Logout', icon: ExitIcon },
+	{ link: "/settings", label: "Settings", icon: Settings },
+	{ link: "/logout", label: "Logout", icon: LogOut },
 ];

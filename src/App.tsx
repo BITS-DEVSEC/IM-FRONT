@@ -1,42 +1,55 @@
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ThemeProvider } from "@/components/shared/theme-provider";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { VALID_ROLES } from "./config/roles";
+import { defaultAppRedirect, roleSpecificRoutes } from "./config/routes.tsx";
+import { AuthProvider } from "./context/AuthContext";
 import { RoleLayout } from "./layouts/RoleLayout";
-import { AuthProvider } from './context/AuthContext';
-
-const InsurerHome = () => <h1>Insurer Home</h1>;
-const InsurerListings = () => <h1>Insurer Listings</h1>;
-const AdminHome = () => <h1>Admin Home</h1>;
-const AdminListings = () => <h1>Admin Listings</h1>;
-const CustomerHome = () => <h1>Customer Home</h1>;
-const CustomerListings = () => <h1>Customer Listings</h1>;
+import LoginPage from "./pages/Auth/LoginPage";
 
 export default function App() {
-  return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/insurer/home" replace />} />
+	return (
+		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+			<AuthProvider>
+				<ErrorBoundary>
+					<BrowserRouter>
+						<Routes>
+							<Route
+								path="/"
+								element={<Navigate to={defaultAppRedirect} replace />}
+							/>
+							<Route path="/login" element={<LoginPage />} />
 
-          <Route path="/insurer" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<InsurerHome />} />
-            <Route path="listings" element={<InsurerListings />} />
-          </Route>
+							{VALID_ROLES.map((role) => {
+								const routesForRole = roleSpecificRoutes[role];
+								const defaultRouteForRole =
+									routesForRole.find((r) => r.isIndex)?.path ||
+									(routesForRole.length > 0 ? routesForRole[0].path : "home");
 
-          <Route path="/admin" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<AdminHome />} />
-            <Route path="listings" element={<AdminListings />} />
-          </Route>
-
-          <Route path="/customer" element={<RoleLayout />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<CustomerHome />} />
-            <Route path="listings" element={<CustomerListings />} />
-          </Route>
-
-          <Route path="*" element={<Navigate to="/insurer/home" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  );
+								return (
+									<Route key={role} path={`/${role}`} element={<RoleLayout />}>
+										<Route
+											index
+											element={<Navigate to={defaultRouteForRole} replace />}
+										/>
+										{routesForRole.map((routeConfig) => (
+											<Route
+												key={routeConfig.path}
+												path={routeConfig.path}
+												element={routeConfig.element}
+											/>
+										))}
+										<Route
+											path="*"
+											element={<Navigate to={`/${role}`} replace />}
+										/>
+									</Route>
+								);
+							})}
+						</Routes>
+					</BrowserRouter>
+				</ErrorBoundary>
+			</AuthProvider>
+		</ThemeProvider>
+	);
 }

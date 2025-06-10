@@ -1,45 +1,64 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
-
-type User = {
-    role: 'admin' | 'customer' | 'insurer';
-    id: string;
-};
-
-type AuthContextType = {
-    user: User | null;
-    login: (user: User) => void;
-    logout: () => void;
-    isAuthenticated: boolean;
-};
+import { loginUser, logoutUser, mockUser } from "@/services/authService";
+import type { LoginCredentials } from "@/services/authService";
+import type { AuthContextType, User } from "@/types/auth";
+import {
+	type ReactNode,
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    // Change to your role
-    const [user] = useState<User>({
-        role: 'insurer',
-        id: 'user1'
-    });
+	const [user, setUser] = useState<User | null>(null);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const login = (userData: User) => {
-        console.log('Login called:', userData);
-    };
+	useEffect(() => {
+		const initializeAuth = async () => {
+			// For development: bypass authentication and set a mock user
+			setUser(mockUser);
+			setIsAuthenticated(true);
+		};
+		initializeAuth();
+	}, []);
 
-    const logout = () => {
-        console.log('Logout called');
-    };
+	const login = async (userData: LoginCredentials) => {
+		try {
+			const loggedInUser = await loginUser(userData);
+			setUser(loggedInUser);
+			setIsAuthenticated(true);
+			console.log("Login successful:", loggedInUser);
+		} catch (error) {
+			console.error("Login failed:", error);
+			throw error; // Re-throw to allow components to handle login errors
+		}
+	};
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated: true }}>
-            {children}
-        </AuthContext.Provider>
-    );
+	const logout = async () => {
+		try {
+			await logoutUser();
+			setUser(null);
+			setIsAuthenticated(false);
+			console.log("Logout successful");
+		} catch (error) {
+			console.error("Logout failed:", error);
+			throw error;
+		}
+	};
+
+	return (
+		<AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+			{children}
+		</AuthContext.Provider>
+	);
 }
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
+	const context = useContext(AuthContext);
+	if (!context) {
+		throw new Error("useAuth must be used within an AuthProvider");
+	}
+	return context;
 };
