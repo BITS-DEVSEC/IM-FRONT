@@ -302,6 +302,23 @@ interface StepIndicatorProps {
 	disableStepIndicators?: boolean;
 }
 
+// Approximated RGB values for light and dark themes
+const lightThemeColors = {
+	muted: "rgb(242, 242, 242)",
+	mutedForeground: "rgb(128, 128, 128)",
+	primary: "rgb(109, 100, 100)",
+	primaryForeground: "rgb(255, 255, 255)",
+	border: "rgb(224, 224, 224)",
+};
+
+const darkThemeColors = {
+	muted: "rgb(64, 64, 64)",
+	mutedForeground: "rgb(196, 196, 196)",
+	primary: "rgb(235, 229, 241)",
+	primaryForeground: "rgb(51, 62, 70)",
+	border: "rgb(61, 62, 62)",
+};
+
 function StepIndicator({
 	step,
 	currentStep,
@@ -315,6 +332,14 @@ function StepIndicator({
 				? "inactive"
 				: "complete";
 
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useLayoutEffect(() => {
+		setIsDarkMode(document.documentElement.classList.contains("dark"));
+	}, []);
+
+	const colors = isDarkMode ? darkThemeColors : lightThemeColors;
+
 	const handleClick = () => {
 		if (step !== currentStep && !disableStepIndicators) {
 			onClickStep(step);
@@ -326,37 +351,45 @@ function StepIndicator({
 			onClick={handleClick}
 			className="relative cursor-pointer outline-none focus:outline-none"
 			animate={status}
-			initial={false}
+			initial={{ scale: 1 }}
+			variants={{
+				inactive: {
+					scale: 1,
+				},
+				active: {
+					scale: 1,
+				},
+				complete: {
+					scale: 1,
+				},
+			}}
+			transition={{ duration: 0.3 }}
+			style={{
+				borderRadius: "9999px",
+				backgroundColor: status === "inactive" ? colors.muted : colors.primary,
+				color:
+					status === "inactive"
+						? colors.mutedForeground
+						: colors.primaryForeground,
+			}}
 		>
-			<motion.div
-				variants={{
-					inactive: {
-						scale: 1,
-						backgroundColor: "var(--muted)",
-						color: "var(--muted-foreground)",
-					},
-					active: {
-						scale: 1,
-						backgroundColor: "var(--primary)",
-						color: "var(--primary-foreground)",
-					},
-					complete: {
-						scale: 1,
-						backgroundColor: "var(--primary)",
-						color: "var(--primary-foreground)",
-					},
-				}}
-				transition={{ duration: 0.3 }}
-				className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
-			>
+			<div className="flex h-8 w-8 items-center justify-center font-semibold">
 				{status === "complete" ? (
-					<CheckIcon className="h-4 w-4 text-primary-foreground" />
+					<CheckIcon
+						className="h-4 w-4"
+						style={{ color: colors.primaryForeground }}
+					/>
 				) : status === "active" ? (
-					<div className="h-3 w-3 rounded-full bg-primary-foreground" />
+					<div
+						className="h-3 w-3 rounded-full"
+						style={{ backgroundColor: colors.primaryForeground }}
+					/>
 				) : (
-					<span className="text-sm text-muted-foreground">{step}</span>
+					<span className="text-sm" style={{ color: colors.mutedForeground }}>
+						{step}
+					</span>
 				)}
-			</motion.div>
+			</div>
 		</motion.div>
 	);
 }
@@ -366,19 +399,31 @@ interface StepConnectorProps {
 }
 
 function StepConnector({ isComplete }: StepConnectorProps) {
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useLayoutEffect(() => {
+		setIsDarkMode(document.documentElement.classList.contains("dark"));
+	}, []);
+
+	const colors = isDarkMode ? darkThemeColors : lightThemeColors;
+
 	const lineVariants: Variants = {
-		incomplete: { width: 0, backgroundColor: "transparent" },
-		complete: { width: "100%", backgroundColor: "var(--primary)" },
+		incomplete: { width: 0 },
+		complete: { width: "100%" },
 	};
 
 	return (
-		<div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-border">
+		<div
+			className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded"
+			style={{ backgroundColor: colors.border }}
+		>
 			<motion.div
 				className="absolute left-0 top-0 h-full"
 				variants={lineVariants}
-				initial={false}
+				initial={isComplete ? "complete" : "incomplete"}
 				animate={isComplete ? "complete" : "incomplete"}
 				transition={{ duration: 0.4 }}
+				style={{ backgroundColor: isComplete ? colors.primary : colors.border }}
 			/>
 		</div>
 	);

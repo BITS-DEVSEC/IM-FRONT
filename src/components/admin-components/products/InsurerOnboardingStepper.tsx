@@ -165,13 +165,6 @@ export const InsurerOnboardingStepper: React.FC<
 		setShowOnboardingStepper(false);
 	};
 
-	const memoizedOnEmailUpdateData = useCallback(
-		({ email }: { email: string }) => {
-			updateOnboardingData("email", email);
-		},
-		[updateOnboardingData],
-	);
-
 	if (!showOnboardingStepper) {
 		return null;
 	}
@@ -180,9 +173,7 @@ export const InsurerOnboardingStepper: React.FC<
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs">
 			<Stepper
 				initialStep={1}
-				onStepChange={(step) => {
-					console.log(`Current step: ${step}`);
-				}}
+				onStepChange={(step) => {}}
 				onValidateStep={handleValidateStep}
 				onFinalStepCompleted={handleFinalStepCompleted}
 				backButtonText="Previous"
@@ -205,16 +196,8 @@ export const InsurerOnboardingStepper: React.FC<
 						}
 					/>
 				</Step>
-				{/* Removed Email Verification Step */}
-				{/* <Step>
-					<h2 className="text-xl font-bold mb-4">Email Verification</h2>
-					<EmailVerificationForm
-						ref={emailVerificationFormRef}
-						onUpdateData={memoizedOnEmailUpdateData}
-					/>
-				</Step> */}
+
 				<Step>
-					<h2 className="text-xl font-bold mb-4">Company Information</h2>
 					<CompanyInformationForm
 						ref={companyInformationFormRef}
 						onUpdateData={({ name, description }) => {
@@ -224,7 +207,6 @@ export const InsurerOnboardingStepper: React.FC<
 					/>
 				</Step>
 				<Step>
-					<h2 className="text-xl font-bold mb-4">Contact Details</h2>
 					<ContactDetailsForm
 						ref={contactDetailsFormRef}
 						onUpdateData={({ contact_email, contact_phone }) => {
@@ -234,7 +216,6 @@ export const InsurerOnboardingStepper: React.FC<
 					/>
 				</Step>
 				<Step>
-					<h2 className="text-xl font-bold mb-4">API Configuration</h2>
 					<ApiConfigurationForm
 						ref={apiConfigurationFormRef}
 						onUpdateData={({
@@ -247,7 +228,6 @@ export const InsurerOnboardingStepper: React.FC<
 					/>
 				</Step>
 				<Step>
-					<h2 className="text-xl font-bold mb-4">Branding</h2>
 					<BrandingForm
 						ref={brandingFormRef}
 						onUpdateData={({ logo_url }) =>

@@ -52,37 +52,23 @@ export const EmailVerificationForm = React.forwardRef<
 		async (values: z.infer<typeof otpVerificationSchema>): Promise<boolean> => {
 			setIsLoading(true);
 			setError(null);
-			console.log("OTP verification form submitted:", values);
+			// Simulate API call for OTP verification
+			await new Promise((resolve, reject) => {
+				setTimeout(() => {
+					if (values.otp_code === "123456") {
+						resolve(true);
+					} else {
+						reject(new Error("Invalid OTP code. Please try again."));
+					}
+				}, 1500); // Simulate network delay
+			});
 
-			try {
-				// Simulate API call for OTP verification
-				await new Promise((resolve, reject) => {
-					setTimeout(() => {
-						if (values.otp_code === "123456") {
-							resolve(true);
-						} else {
-							reject(new Error("Invalid OTP code. Please try again."));
-						}
-					}, 1500); // Simulate network delay
-				});
-
-				onUpdateData({ email: "mock-verified-email@example.com" });
-				toast.success("Your email has been successfully verified.", {
-					// title: "OTP Verified", // Sonner automatically uses the first argument as title
-					description: "OTP Verified",
-				});
-				return true; // Indicate success
-			} catch (err) {
-				const message =
-					err instanceof Error ? err.message : "An unknown error occurred.";
-				setError(message);
-				toast.error(message, {
-					description: "Verification Failed",
-				});
-				return false; // Indicate failure
-			} finally {
-				setIsLoading(false);
-			}
+			onUpdateData({ email: "mock-verified-email@example.com" });
+			toast.success("Your email has been successfully verified.", {
+				// title: "OTP Verified", // Sonner automatically uses the first argument as title
+				description: "OTP Verified",
+			});
+			return true; // Indicate success
 		},
 		[onUpdateData],
 	);

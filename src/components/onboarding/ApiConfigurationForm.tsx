@@ -37,7 +37,6 @@ export const ApiConfigurationForm = React.forwardRef<
 	useImperativeHandle(ref, () => form, [form]);
 
 	const onSubmit = (values: z.infer<typeof apiConfigurationSchema>) => {
-		console.log("API configuration form submitted:", values);
 		onUpdateData(values);
 	};
 

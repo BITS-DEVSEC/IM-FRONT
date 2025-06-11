@@ -5,14 +5,11 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
 import { useFileUpload } from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 
@@ -63,12 +60,17 @@ export const BrandingForm = React.forwardRef<
 	const previewUrl = files[0]?.preview || null;
 
 	React.useEffect(() => {
-		form.setValue("logo_url", files[0]?.file || null);
-		onUpdateData({ logo_url: files[0]?.file || null });
+		const newFile = files[0]?.file || null;
+		const currentFormLogoUrl = form.getValues("logo_url");
+
+		// Check if the file reference has actually changed before updating
+		if (newFile !== currentFormLogoUrl) {
+			form.setValue("logo_url", newFile);
+			onUpdateData({ logo_url: newFile });
+		}
 	}, [files, form, onUpdateData]);
 
 	const onSubmit = (values: z.infer<typeof brandingSchema>) => {
-		console.log("Branding form submitted:", values);
 		// The data is already passed up via onUpdateData in the useEffect.
 		// This onSubmit is primarily for validation to ensure the form is valid before proceeding.
 	};
@@ -77,14 +79,13 @@ export const BrandingForm = React.forwardRef<
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="space-y-4 max-w-sm mx-auto"
+				className="space-y-4 max-w-full"
 			>
 				<FormField
 					control={form.control}
 					name="logo_url"
 					render={() => (
 						<FormItem>
-							<FormLabel>Company Logo</FormLabel>
 							<FormControl>
 								<div className="relative">
 									<button
@@ -119,7 +120,7 @@ export const BrandingForm = React.forwardRef<
 													<ImageUpIcon className="size-4 opacity-60" />
 												</div>
 												<p className="mb-1.5 text-sm font-medium">
-													Drop your image here or click to browse
+													Drop your Brand logo here or click to browse
 												</p>
 												<p className="text-muted-foreground text-xs">
 													Max size: {maxSizeMB}MB

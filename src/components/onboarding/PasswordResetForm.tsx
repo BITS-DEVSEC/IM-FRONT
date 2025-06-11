@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
 	Form,
@@ -43,7 +42,6 @@ export const PasswordResetForm = React.forwardRef<
 	useImperativeHandle(ref, () => form, [form]);
 
 	const onSubmit = (values: z.infer<typeof passwordResetSchema>) => {
-		console.log("Password reset form submitted:", values);
 		onUpdateData({ password_reset_required: false });
 	};
 

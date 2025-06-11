@@ -40,7 +40,6 @@ export const ContactDetailsForm = React.forwardRef<
 	useImperativeHandle(ref, () => form, [form]);
 
 	const onSubmit = (values: z.infer<typeof contactDetailsSchema>) => {
-		console.log("Contact details form submitted:", values);
 		onUpdateData(values);
 	};
 

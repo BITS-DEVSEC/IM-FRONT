@@ -38,7 +38,6 @@ export const CompanyInformationForm = React.forwardRef<
 	useImperativeHandle(ref, () => form, [form]);
 
 	const onSubmit = (values: z.infer<typeof companyInformationSchema>) => {
-		console.log("Company information form submitted:", values);
 		onUpdateData(values);
 	};
 
