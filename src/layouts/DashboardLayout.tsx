@@ -1,4 +1,4 @@
-import { NavUser } from "@/components/shared/NavUser";
+import { InsurerNav } from "@/components/shared/InsurerNav";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -133,7 +133,7 @@ function AppSidebar({
 				<SidebarSeparator className="my-4" />{" "}
 				{/* Added separator for visual distinction */}
 				{user && (
-					<NavUser
+					<InsurerNav
 						user={{
 							name: user.name || "User Name",
 							email: user.email || "user@example.com",

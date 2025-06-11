@@ -5,7 +5,7 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-interface NavUserProps {
+interface InsurerNavProps {
 	user: {
 		name: string;
 		email: string;
@@ -14,7 +14,7 @@ interface NavUserProps {
 	};
 }
 
-export function NavUser({ user }: NavUserProps) {
+export function InsurerNav({ user }: InsurerNavProps) {
 	const userInitials = user.name
 		.split(" ")
 		.map((n) => n[0])
