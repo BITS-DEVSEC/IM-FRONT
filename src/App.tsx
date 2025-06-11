@@ -10,6 +10,7 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 import { RoleLayout } from "./layouts/RoleLayout";
 import LoginPage from "./pages/Auth/LoginPage";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function App() {
 	return (
@@ -53,6 +54,7 @@ export default function App() {
 						</Routes>
 					</BrowserRouter>
 				</ErrorBoundary>
+				<Toaster />
 			</AuthProvider>
 		</ThemeProvider>
 	);

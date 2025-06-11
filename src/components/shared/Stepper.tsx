@@ -7,12 +7,15 @@ import React, {
 	type ReactNode,
 } from "react";
 import { AnimatePresence, motion, type Variants } from "motion/react";
+import { Button } from "@/components/ui/button";
+import { CheckIcon } from "lucide-react";
 
 interface StepperProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
 	initialStep?: number;
 	onStepChange?: (step: number) => void;
 	onFinalStepCompleted?: () => void;
+	onValidateStep?: (currentStep: number) => Promise<boolean> | boolean;
 	stepCircleContainerClassName?: string;
 	stepContainerClassName?: string;
 	contentClassName?: string;
@@ -34,6 +37,7 @@ export default function Stepper({
 	initialStep = 1,
 	onStepChange = () => {},
 	onFinalStepCompleted = () => {},
+	onValidateStep,
 	stepCircleContainerClassName = "",
 	stepContainerClassName = "",
 	contentClassName = "",
@@ -69,26 +73,39 @@ export default function Stepper({
 		}
 	};
 
-	const handleNext = () => {
+	const handleNext = async () => {
+		if (onValidateStep) {
+			const isValid = await Promise.resolve(onValidateStep(currentStep));
+			if (!isValid) {
+				return; // Prevent step change if validation fails
+			}
+		}
+
 		if (!isLastStep) {
 			setDirection(1);
 			updateStep(currentStep + 1);
 		}
 	};
 
-	const handleComplete = () => {
+	const handleComplete = async () => {
+		if (onValidateStep) {
+			const isValid = await Promise.resolve(onValidateStep(currentStep));
+			if (!isValid) {
+				return; // Prevent completion if validation fails
+			}
+		}
+
 		setDirection(1);
 		updateStep(totalSteps + 1);
 	};
 
 	return (
 		<div
-			className="flex min-h-full flex-1 flex-col items-center justify-center p-4 sm:aspect-[4/3] md:aspect-[2/1]"
+			className="flex flex-1 flex-col items-center justify-center p-4"
 			{...rest}
 		>
 			<div
-				className={`mx-auto w-full max-w-md rounded-4xl shadow-xl ${stepCircleContainerClassName}`}
-				style={{ border: "1px solid #222" }}
+				className={`mx-auto w-fit min-w-[500px] rounded-xl shadow-lg bg-card text-card-foreground ${stepCircleContainerClassName}`}
 			>
 				<div
 					className={`${stepContainerClassName} flex w-full items-center p-8`}
@@ -138,30 +155,23 @@ export default function Stepper({
 				{!isCompleted && (
 					<div className={`px-8 pb-8 ${footerClassName}`}>
 						<div
-							className={`mt-10 flex ${
-								currentStep !== 1 ? "justify-between" : "justify-end"
-							}`}
+							className={`mt-10 flex ${currentStep !== 1 ? "justify-between" : "justify-end"}`}
 						>
 							{currentStep !== 1 && (
-								<button
+								<Button
 									onClick={handleBack}
-									className={`duration-350 rounded px-2 py-1 transition ${
-										currentStep === 1
-											? "pointer-events-none opacity-50 text-neutral-400"
-											: "text-neutral-400 hover:text-neutral-700"
-									}`}
+									variant="ghost"
 									{...backButtonProps}
 								>
 									{backButtonText}
-								</button>
+								</Button>
 							)}
-							<button
+							<Button
 								onClick={isLastStep ? handleComplete : handleNext}
-								className="duration-350 flex items-center justify-center rounded-full bg-green-500 py-1.5 px-3.5 font-medium tracking-tight text-white transition hover:bg-green-600 active:bg-green-700"
 								{...nextButtonProps}
 							>
 								{isLastStep ? "Complete" : nextButtonText}
-							</button>
+							</Button>
 						</div>
 					</div>
 				)}
@@ -199,7 +209,11 @@ function StepContentWrapper({
 					<SlideTransition
 						key={currentStep}
 						direction={direction}
-						onHeightReady={(h) => setParentHeight(h)}
+						onHeightReady={(h) => {
+							if (h !== parentHeight) {
+								setParentHeight(h);
+							}
+						}}
 					>
 						{children}
 					</SlideTransition>
@@ -221,10 +235,22 @@ function SlideTransition({
 	onHeightReady,
 }: SlideTransitionProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const contentRef = useRef<HTMLDivElement | null>(null);
 
 	useLayoutEffect(() => {
-		if (containerRef.current) {
-			onHeightReady(containerRef.current.offsetHeight);
+		if (contentRef.current) {
+			const observer = new ResizeObserver((entries) => {
+				const newHeight = entries[0].contentRect.height;
+				onHeightReady(newHeight);
+			});
+			observer.observe(contentRef.current);
+
+			// Initial height measurement
+			onHeightReady(contentRef.current.offsetHeight);
+
+			return () => {
+				observer.disconnect();
+			};
 		}
 	}, [onHeightReady]);
 
@@ -239,7 +265,9 @@ function SlideTransition({
 			transition={{ duration: 0.4 }}
 			style={{ position: "absolute", left: 0, right: 0, top: 0 }}
 		>
-			{children}
+			<div ref={contentRef} style={{ width: "100%" }}>
+				{children}
+			</div>
 		</motion.div>
 	);
 }
@@ -264,7 +292,7 @@ interface StepProps {
 }
 
 export function Step({ children }: StepProps) {
-	return <div className="px-8">{children}</div>;
+	return <div className="px-8 py-4">{children}</div>;
 }
 
 interface StepIndicatorProps {
@@ -302,19 +330,31 @@ function StepIndicator({
 		>
 			<motion.div
 				variants={{
-					inactive: { scale: 1, backgroundColor: "#222", color: "#a3a3a3" },
-					active: { scale: 1, backgroundColor: "#5227FF", color: "#5227FF" },
-					complete: { scale: 1, backgroundColor: "#5227FF", color: "#3b82f6" },
+					inactive: {
+						scale: 1,
+						backgroundColor: "var(--muted)",
+						color: "var(--muted-foreground)",
+					},
+					active: {
+						scale: 1,
+						backgroundColor: "var(--primary)",
+						color: "var(--primary-foreground)",
+					},
+					complete: {
+						scale: 1,
+						backgroundColor: "var(--primary)",
+						color: "var(--primary-foreground)",
+					},
 				}}
 				transition={{ duration: 0.3 }}
 				className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
 			>
 				{status === "complete" ? (
-					<CheckIcon className="h-4 w-4 text-black" />
+					<CheckIcon className="h-4 w-4 text-primary-foreground" />
 				) : status === "active" ? (
-					<div className="h-3 w-3 rounded-full bg-[#060010]" />
+					<div className="h-3 w-3 rounded-full bg-primary-foreground" />
 				) : (
-					<span className="text-sm">{step}</span>
+					<span className="text-sm text-muted-foreground">{step}</span>
 				)}
 			</motion.div>
 		</motion.div>
@@ -328,11 +368,11 @@ interface StepConnectorProps {
 function StepConnector({ isComplete }: StepConnectorProps) {
 	const lineVariants: Variants = {
 		incomplete: { width: 0, backgroundColor: "transparent" },
-		complete: { width: "100%", backgroundColor: "#5227FF" },
+		complete: { width: "100%", backgroundColor: "var(--primary)" },
 	};
 
 	return (
-		<div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-neutral-600">
+		<div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-border">
 			<motion.div
 				className="absolute left-0 top-0 h-full"
 				variants={lineVariants}
@@ -341,34 +381,5 @@ function StepConnector({ isComplete }: StepConnectorProps) {
 				transition={{ duration: 0.4 }}
 			/>
 		</div>
-	);
-}
-
-interface CheckIconProps extends React.SVGProps<SVGSVGElement> {}
-
-function CheckIcon(props: CheckIconProps) {
-	return (
-		<svg
-			{...props}
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={2}
-			viewBox="0 0 24 24"
-		>
-			<title>Checkmark icon</title>
-			<motion.path
-				initial={{ pathLength: 0 }}
-				animate={{ pathLength: 1 }}
-				transition={{
-					delay: 0.1,
-					type: "tween",
-					ease: "easeOut",
-					duration: 0.3,
-				}}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M5 13l4 4L19 7"
-			/>
-		</svg>
 	);
 }

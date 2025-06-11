@@ -52,7 +52,7 @@ export default function LoginPage() {
 							</svg>
 						</div>
 						<div>
-							<div className="font-semibold text-lg">SecureGuard</div>
+							<div className="font-semibold text-lg">Tila</div>
 							<div className="text-xs text-muted-foreground">
 								Insurance Platform
 							</div>

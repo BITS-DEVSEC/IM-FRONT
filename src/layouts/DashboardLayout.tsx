@@ -1,7 +1,7 @@
 import { NavUser } from "@/components/shared/NavUser";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation";
-import { useAuth } from "@/context/AuthContext"; 
+import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -70,7 +70,7 @@ function AppSidebar({
 						</svg>
 					</div>
 					<div>
-						<div className="font-semibold text-lg">SecureGuard</div>
+						<div className="font-semibold text-lg">Tila</div>
 						<div className="text-xs text-muted-foreground">
 							Insurance Platform
 						</div>
