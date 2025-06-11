@@ -2,6 +2,7 @@ import { InsurerNav } from "@/components/shared/InsurerNav";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { footerNavigation, navigationData } from "@/config/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { InsurerProfile } from "@/types/insurer";
 import { useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -135,10 +136,19 @@ function AppSidebar({
 				{user && (
 					<InsurerNav
 						user={{
+							id: user.id || "",
+							role: "insurer",
 							name: user.name || "User Name",
 							email: user.email || "user@example.com",
-							role: user.role || "user",
-						}}
+							description: "",
+							contact_email: user.email || "",
+							contact_phone: "",
+							api_endpoint: "",
+							api_key: "",
+							logo_url: null,
+							password_reset_required: false,
+							profile_complete: false
+						} as InsurerProfile}
 					/>
 				)}
 			</SidebarFooter>

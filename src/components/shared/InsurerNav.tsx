@@ -1,20 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { InsurerProfile } from "@/types/insurer";
 
 interface InsurerNavProps {
-	user: {
-		name: string;
-		email: string;
-		role: string;
-		avatar?: string;
-	};
+	user: InsurerProfile;
 }
 
 export function InsurerNav({ user }: InsurerNavProps) {
+	const navigate = useNavigate();
+
 	const userInitials = user.name
 		.split(" ")
 		.map((n) => n[0])
@@ -22,16 +21,26 @@ export function InsurerNav({ user }: InsurerNavProps) {
 		.toUpperCase()
 		.slice(0, 2);
 
+	const handleProfileClick = () => {
+		navigate('/admin/settings?tab=profile');
+	};
+
 	return (
 		<SidebarMenu className="mt-auto mb-4">
 			<SidebarMenuItem>
 				<SidebarMenuButton
 					size="lg"
-					className="hover:bg-transparent dark:hover:bg-transparent"
+					className="hover:bg-transparent dark:hover:bg-transparent cursor-pointer"
+					onClick={handleProfileClick}
+					aria-label="View profile settings"
 				>
 					<Avatar className="h-10 w-10 rounded-md">
-						{user.avatar ? (
-							<AvatarImage src={user.avatar} alt={user.name} />
+						{user.logo_url ? (
+							<AvatarImage 
+								src={typeof user.logo_url === 'string' ? user.logo_url : URL.createObjectURL(user.logo_url)} 
+								alt={user.name} 
+								className="object-cover"
+							/>
 						) : (
 							<AvatarFallback className="rounded-md bg-black text-white">
 								{userInitials}
@@ -42,8 +51,8 @@ export function InsurerNav({ user }: InsurerNavProps) {
 						<span className="truncate font-medium text-primary">
 							{user.name}
 						</span>
-						<span className="truncate text-xs text-muted-foreground capitalize">
-							{user.role}
+						<span className="truncate text-xs text-muted-foreground">
+							{user.email}
 						</span>
 					</div>
 				</SidebarMenuButton>
