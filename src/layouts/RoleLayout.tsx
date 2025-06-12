@@ -3,11 +3,17 @@ import { VALID_ROLES, type ValidRole } from "@/config/roles";
 import { useAuth } from "@/context/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { DashboardLayout } from "./DashboardLayout";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export function RoleLayout() {
 	const location = useLocation();
 	const role = location.pathname.split("/")[1];
-	const { isAuthenticated, user } = useAuth();
+	const { isAuthenticated, user, isLoading } = useAuth();
+
+	// Display a loading spinner while authentication is in progress
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
 
 	// If not authenticated, redirect to login page
 	// We check for user role after authentication

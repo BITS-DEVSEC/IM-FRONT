@@ -3,75 +3,95 @@ import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
-import { useFileUpload } from "@/hooks/use-file-upload";
+// import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"; // Removed as useFileUpload is no longer needed
+// import { useFileUpload } from "@/hooks/use-file-upload"; // Removed as useFileUpload is no longer needed
 import {
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
+	FormLabel,
+	FormDescription,
 	FormMessage,
 } from "@/components/ui/form";
+import AvatarUploader from "@/components/avatar-uploader"; // New import
 
 const brandingSchema = z.object({
-	logo_url: z
-		.any()
-		.refine(
-			(file) =>
-				file instanceof File || typeof file === "string" || file === null,
-			"Logo is required",
-		),
+	logo_url: z.union([z.instanceof(Blob), z.string()]).nullable(), // Allows Blob, string, or null
 });
 
 interface BrandingFormProps {
-	onUpdateData: (data: { logo_url: string | File | null }) => void;
+	onUpdateData: (data: { logo_url: Blob | null }) => void; // Updated prop type to accept Blob | null
+	initialLogoUrl?: string | null;
 	// No onNext prop anymore
 }
 
 export const BrandingForm = React.forwardRef<
 	UseFormReturn<z.infer<typeof brandingSchema>>,
 	BrandingFormProps
->(({ onUpdateData }, ref) => {
+>(({ onUpdateData, initialLogoUrl = null }, ref) => {
 	const form = useForm<z.infer<typeof brandingSchema>>({
 		resolver: zodResolver(brandingSchema),
+		defaultValues: {
+			logo_url: initialLogoUrl,
+		},
 	});
 
 	useImperativeHandle(ref, () => form, [form]);
 
-	const maxSizeMB = 5;
-	const maxSize = maxSizeMB * 1024 * 1024;
+	// const maxSizeMB = 5; // Removed as useFileUpload is no longer needed
+	// const maxSize = maxSizeMB * 1024 * 1024; // Removed as useFileUpload is no longer needed
 
-	const [
-		{ files, isDragging, errors },
-		{
-			handleDragEnter,
-			handleDragLeave,
-			handleDragOver,
-			handleDrop,
-			openFileDialog,
-			removeFile,
-			getInputProps,
+	// const [ // Removed as useFileUpload is no longer needed
+	// 	{ files, isDragging, errors },
+	// 	{
+	// 		handleDragEnter,
+	// 		handleDragLeave,
+	// 		handleDragOver,
+	// 		handleDrop,
+	// 		openFileDialog,
+	// 		removeFile,
+	// 		getInputProps,
+	// 	},
+	// ] = useFileUpload({
+	// 	accept: "image/*",
+	// 	maxSize,
+	// });
+
+	// const previewUrl = files[0]?.preview || null; // Removed as useFileUpload is no longer needed
+
+	React.useEffect(
+		() => {
+			// This effect is no longer needed as onImageChange directly updates parent and form
+			// if (previewUrl !== form.getValues("logo_url")) {
+			// 	form.setValue("logo_url", previewUrl);
+			// 	onUpdateData({ logo_url: previewUrl });
+			// }
 		},
-	] = useFileUpload({
-		accept: "image/*",
-		maxSize,
-	});
+		[
+			/* previewUrl, form, onUpdateData */
+		],
+	); // Dependencies commented out
 
-	const previewUrl = files[0]?.preview || null;
-
+	// Effect to handle initialLogoUrl changes from parent
 	React.useEffect(() => {
-		const newFile = files[0]?.file || null;
-		const currentFormLogoUrl = form.getValues("logo_url");
-
-		// Check if the file reference has actually changed before updating
-		if (newFile !== currentFormLogoUrl) {
-			form.setValue("logo_url", newFile);
-			onUpdateData({ logo_url: newFile });
+		if (initialLogoUrl !== form.getValues("logo_url")) {
+			form.setValue("logo_url", initialLogoUrl);
 		}
-	}, [files, form, onUpdateData]);
+	}, [initialLogoUrl, form]);
+
+	const handleImageChange = React.useCallback(
+		(blob: Blob | null) => {
+			form.setValue("logo_url", blob); // Update form value
+			onUpdateData({ logo_url: blob }); // Notify parent
+			// Manually trigger validation for the logo_url field after change
+			form.trigger("logo_url");
+		},
+		[form, onUpdateData],
+	);
 
 	const onSubmit = (values: z.infer<typeof brandingSchema>) => {
-		// The data is already passed up via onUpdateData in the useEffect.
+		// The data is already passed up via onUpdateData in the handleImageChange.
 		// This onSubmit is primarily for validation to ensure the form is valid before proceeding.
 	};
 
@@ -79,75 +99,30 @@ export const BrandingForm = React.forwardRef<
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="space-y-4 max-w-full"
+				className="space-y-4 max-w-full flex justify-center" // Added flex and justify-center for centering
 			>
 				<FormField
 					control={form.control}
 					name="logo_url"
-					render={() => (
-						<FormItem>
+					render={({ field }) => (
+						<FormItem className="space-y-2 text-center">
+							<FormDescription className="text-sm text-muted-foreground mb-4">
+								Upload your company logo. Recommended: square aspect ratio, max
+								size 5MB.
+							</FormDescription>
 							<FormControl>
-								<div className="relative">
-									<button
-										type="button"
-										onClick={openFileDialog}
-										onDragEnter={handleDragEnter}
-										onDragLeave={handleDragLeave}
-										onDragOver={handleDragOver}
-										onDrop={handleDrop}
-										data-dragging={isDragging || undefined}
-										className="border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none has-[input:focus]:ring-[3px] w-full"
-									>
-										<input
-											{...getInputProps()}
-											className="sr-only"
-											aria-label="Upload file"
-										/>
-										{previewUrl ? (
-											<div className="absolute inset-0">
-												<img
-													src={previewUrl}
-													alt={files[0]?.file?.name || "Uploaded image"}
-													className="size-full object-cover"
-												/>
-											</div>
-										) : (
-											<div className="flex flex-col items-center justify-center px-4 py-3 text-center">
-												<div
-													className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
-													aria-hidden="true"
-												>
-													<ImageUpIcon className="size-4 opacity-60" />
-												</div>
-												<p className="mb-1.5 text-sm font-medium">
-													Drop your Brand logo here or click to browse
-												</p>
-												<p className="text-muted-foreground text-xs">
-													Max size: {maxSizeMB}MB
-												</p>
-											</div>
-										)}
-									</button>
-									{previewUrl && (
-										<div className="absolute top-4 right-4">
-											<button
-												type="button"
-												className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-												onClick={() => removeFile(files[0]?.id || "")}
-												aria-label="Remove image"
-											>
-												<XIcon className="size-4" aria-hidden="true" />
-											</button>
-										</div>
-									)}
-								</div>
+								<AvatarUploader
+									initialImageUrl={initialLogoUrl}
+									onImageChange={handleImageChange}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
 
-				{errors.length > 0 && (
+				{/* Errors display from useFileUpload removed */}
+				{/* {errors.length > 0 && (
 					<div
 						className="text-destructive flex items-center gap-1 text-xs"
 						role="alert"
@@ -155,7 +130,7 @@ export const BrandingForm = React.forwardRef<
 						<AlertCircleIcon className="size-3 shrink-0" />
 						<span>{errors[0]}</span>
 					</div>
-				)}
+				)} */}
 			</form>
 		</Form>
 	);

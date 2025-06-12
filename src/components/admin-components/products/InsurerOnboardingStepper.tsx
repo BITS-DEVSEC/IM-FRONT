@@ -1,5 +1,5 @@
 import Stepper, { Step } from "@/components/shared/Stepper";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import type React from "react";
 import { ApiConfigurationForm } from "@/components/onboarding/ApiConfigurationForm";
 import { BrandingForm } from "@/components/onboarding/BrandingForm";
@@ -9,6 +9,7 @@ import { PasswordResetForm } from "@/components/onboarding/PasswordResetForm";
 import type { InsurerProfile } from "@/types/insurer";
 import type { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+import { profileService, type UserProfile } from "@/services/profileService";
 
 const passwordResetSchema = z
 	.object({
@@ -36,13 +37,7 @@ const apiConfigurationSchema = z.object({
 });
 
 const brandingSchema = z.object({
-	logo_url: z
-		.any()
-		.refine(
-			(file) =>
-				file instanceof File || typeof file === "string" || file === null,
-			"Logo is required",
-		),
+	logo_url: z.union([z.instanceof(Blob), z.string()]).nullable(),
 });
 
 interface InsurerOnboardingStepperProps {
@@ -71,26 +66,39 @@ export const InsurerOnboardingStepper: React.FC<
 	const brandingFormRef =
 		useRef<UseFormReturn<z.infer<typeof brandingSchema>>>(null);
 
-	const [onboardingData, setOnboardingData] = useState<Partial<InsurerProfile>>(
-		{
-			id: "", // Placeholder
-			role: "insurer",
-			name: "",
-			email: "",
-			description: "",
-			contact_email: "",
-			contact_phone: "",
-			api_endpoint: "",
-			api_key: "",
-			logo_url: null, // Initialize with null
-			password_reset_required: true,
-			profile_complete: false,
-		},
+	const [onboardingData, setOnboardingData] = useState<Partial<UserProfile>>({
+		id: "", // Placeholder
+		companyName: "",
+		email: "",
+		description: "",
+		contactEmail: "",
+		contactPhone: "",
+		logo_url: null, // Initialize with null
+		profile_complete: false,
+	});
+
+	// State to hold the fetched user profile for initial data in BrandingForm
+	const [fetchedProfile, setFetchedProfile] = useState<UserProfile | null>(
+		null,
 	);
 
+	useEffect(() => {
+		const fetchInitialProfile = async () => {
+			try {
+				const data = await profileService.fetchProfile();
+				setFetchedProfile(data);
+				// Initialize onboardingData with fetched profile data if available
+				setOnboardingData((prev) => ({ ...prev, ...data }));
+			} catch (error) {
+				console.error("Failed to fetch initial profile for onboarding:", error);
+			}
+		};
+		fetchInitialProfile();
+	}, []);
+
 	const updateOnboardingData = useCallback(
-		<K extends keyof InsurerProfile>(field: K, value: InsurerProfile[K]) => {
-			setOnboardingData((prev: Partial<InsurerProfile>) => ({
+		<K extends keyof UserProfile>(field: K, value: UserProfile[K]) => {
+			setOnboardingData((prev: Partial<UserProfile>) => ({
 				...prev,
 				[field]: value,
 			}));
@@ -141,6 +149,14 @@ export const InsurerOnboardingStepper: React.FC<
 				if (form) {
 					await form.trigger();
 					isValid = form.formState.isValid;
+					// Additional manual validation for logo_url to ensure it's not null
+					if (isValid && !form.getValues("logo_url")) {
+						form.setError("logo_url", {
+							type: "manual",
+							message: "Company logo is required.",
+						});
+						isValid = false;
+					}
 				}
 				return isValid;
 			}
@@ -149,20 +165,33 @@ export const InsurerOnboardingStepper: React.FC<
 		}
 	};
 
-	const handleFinalStepCompleted = () => {
+	const handleFinalStepCompleted = async () => {
 		// Ensure all required fields are present before calling onOnboardingComplete
 		// This check should be more robust in a real application
 		// For now, we assume all fields are filled by the time we reach the end.
 		// We also need to add a fake id to the onboardingData since it's required in InsurerProfile
 		const finalProfile: InsurerProfile = {
-			...(onboardingData as InsurerProfile),
 			id:
 				onboardingData.id ||
-				`insurer-${Math.random().toString(36).substring(2, 9)}`, // Generate a dummy ID if not set
+				`insurer-${Math.random().toString(36).substring(2, 9)}`,
+			companyName: onboardingData.companyName || "",
+			email: onboardingData.email || "",
+			description: onboardingData.description || "",
+			contactEmail: onboardingData.contactEmail || "",
+			contactPhone: onboardingData.contactPhone || "",
+			logo_url: onboardingData.logo_url || null,
 			profile_complete: true,
 		};
-		onOnboardingComplete(finalProfile);
-		setShowOnboardingStepper(false);
+
+		try {
+			// Update the profile via service
+			await profileService.updateProfile(finalProfile);
+			onOnboardingComplete(finalProfile);
+			setShowOnboardingStepper(false);
+		} catch (error) {
+			console.error("Failed to complete onboarding and update profile:", error);
+			// Optionally show a toast error
+		}
 	};
 
 	if (!showOnboardingStepper) {
@@ -189,19 +218,25 @@ export const InsurerOnboardingStepper: React.FC<
 					<PasswordResetForm
 						ref={passwordResetFormRef}
 						onUpdateData={({ password_reset_required }) =>
-							updateOnboardingData(
-								"password_reset_required",
-								password_reset_required,
-							)
+							// We no longer explicitly update 'password_reset_required' in onboardingData
+							// as it's part of the static profile_complete logic
+							{}
 						}
 					/>
 				</Step>
+
+				{/* <Step>
+					<EmailVerificationForm
+						ref={emailVerificationFormRef}
+						onUpdateData={({ email }) => updateOnboardingData("email", email)}
+					/>
+				</Step> */}
 
 				<Step>
 					<CompanyInformationForm
 						ref={companyInformationFormRef}
 						onUpdateData={({ name, description }) => {
-							updateOnboardingData("name", name);
+							updateOnboardingData("companyName", name); // Update to companyName
 							updateOnboardingData("description", description);
 						}}
 					/>
@@ -210,20 +245,16 @@ export const InsurerOnboardingStepper: React.FC<
 					<ContactDetailsForm
 						ref={contactDetailsFormRef}
 						onUpdateData={({ contact_email, contact_phone }) => {
-							updateOnboardingData("contact_email", contact_email);
-							updateOnboardingData("contact_phone", contact_phone);
+							updateOnboardingData("contactEmail", contact_email); // Update to contactEmail
+							updateOnboardingData("contactPhone", contact_phone); // Update to contactPhone
 						}}
 					/>
 				</Step>
 				<Step>
 					<ApiConfigurationForm
 						ref={apiConfigurationFormRef}
-						onUpdateData={({
-							api_endpoint,
-							api_key,
-						}: { api_endpoint: string; api_key: string }) => {
-							updateOnboardingData("api_endpoint", api_endpoint);
-							updateOnboardingData("api_key", api_key);
+						onUpdateData={() => {
+							/* No longer updating onboardingData with API config */
 						}}
 					/>
 				</Step>
@@ -232,6 +263,11 @@ export const InsurerOnboardingStepper: React.FC<
 						ref={brandingFormRef}
 						onUpdateData={({ logo_url }) =>
 							updateOnboardingData("logo_url", logo_url)
+						}
+						initialLogoUrl={
+							fetchedProfile?.logo_url instanceof Blob
+								? URL.createObjectURL(fetchedProfile.logo_url)
+								: fetchedProfile?.logo_url
 						}
 					/>
 				</Step>

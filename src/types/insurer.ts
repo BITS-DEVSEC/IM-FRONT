@@ -1,14 +1,10 @@
-export type InsurerProfile = {
+export interface InsurerProfile {
 	id: string;
-	role: "insurer";
-	name: string;
+	companyName: string;
 	email: string;
 	description: string;
-	contact_email: string;
-	contact_phone: string;
-	api_endpoint: string;
-	api_key: string;
-	logo_url: string | File | null;
-	password_reset_required: boolean;
+	contactEmail: string;
+	contactPhone: string;
+	logo_url: string | Blob | null;
 	profile_complete: boolean;
-};
+}

@@ -1,8 +1,43 @@
+import { SettingsLayout, type TabType } from "./components/SettingsLayout";
+import ProfilePage from "./pages/profile/ProfilePage";
+import SecurityPage from "./pages/security/SecurityPage";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { User, Lock } from "lucide-react";
+
+const TABS: TabType[] = [
+	{
+		id: "profile",
+		label: "Profile",
+		to: "profile",
+		icon: <User className="mr-2 h-4 w-4" />,
+	},
+	{
+		id: "security",
+		label: "Security",
+		to: "security",
+		icon: <Lock className="mr-2 h-4 w-4" />,
+	},
+];
+
+const BASE_URL = "/admin/settings";
+
+// Wrapper component to render the settings layout with tabs
+function SettingsLayoutWrapper() {
+	return (
+		<SettingsLayout tabs={TABS} baseUrl={BASE_URL}>
+			<Outlet />
+		</SettingsLayout>
+	);
+}
+
 export default function Settings() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-      <h1 className="text-4xl font-bold text-foreground">Coming Soon</h1>
-      <p className="text-muted-foreground">Settings page is under construction</p>
-    </div>
-  );
+	return (
+		<Routes>
+			<Route element={<SettingsLayoutWrapper />}>
+				<Route index element={<Navigate to="profile" replace />} />
+				<Route path="profile" element={<ProfilePage />} />
+				<Route path="security" element={<SecurityPage />} />
+			</Route>
+		</Routes>
+	);
 }

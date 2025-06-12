@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { InsurerProfile } from "@/types/insurer";
+import type { InsurerProfile } from "@/types/insurer";
 
 interface InsurerNavProps {
 	user: InsurerProfile;
@@ -14,7 +14,7 @@ interface InsurerNavProps {
 export function InsurerNav({ user }: InsurerNavProps) {
 	const navigate = useNavigate();
 
-	const userInitials = user.name
+	const userInitials = user.companyName
 		.split(" ")
 		.map((n) => n[0])
 		.join("")
@@ -22,7 +22,7 @@ export function InsurerNav({ user }: InsurerNavProps) {
 		.slice(0, 2);
 
 	const handleProfileClick = () => {
-		navigate('/admin/settings?tab=profile');
+		navigate("/admin/settings?tab=profile");
 	};
 
 	return (
@@ -36,9 +36,13 @@ export function InsurerNav({ user }: InsurerNavProps) {
 				>
 					<Avatar className="h-10 w-10 rounded-md">
 						{user.logo_url ? (
-							<AvatarImage 
-								src={typeof user.logo_url === 'string' ? user.logo_url : URL.createObjectURL(user.logo_url)} 
-								alt={user.name} 
+							<AvatarImage
+								src={
+									typeof user.logo_url === "string"
+										? user.logo_url
+										: URL.createObjectURL(user.logo_url)
+								}
+								alt={user.companyName}
 								className="object-cover"
 							/>
 						) : (
@@ -49,7 +53,7 @@ export function InsurerNav({ user }: InsurerNavProps) {
 					</Avatar>
 					<div className="grid flex-1 text-left text-sm leading-tight">
 						<span className="truncate font-medium text-primary">
-							{user.name}
+							{user.companyName}
 						</span>
 						<span className="truncate text-xs text-muted-foreground">
 							{user.email}
