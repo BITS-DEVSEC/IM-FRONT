@@ -1,13 +1,13 @@
+import { InsurerOnboardingStepper } from "@/components/admin-components/products/InsurerOnboardingStepper";
 import { InsurerNav } from "@/components/shared/InsurerNav";
 import { ModeToggle } from "@/components/shared/mode-toggle";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { footerNavigation, navigationData } from "@/config/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { type UserProfile, profileService } from "@/services/profileService";
 import type { InsurerProfile } from "@/types/insurer";
 import { useCallback, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { profileService, type UserProfile } from "@/services/profileService";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { InsurerOnboardingStepper } from "@/components/admin-components/products/InsurerOnboardingStepper";
 
 import {
 	Breadcrumb,

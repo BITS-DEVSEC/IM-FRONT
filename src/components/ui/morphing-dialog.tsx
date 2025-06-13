@@ -202,18 +202,17 @@ function MorphingDialogContent({
 	});
 
 	return (
-		<motion.div
+		<motion.dialog
 			ref={containerRef}
 			layoutId={`dialog-${uniqueId}`}
 			className={cn("overflow-hidden", className)}
 			style={style}
-			role="dialog"
 			aria-modal="true"
 			aria-labelledby={`motion-ui-morphing-dialog-title-${uniqueId}`}
 			aria-describedby={`motion-ui-morphing-dialog-description-${uniqueId}`}
 		>
 			{children}
-		</motion.div>
+		</motion.dialog>
 	);
 }
 
