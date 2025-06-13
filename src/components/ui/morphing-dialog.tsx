@@ -141,7 +141,7 @@ function MorphingDialogContent({
 	style,
 }: MorphingDialogContentProps) {
 	const { setIsOpen, isOpen, uniqueId, triggerRef } = useMorphingDialog();
-	const containerRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLDialogElement>(null);
 	const [firstFocusableElement, setFirstFocusableElement] =
 		useState<HTMLElement | null>(null);
 	const [lastFocusableElement, setLastFocusableElement] =

@@ -16,7 +16,7 @@ interface ProfileFormProps {
 		description: string;
 		contactEmail: string;
 		contactPhone: string;
-		logo_url: string | null;
+		logo_url: string | Blob | null;
 	};
 	onSubmit: (data: {
 		companyName: string;

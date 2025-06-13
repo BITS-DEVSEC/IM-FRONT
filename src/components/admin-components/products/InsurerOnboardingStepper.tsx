@@ -202,7 +202,7 @@ export const InsurerOnboardingStepper: React.FC<
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs">
 			<Stepper
 				initialStep={1}
-				onStepChange={(step) => {}}
+				onStepChange={() => {}}
 				onValidateStep={handleValidateStep}
 				onFinalStepCompleted={handleFinalStepCompleted}
 				backButtonText="Previous"
@@ -217,7 +217,7 @@ export const InsurerOnboardingStepper: React.FC<
 					</p>
 					<PasswordResetForm
 						ref={passwordResetFormRef}
-						onUpdateData={({ password_reset_required }) =>
+						onUpdateData={({ password_reset_required: _ }) =>
 							// We no longer explicitly update 'password_reset_required' in onboardingData
 							// as it's part of the static profile_complete logic
 							{}

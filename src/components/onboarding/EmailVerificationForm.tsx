@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -46,7 +45,7 @@ export const EmailVerificationForm = React.forwardRef<
 	});
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const [, setError] = useState<string | null>(null);
 
 	const onSubmit = React.useCallback(
 		async (values: z.infer<typeof otpVerificationSchema>): Promise<boolean> => {
@@ -78,8 +77,12 @@ export const EmailVerificationForm = React.forwardRef<
 		() => ({
 			...form,
 			triggerSubmit: async () => {
-				// Directly trigger the form submission, which will call the latest onSubmit
-				return await form.handleSubmit(onSubmit)();
+				try {
+					await form.handleSubmit(onSubmit)();
+					return true;
+				} catch (error) {
+					return false;
+				}
 			},
 		}),
 		[form, onSubmit],
@@ -121,7 +124,6 @@ export const EmailVerificationForm = React.forwardRef<
 						</FormItem>
 					)}
 				/>
-				{error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 			</form>
 		</Form>
 	);

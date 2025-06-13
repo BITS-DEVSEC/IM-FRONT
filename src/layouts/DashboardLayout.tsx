@@ -31,7 +31,6 @@ import {
 	SidebarProvider,
 	SidebarRail,
 	SidebarSeparator,
-	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import type { ValidRole } from "@/config/roles";
 
@@ -44,11 +43,13 @@ interface AppSidebarProps {
 
 function AppSidebar({
 	role,
-	user,
 	logout,
 	currentPath,
-	userProfile, // Destructure userProfile
-}: AppSidebarProps & { user: ReturnType<typeof useAuth>["user"] }) {
+	userProfile,
+}: AppSidebarProps & { 
+	user: ReturnType<typeof useAuth>["user"];
+	userProfile: UserProfile | null;
+}) {
 	const navigate = useNavigate();
 
 	const navSections = navigationData[role] || [];
@@ -150,9 +151,9 @@ function AppSidebar({
 								contactEmail: userProfile.contactEmail || "",
 								contactPhone: userProfile.contactPhone || "",
 								logo_url:
-									userProfile.logo_url instanceof Blob
+									userProfile?.logo_url && userProfile.logo_url instanceof Blob
 										? URL.createObjectURL(userProfile.logo_url)
-										: userProfile.logo_url,
+										: userProfile?.logo_url || undefined,
 								profile_complete: true,
 							} as InsurerProfile
 						}

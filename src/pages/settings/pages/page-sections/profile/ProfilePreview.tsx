@@ -8,7 +8,7 @@ interface ProfilePreviewProps {
 	contactEmail?: string;
 	contactPhone?: string;
 	description?: string;
-	logo_url: string | null;
+	logo_url: string | Blob | null;
 }
 
 export function ProfilePreview({
@@ -27,7 +27,7 @@ export function ProfilePreview({
 			<div className="bg-card rounded-lg border p-6">
 				<div className="flex items-center gap-4">
 					<Avatar className="h-16 w-16 rounded-lg">
-						{logo_url ? (
+						{logo_url && typeof logo_url === 'string' ? (
 							<AvatarImage
 								src={logo_url}
 								alt={companyName}

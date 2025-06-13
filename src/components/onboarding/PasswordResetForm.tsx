@@ -41,7 +41,7 @@ export const PasswordResetForm = React.forwardRef<
 
 	useImperativeHandle(ref, () => form, [form]);
 
-	const onSubmit = (values: z.infer<typeof passwordResetSchema>) => {
+	const onSubmit = () => {
 		onUpdateData({ password_reset_required: false });
 	};
 

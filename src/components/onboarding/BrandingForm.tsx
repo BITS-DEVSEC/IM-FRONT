@@ -7,7 +7,6 @@ import {
 	FormDescription,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,9 +20,8 @@ const brandingSchema = z.object({
 });
 
 interface BrandingFormProps {
-	onUpdateData: (data: { logo_url: Blob | null }) => void; // Updated prop type to accept Blob | null
+	onUpdateData: (data: { logo_url: Blob | string | null }) => void; // Updated to accept string | Blob | null
 	initialLogoUrl?: string | null;
-	// No onNext prop anymore
 }
 
 export const BrandingForm = React.forwardRef<
@@ -90,9 +88,8 @@ export const BrandingForm = React.forwardRef<
 		[form, onUpdateData],
 	);
 
-	const onSubmit = (values: z.infer<typeof brandingSchema>) => {
-		// The data is already passed up via onUpdateData in the handleImageChange.
-		// This onSubmit is primarily for validation to ensure the form is valid before proceeding.
+	const onSubmit = () => {
+		onUpdateData({ logo_url: form.getValues("logo_url") });
 	};
 
 	return (
@@ -104,7 +101,7 @@ export const BrandingForm = React.forwardRef<
 				<FormField
 					control={form.control}
 					name="logo_url"
-					render={({ field }) => (
+					render={() => (
 						<FormItem className="space-y-2 text-center">
 							<FormDescription className="text-sm text-muted-foreground mb-4">
 								Upload your company logo. Recommended: square aspect ratio, max

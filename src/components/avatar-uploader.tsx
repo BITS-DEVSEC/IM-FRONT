@@ -83,7 +83,7 @@ async function getCroppedImg(
 }
 
 interface AvatarUploaderProps {
-	initialImageUrl?: string | null;
+	initialImageUrl?: string | Blob | null;
 	onImageChange?: (blob: Blob | null) => void;
 }
 
@@ -109,9 +109,16 @@ export default function AvatarUploader({
 	const previewUrl = files[0]?.preview || null;
 	const fileId = files[0]?.id;
 
-	const [finalImageUrl, setFinalImageUrl] = useState<string | null>(
-		initialImageUrl,
-	);
+	// Convert initialImageUrl to a string URL if it's a Blob
+	const getInitialImageUrl = () => {
+		if (!initialImageUrl) return null;
+		if (initialImageUrl instanceof Blob) {
+			return URL.createObjectURL(initialImageUrl);
+		}
+		return initialImageUrl;
+	};
+
+	const [finalImageUrl, setFinalImageUrl] = useState<string | null>(getInitialImageUrl());
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	// Ref to track the previous file ID to detect new uploads
@@ -195,7 +202,11 @@ export default function AvatarUploader({
 
 	// Effect to update finalImageUrl when initialImageUrl changes from parent
 	useEffect(() => {
-		if (initialImageUrl !== finalImageUrl) {
+		if (initialImageUrl === null) {
+			setFinalImageUrl(null);
+		} else if (initialImageUrl instanceof Blob) {
+			setFinalImageUrl(URL.createObjectURL(initialImageUrl));
+		} else if (typeof initialImageUrl === 'string' && initialImageUrl !== finalImageUrl) {
 			setFinalImageUrl(initialImageUrl);
 		}
 	}, [initialImageUrl, finalImageUrl]);
