@@ -14,12 +14,15 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const initializeAuth = async () => {
-			// For development: bypass authentication and set a mock user
+			// TODO: In a production environment, this should involve actual authentication (e.g., checking a token).
+			// For development, we bypass authentication and set a mock user.
 			setUser(mockUser);
 			setIsAuthenticated(true);
+			setIsLoading(false);
 		};
 		initializeAuth();
 	}, []);
@@ -49,8 +52,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
-			{children}
+		<AuthContext.Provider
+			value={{ user, login, logout, isAuthenticated, isLoading }}
+		>
+			{!isLoading && children}
 		</AuthContext.Provider>
 	);
 }

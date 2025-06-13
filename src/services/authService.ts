@@ -5,6 +5,7 @@ export const mockUser: User = {
 	name: "Admin User",
 	email: "admin@example.com",
 	role: "admin",
+	profile_complete: true,
 };
 
 export const fetchUser = () => {

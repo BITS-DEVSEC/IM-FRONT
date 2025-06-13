@@ -1,9 +1,12 @@
-"use client";
-import { NavUser } from "@/components/shared/NavUser";
+import { InsurerOnboardingStepper } from "@/components/admin-components/products/InsurerOnboardingStepper";
+import { InsurerNav } from "@/components/shared/InsurerNav";
 import { ModeToggle } from "@/components/shared/mode-toggle";
-import { footerNavigation, navigationData } from "@/config/navigation"; // Added footerNavigation back
-import { useAuth } from "@/context/AuthContext"; // Import useAuth hook
-import { useEffect } from "react";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { footerNavigation, navigationData } from "@/config/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { type UserProfile, profileService } from "@/services/profileService";
+import type { InsurerProfile } from "@/types/insurer";
+import { useCallback, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -28,7 +31,6 @@ import {
 	SidebarProvider,
 	SidebarRail,
 	SidebarSeparator,
-	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import type { ValidRole } from "@/config/roles";
 
@@ -36,14 +38,18 @@ interface AppSidebarProps {
 	role: ValidRole;
 	logout: ReturnType<typeof useAuth>["logout"];
 	currentPath: string; // Add currentPath to props
+	userProfile: UserProfile | null; // Add userProfile to props
 }
 
 function AppSidebar({
 	role,
-	user,
 	logout,
-	currentPath, // Destructure currentPath
-}: AppSidebarProps & { user: ReturnType<typeof useAuth>["user"] }) {
+	currentPath,
+	userProfile,
+}: AppSidebarProps & { 
+	user: ReturnType<typeof useAuth>["user"];
+	userProfile: UserProfile | null;
+}) {
 	const navigate = useNavigate();
 
 	const navSections = navigationData[role] || [];
@@ -71,7 +77,7 @@ function AppSidebar({
 						</svg>
 					</div>
 					<div>
-						<div className="font-semibold text-lg">SecureGuard</div>
+						<div className="font-semibold text-lg">Tila</div>
 						<div className="text-xs text-muted-foreground">
 							Insurance Platform
 						</div>
@@ -133,13 +139,24 @@ function AppSidebar({
 				</SidebarMenu>
 				<SidebarSeparator className="my-4" />{" "}
 				{/* Added separator for visual distinction */}
-				{user && (
-					<NavUser
-						user={{
-							name: user.name || "User Name",
-							email: user.email || "user@example.com",
-							role: user.role || "user",
-						}}
+				{userProfile && (
+					<InsurerNav
+						user={
+							{
+								id: userProfile.id || "",
+								role: "insurer",
+								companyName: userProfile.companyName || "User Name",
+								email: userProfile.email || "user@example.com",
+								description: userProfile.description || "",
+								contactEmail: userProfile.contactEmail || "",
+								contactPhone: userProfile.contactPhone || "",
+								logo_url:
+									userProfile?.logo_url && userProfile.logo_url instanceof Blob
+										? URL.createObjectURL(userProfile.logo_url)
+										: userProfile?.logo_url || undefined,
+								profile_complete: true,
+							} as InsurerProfile
+						}
 					/>
 				)}
 			</SidebarFooter>
@@ -155,6 +172,34 @@ export interface DashboardLayoutProps {
 export function DashboardLayout({ role }: DashboardLayoutProps) {
 	const { user, logout } = useAuth();
 	const location = useLocation();
+	const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+	const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+
+	useEffect(() => {
+		const fetchProfile = async () => {
+			try {
+				const data = await profileService.fetchProfile();
+				setUserProfile(data);
+			} catch (error) {
+				console.error(
+					"Failed to fetch user profile in DashboardLayout:",
+					error,
+				);
+			} finally {
+				setIsLoadingProfile(false);
+			}
+		};
+		fetchProfile();
+	}, []);
+
+	const handleOnboardingComplete = useCallback((profile: InsurerProfile) => {
+		// Update the userProfile state to reflect the completed onboarding
+		setUserProfile((prev) =>
+			prev ? { ...prev, ...profile, profile_complete: true } : profile,
+		);
+		// Optionally navigate away from /admin to the home route if needed,
+		// but for now, we'll let it stay on the current route
+	}, []);
 
 	const pathSegments = location.pathname.split("/").filter(Boolean);
 	let breadcrumbPageContent = "Home";
@@ -162,66 +207,62 @@ export function DashboardLayout({ role }: DashboardLayoutProps) {
 	// Check if the path is a quotation details page (e.g., /admin/quotation-requests/123)
 	const isQuotationDetailsPage =
 		pathSegments.length >= 3 &&
-		pathSegments[pathSegments.length - 2] === "quotation-requests" &&
-		/^\d+$/.test(pathSegments[pathSegments.length - 1]);
+		pathSegments[1] === "quotation-requests" &&
+		!Number.isNaN(Number.parseInt(pathSegments[2]));
 
-	if (isQuotationDetailsPage) {
-		const quotationId = pathSegments[pathSegments.length - 1];
-		breadcrumbPageContent = `Request #${quotationId}`;
-	} else {
-		// Existing logic for other pages
-		breadcrumbPageContent = pathSegments.pop()?.replace(/-/g, " ") || "Home";
+	if (location.pathname === "/admin/settings/profile") {
+		breadcrumbPageContent = "Profile Settings";
+	} else if (location.pathname === "/admin/settings/security") {
+		breadcrumbPageContent = "Security Settings";
+	} else if (isQuotationDetailsPage) {
+		breadcrumbPageContent = `Quotation Request #${pathSegments[2]}`;
+	} else if (pathSegments.length > 1) {
+		breadcrumbPageContent = pathSegments[pathSegments.length - 1]
+			.replace(/-/g, " ")
+			.replace(/\b\w/g, (char) => char.toUpperCase());
 	}
 
-	// Update document title when breadcrumbPageContent changes
-	useEffect(() => {
-		document.title = `SecureGuard | ${breadcrumbPageContent.charAt(0).toUpperCase() + breadcrumbPageContent.slice(1)}`;
-	}, [breadcrumbPageContent]);
+	if (isLoadingProfile || !userProfile) {
+		return <LoadingSpinner />;
+	}
 
 	return (
-		<SidebarProvider>
+		<SidebarProvider defaultOpen={true}>
 			<AppSidebar
 				role={role}
 				user={user}
 				logout={logout}
 				currentPath={location.pathname}
+				userProfile={userProfile}
 			/>
 			<SidebarInset>
-				<header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
-					<SidebarTrigger className="-ml-1" />
+				<div className="flex h-16 items-center justify-between px-6">
 					<Breadcrumb>
 						<BreadcrumbList>
-							<BreadcrumbItem className="hidden md:block">
-								<BreadcrumbPage>
-									{role.charAt(0).toUpperCase() + role.slice(1)}
-								</BreadcrumbPage>
+							<BreadcrumbItem>
+								<BreadcrumbPage>Dashboard</BreadcrumbPage>
 							</BreadcrumbItem>
-							{isQuotationDetailsPage && (
+							{breadcrumbPageContent !== "Home" && (
 								<>
-									<BreadcrumbSeparatorUI className="hidden md:block" />
-									<BreadcrumbItem className="hidden md:block">
-										<Link to={`/${role}/quotation-requests`}>
-											<BreadcrumbPage>Quotation Requests</BreadcrumbPage>
-										</Link>
+									<BreadcrumbSeparatorUI />
+									<BreadcrumbItem>
+										<BreadcrumbPage>{breadcrumbPageContent}</BreadcrumbPage>
 									</BreadcrumbItem>
 								</>
 							)}
-							<BreadcrumbSeparatorUI className="hidden md:block" />
-							<BreadcrumbItem>
-								<BreadcrumbPage className="capitalize">
-									{breadcrumbPageContent}
-								</BreadcrumbPage>
-							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
-					<div className="ml-auto">
-						<ModeToggle />
-					</div>
-				</header>
-				<main className="flex flex-1 flex-col gap-4 py-4 px-8">
+					<ModeToggle />
+				</div>
+				<div className="container mx-auto px-6 py-8">
 					<Outlet />
-				</main>
+				</div>
 			</SidebarInset>
+			{userProfile && !userProfile.profile_complete && (
+				<InsurerOnboardingStepper
+					onOnboardingComplete={handleOnboardingComplete}
+				/>
+			)}
 		</SidebarProvider>
 	);
 }

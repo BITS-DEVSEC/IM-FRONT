@@ -141,7 +141,7 @@ function MorphingDialogContent({
 	style,
 }: MorphingDialogContentProps) {
 	const { setIsOpen, isOpen, uniqueId, triggerRef } = useMorphingDialog();
-	const containerRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLDialogElement>(null);
 	const [firstFocusableElement, setFirstFocusableElement] =
 		useState<HTMLElement | null>(null);
 	const [lastFocusableElement, setLastFocusableElement] =
@@ -202,18 +202,17 @@ function MorphingDialogContent({
 	});
 
 	return (
-		<motion.div
+		<motion.dialog
 			ref={containerRef}
 			layoutId={`dialog-${uniqueId}`}
 			className={cn("overflow-hidden", className)}
 			style={style}
-			role="dialog"
 			aria-modal="true"
 			aria-labelledby={`motion-ui-morphing-dialog-title-${uniqueId}`}
 			aria-describedby={`motion-ui-morphing-dialog-description-${uniqueId}`}
 		>
 			{children}
-		</motion.div>
+		</motion.dialog>
 	);
 }
 

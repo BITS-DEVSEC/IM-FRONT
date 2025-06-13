@@ -3,9 +3,21 @@ import { defaultRoleRedirects } from "@/config/routes";
 import { useAuth } from "@/context/AuthContext";
 import { fetchUser } from "@/services/authService";
 import type { User } from "@/types/auth";
+import type { InsurerProfile } from "@/types/insurer";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+// Type guard to check if user has a role property (basic user type)
+type UserWithRole = Extract<User, { role: string }>;
+function hasRole(user: User): user is UserWithRole {
+  return 'role' in user && ['admin', 'customer', 'insurer'].includes((user as { role?: unknown }).role as string);
+}
+
+// Type guard to check if user is an InsurerProfile
+function isInsurerProfile(user: User): user is InsurerProfile {
+  return 'companyName' in user && 'profile_complete' in user && !('role' in user);
+}
 
 export default function LoginPage() {
 	const [username, setUsername] = useState("");
@@ -24,9 +36,20 @@ export default function LoginPage() {
 		try {
 			await login({ username, password });
 			toast.success("Login successful!");
-			// Redirect based on role or a default path after login
-			const loggedInUser = (await fetchUser()) as User; // Fetch user to get their actual role
-			const redirectPath = defaultRoleRedirects[loggedInUser.role];
+			// Fetch user to get their actual role/type
+			const loggedInUser = await fetchUser();
+			
+			// Determine redirect path based on user type
+			let redirectPath = '/login'; // Default fallback
+			
+			if (hasRole(loggedInUser)) {
+				// For users with a role property
+				redirectPath = defaultRoleRedirects[loggedInUser.role as keyof typeof defaultRoleRedirects] || '/login';
+			} else if (isInsurerProfile(loggedInUser)) {
+				// For InsurerProfile, redirect to insurer dashboard
+				redirectPath = defaultRoleRedirects.insurer;
+			}
+			
 			navigate(redirectPath);
 		} catch (error: unknown) {
 			toast.error(`Login failed: ${(error as Error).message}`);
@@ -52,7 +75,7 @@ export default function LoginPage() {
 							</svg>
 						</div>
 						<div>
-							<div className="font-semibold text-lg">SecureGuard</div>
+							<div className="font-semibold text-lg">Tila</div>
 							<div className="text-xs text-muted-foreground">
 								Insurance Platform
 							</div>

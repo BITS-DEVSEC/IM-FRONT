@@ -1,3 +1,4 @@
+import { InsurerOnboardingStepper } from "@/components/admin-components/products/InsurerOnboardingStepper.tsx";
 import { ProductsTable } from "@/components/admin-components/products/ProductsTable.tsx";
 import { CreateProductDialog } from "@/components/admin-components/products/modals/CreateProductDialog";
 import { EditProductDialog } from "@/components/admin-components/products/modals/EditProductDialog";
@@ -20,6 +21,7 @@ const AdminProducts: React.FC = () => {
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const [selectedProductForEdit, setSelectedProductForEdit] =
 		useState<Product | null>(null);
+	const [showOnboarding, setShowOnboarding] = useState(true);
 
 	useEffect(() => {
 		const getProducts = async () => {
@@ -34,8 +36,11 @@ const AdminProducts: React.FC = () => {
 				setIsLoading(false);
 			}
 		};
-		getProducts();
-	}, []);
+		// Only fetch products if the onboarding stepper is not shown
+		if (!showOnboarding) {
+			getProducts();
+		}
+	}, [showOnboarding]);
 
 	const handleCreateProduct = async (newProduct: Product) => {
 		const createdProduct = await createProduct(newProduct);
@@ -72,6 +77,18 @@ const AdminProducts: React.FC = () => {
 			console.log("Deleting product:", productId);
 		}
 	};
+
+	const handleOnboardingComplete = () => {
+		setShowOnboarding(false);
+	};
+
+	if (showOnboarding) {
+		return (
+			<InsurerOnboardingStepper
+				onOnboardingComplete={handleOnboardingComplete}
+			/>
+		);
+	}
 
 	if (isLoading) {
 		return <LoadingSpinner />;

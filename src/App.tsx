@@ -1,8 +1,13 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/components/shared/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { VALID_ROLES } from "./config/roles";
-import { defaultAppRedirect, roleSpecificRoutes } from "./config/routes.tsx";
+import {
+	defaultAppRedirect,
+	defaultRoleRedirects,
+	roleSpecificRoutes,
+} from "./config/routes.tsx";
 import { AuthProvider } from "./context/AuthContext";
 import { RoleLayout } from "./layouts/RoleLayout";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -24,7 +29,7 @@ export default function App() {
 								const routesForRole = roleSpecificRoutes[role];
 								const defaultRouteForRole =
 									routesForRole.find((r) => r.isIndex)?.path ||
-									(routesForRole.length > 0 ? routesForRole[0].path : "home");
+									defaultRoleRedirects[role];
 
 								return (
 									<Route key={role} path={`/${role}`} element={<RoleLayout />}>
@@ -49,6 +54,7 @@ export default function App() {
 						</Routes>
 					</BrowserRouter>
 				</ErrorBoundary>
+				<Toaster />
 			</AuthProvider>
 		</ThemeProvider>
 	);
